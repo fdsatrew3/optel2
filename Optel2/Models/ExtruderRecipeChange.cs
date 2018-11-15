@@ -13,7 +13,7 @@ namespace Optel2.Models
         public Guid Id { get; set; }
         public string From { get; set; }
         public string On { get; set; }
-        public decimal Duration { get; set; }
+        public DateTime Duration { get; set; }
         public decimal Consumption { get; set; }
         public Guid ExtruderId { get; set; }
     }

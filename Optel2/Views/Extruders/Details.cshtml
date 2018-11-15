@@ -1,0 +1,170 @@
+﻿@model Optel2.Models.Extruder
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Extruder</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WidthMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WidthMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WidthMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WidthMax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThicknessMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThicknessMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThicknessMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThicknessMax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionSpeedMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductionSpeedMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionSpeedMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductionSpeedMax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiameterMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiameterMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiameterMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiameterMax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WeightMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WeightMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WeightMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WeightMax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LenghtMin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LenghtMin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LenghtMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LenghtMax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WidthAdjustmentTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WidthAdjustmentTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChangeOfThicknessTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChangeOfThicknessTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartupDelay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartupDelay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MachineHourCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MachineHourCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WidthAdjustmentConsumption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WidthAdjustmentConsumption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChangeOfThicknessTimeConsumption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChangeOfThicknessTimeConsumption)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
