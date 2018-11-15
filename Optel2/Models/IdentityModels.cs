@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 
 namespace Optel2.Models
 {
@@ -29,5 +30,20 @@ namespace Optel2.Models
         {
             return new ApplicationDbContext();
         }
+    }
+
+    public class OptelContext : DbContext
+    {
+        public OptelContext() : base("DefaultConnection")
+        { }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<ExtruderCalibrationChange> ExtruderCalibrationChanges { get; set; }
+        public DbSet<ExtruderCoolingLipChange> ExtruderCoolingLipChanges { get; set; }
+        public DbSet<ExtruderNozzleChange> ExtruderNozzleChanges { get; set; }
+        public DbSet<ExtruderRecipeChange> ExtruderRecipeChanges { get; set; }
+        public DbSet<Extruder> Extruders { get; set; }
+        public DbSet<FilmRecipeCost> FilmRecipeCosts { get; set; }
+        public DbSet<FilmRecipe> FilmRecipes { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
