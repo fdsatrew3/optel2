@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Optel2.Models.Extruder>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Extruder data";
 }
 
-<h2>Index</h2>
+<h2>Extruder data</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -15,58 +15,40 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WidthMin)
+            Allowed width
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WidthMax)
+            Allowed thickness
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ThicknessMin)
+            Allowed production speed
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ThicknessMax)
+            Allowed diameter
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ProductionSpeedMin)
+            Allowed weight
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ProductionSpeedMax)
+            Allowed length
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DiameterMin)
+            Width adjustment time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DiameterMax)
+			Change of thickness time
+        </th>
+		<th>
+			Width adjustment consumption
+		</th>
+		<th>
+			Change of thickness consumption
+		</th>
+        <th>
+            Startup delay
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WeightMin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WeightMax)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LengthMin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LengthMax)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WidthAdjustmentTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ChangeOfThicknessTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartupDelay)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MachineHourCost)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WidthAdjustmentConsumption)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ChangeOfThicknessConsumption)
+			Machine hour cost
         </th>
         <th></th>
     </tr>
@@ -77,40 +59,22 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.WidthMin)
+            @Html.DisplayFor(modelItem => item.WidthMin) - @Html.DisplayFor(modelItem => item.WidthMax)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.WidthMax)
+            @Html.DisplayFor(modelItem => item.ThicknessMin) - @Html.DisplayFor(modelItem => item.ThicknessMax)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ThicknessMin)
+            @Html.DisplayFor(modelItem => item.ProductionSpeedMin) - @Html.DisplayFor(modelItem => item.ProductionSpeedMax)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ThicknessMax)
+            @Html.DisplayFor(modelItem => item.DiameterMin) - @Html.DisplayFor(modelItem => item.DiameterMax)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ProductionSpeedMin)
+            @Html.DisplayFor(modelItem => item.WeightMin) - @Html.DisplayFor(modelItem => item.WeightMax)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ProductionSpeedMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DiameterMin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DiameterMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WeightMin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WeightMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LengthMin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LengthMax)
+            @Html.DisplayFor(modelItem => item.LengthMin) - @Html.DisplayFor(modelItem => item.LengthMax)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.WidthAdjustmentTime)
@@ -118,6 +82,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.ChangeOfThicknessTime)
         </td>
+		<td>
+			@Html.DisplayFor(modelItem => item.WidthAdjustmentConsumption)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.ChangeOfThicknessConsumption)
+		</td>
         <td>
             @Html.DisplayFor(modelItem => item.StartupDelay)
         </td>
@@ -125,14 +95,8 @@
             @Html.DisplayFor(modelItem => item.MachineHourCost)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.WidthAdjustmentConsumption)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ChangeOfThicknessConsumption)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) <br>
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) <br>
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
