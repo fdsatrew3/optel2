@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Optel2.Models.ExtruderNozzleChange>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Extruder nozzle change data";
 }
 
-<h2>Index</h2>
+<h2>Extruder nozzle change data</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Consumption)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExtruderId)
+            @Html.DisplayNameFor(model => model.Extruder)
         </th>
         <th></th>
     </tr>
@@ -38,7 +38,7 @@
             @Html.DisplayFor(modelItem => item.Consumption)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ExtruderId)
+            @Html.DisplayFor(modelItem => item.Extruder.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
