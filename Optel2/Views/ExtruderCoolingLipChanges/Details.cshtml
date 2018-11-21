@@ -1,17 +1,16 @@
 ﻿@model Optel2.Models.ExtruderCoolingLipChange
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details of extruder cooling lip data";
 }
 
-<h2>Details</h2>
+<h2>Details of extruder cooling lip data</h2>
 
 <div>
-    <h4>ExtruderCoolingLipChange</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CoolingLip)
+        Cooling Lip
         </dt>
 
         <dd>
@@ -35,11 +34,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ExtruderId)
+            @Html.DisplayNameFor(model => model.Extruder)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ExtruderId)
+            @Html.DisplayFor(model => model.Extruder.Name)
         </dd>
 
     </dl>
