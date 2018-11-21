@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Optel2.Models.ExtruderCalibrationChange>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Extruders calibration data";
 }
 
-<h2>Index</h2>
+<h2>Extruders calibration data</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Consumption)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExtruderId)
+            Extruder
         </th>
         <th></th>
     </tr>
@@ -32,13 +32,13 @@
             @Html.DisplayFor(modelItem => item.Calibration)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Duration)
+            @Html.DisplayFor(modelItem => item.Duration.TimeOfDay)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Consumption)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ExtruderId)
+            @Html.DisplayFor(modelItem => item.Extruder.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
