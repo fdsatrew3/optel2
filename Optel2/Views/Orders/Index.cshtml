@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<Optel2.Models.Order>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Orders data";
 }
 
-<h2>Index</h2>
+<h2>Orders data</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create new order data", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OrderNumber)
+            Order number
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Product)
@@ -21,19 +21,19 @@
             @Html.DisplayNameFor(model => model.Width)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SetupTime)
+           Setup time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ProductionTime)
+			Production Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ProductionInterruptionTime)
+			Production Interruption Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TotalTime)
+            Total time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FinishedGoods)
+            Finished goods
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Granules)
@@ -42,10 +42,10 @@
             @Html.DisplayNameFor(model => model.Waste)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.QuanityInRunningMeter)
+			Quanity in running meter
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RollWeightNet)
+			Roll weight net
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Rolls)
@@ -95,8 +95,8 @@
             @Html.DisplayFor(modelItem => item.Rolls)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) <br>
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) <br>
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>

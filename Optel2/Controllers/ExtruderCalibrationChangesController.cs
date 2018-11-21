@@ -18,7 +18,7 @@ namespace Optel2.Controllers
         // GET: ExtruderCalibrationChanges
         public async Task<ActionResult> Index()
         {
-            return View(await db.ExtruderCalibrationChanges.ToListAsync());
+            return View(await db.ExtruderCalibrationChanges.Include(e => e.Extruder).ToListAsync());
         }
 
         // GET: ExtruderCalibrationChanges/Details/5
@@ -28,7 +28,7 @@ namespace Optel2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExtruderCalibrationChange extruderCalibrationChange = await db.ExtruderCalibrationChanges.FindAsync(id);
+            ExtruderCalibrationChange extruderCalibrationChange = await db.ExtruderCalibrationChanges.Include(e => e.Extruder).FirstOrDefaultAsync(e => e.Id == id);
             if (extruderCalibrationChange == null)
             {
                 return HttpNotFound();
@@ -37,8 +37,15 @@ namespace Optel2.Controllers
         }
 
         // GET: ExtruderCalibrationChanges/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View();
         }
 
@@ -56,7 +63,13 @@ namespace Optel2.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View(extruderCalibrationChange);
         }
 
@@ -72,6 +85,13 @@ namespace Optel2.Controllers
             {
                 return HttpNotFound();
             }
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View(extruderCalibrationChange);
         }
 
@@ -88,6 +108,13 @@ namespace Optel2.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View(extruderCalibrationChange);
         }
 
@@ -98,7 +125,7 @@ namespace Optel2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ExtruderCalibrationChange extruderCalibrationChange = await db.ExtruderCalibrationChanges.FindAsync(id);
+            ExtruderCalibrationChange extruderCalibrationChange = await db.ExtruderCalibrationChanges.Include(e => e.Extruder).FirstOrDefaultAsync(e => e.Id == id);
             if (extruderCalibrationChange == null)
             {
                 return HttpNotFound();

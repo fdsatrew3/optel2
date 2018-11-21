@@ -1,118 +1,117 @@
 ﻿@model Optel2.Models.Order
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details of order data";
 }
 
-<h2>Details</h2>
+<h2>Details of order data</h2>
 
 <div>
-    <h4>Order</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderNumber)
-        </dt>
+		<dt>
+			Order number
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderNumber)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.OrderNumber)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Product)
-        </dt>
+		<dt>
+			@Html.DisplayNameFor(model => model.Product)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Product)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Product)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Width)
-        </dt>
+		<dt>
+			@Html.DisplayNameFor(model => model.Width)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Width)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Width)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SetupTime)
-        </dt>
+		<dt>
+			Setup time
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.SetupTime)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.SetupTime)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductionTime)
-        </dt>
+		<dt>
+			Production time
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProductionTime)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ProductionTime)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductionInterruptionTime)
-        </dt>
+		<dt>
+			Production interruption time
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProductionInterruptionTime)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ProductionInterruptionTime)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalTime)
-        </dt>
+		<dt>
+			Total time
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.TotalTime)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.TotalTime)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FinishedGoods)
-        </dt>
+		<dt>
+			Finished goods
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FinishedGoods)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.FinishedGoods)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Granules)
-        </dt>
+		<dt>
+			@Html.DisplayNameFor(model => model.Granules)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Granules)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Granules)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Waste)
-        </dt>
+		<dt>
+			@Html.DisplayNameFor(model => model.Waste)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Waste)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Waste)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.QuanityInRunningMeter)
-        </dt>
+		<dt>
+			Quanity in running meter
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.QuanityInRunningMeter)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.QuanityInRunningMeter)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RollWeightNet)
-        </dt>
+		<dt>
+			Roll weight net
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.RollWeightNet)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.RollWeightNet)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Rolls)
-        </dt>
+		<dt>
+			@Html.DisplayNameFor(model => model.Rolls)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Rolls)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Rolls)
+		</dd>
 
     </dl>
 </div>

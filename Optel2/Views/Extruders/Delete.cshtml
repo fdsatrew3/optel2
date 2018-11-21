@@ -1,168 +1,164 @@
 ﻿@model Optel2.Models.Extruder
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete extruder data";
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this extruder data?</h3>
 <div>
-    <h4>Extruder</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+		<dt>
+			@Html.DisplayNameFor(model => model.Name)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Name)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.WidthMin)
-        </dt>
+		<dt>
+			Min allowed width
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.WidthMin)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.WidthMin)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.WidthMax)
-        </dt>
+		<dt>
+			Max allowed width
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.WidthMax)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.WidthMax)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ThicknessMin)
-        </dt>
+		<dt>
+			Min allowed thickness
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ThicknessMin)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ThicknessMin)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ThicknessMax)
-        </dt>
+		<dt>
+			Max allowed thickness
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ThicknessMax)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ThicknessMax)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductionSpeedMin)
-        </dt>
+		<dt>
+			Min allowed production speed
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProductionSpeedMin)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ProductionSpeedMin)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductionSpeedMax)
-        </dt>
+		<dt>
+			Max allowed production speed
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProductionSpeedMax)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ProductionSpeedMax)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DiameterMin)
-        </dt>
+		<dt>
+			Min allowed diameter
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.DiameterMin)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.DiameterMin)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DiameterMax)
-        </dt>
+		<dt>
+			Max allowed diameter
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.DiameterMax)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.DiameterMax)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.WeightMin)
-        </dt>
+		<dt>
+			Min allowed weight
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.WeightMin)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.WeightMin)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.WeightMax)
-        </dt>
+		<dt>
+			Max allowed weight
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.WeightMax)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.WeightMax)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LenghtMin)
-        </dt>
+		<dt>
+			Min allowed length
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.LenghtMin)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.LengthMin)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LenghtMax)
-        </dt>
+		<dt>
+			Max allowed length
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.LenghtMax)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.LengthMax)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.WidthAdjustmentTime)
-        </dt>
+		<dt>
+			Width adjustment duration
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.WidthAdjustmentTime)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.WidthAdjustmentTime)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ChangeOfThicknessTime)
-        </dt>
+		<dt>
+			Change of thickness duration
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ChangeOfThicknessTime)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ChangeOfThicknessTime)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartupDelay)
-        </dt>
+		<dt>
+			Width adjustment consumption
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartupDelay)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.WidthAdjustmentConsumption)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MachineHourCost)
-        </dt>
+		<dt>
+			Change of thickness consumption
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MachineHourCost)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.ChangeOfThicknessConsumption)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.WidthAdjustmentConsumption)
-        </dt>
+		<dt>
+			Startup delay
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.WidthAdjustmentConsumption)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.StartupDelay)
+		</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ChangeOfThicknessTimeConsumption)
-        </dt>
+		<dt>
+			Machine hour cost
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ChangeOfThicknessTimeConsumption)
-        </dd>
-
+		<dd>
+			@Html.DisplayFor(model => model.MachineHourCost)
+		</dd>
     </dl>
 
     @using (Html.BeginForm()) {

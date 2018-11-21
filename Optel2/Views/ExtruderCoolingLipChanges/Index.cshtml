@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<Optel2.Models.ExtruderCoolingLipChange>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Extruders cooling lip data";
 }
 
-<h2>Index</h2>
+<h2>Extruders cooling lip data</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create new extruder cooling lip data", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CoolingLip)
+            Cooling Lip
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Duration)
@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Consumption)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExtruderId)
+            @Html.DisplayNameFor(model => model.Extruder)
         </th>
         <th></th>
     </tr>
@@ -38,7 +38,7 @@
             @Html.DisplayFor(modelItem => item.Consumption)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ExtruderId)
+            @Html.DisplayFor(modelItem => item.Extruder.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
