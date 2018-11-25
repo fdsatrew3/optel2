@@ -11,6 +11,7 @@ using Optel2.Models;
 
 namespace Optel2.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FilmRecipesController : Controller
     {
         private OptelContext db = new OptelContext();
@@ -18,7 +19,7 @@ namespace Optel2.Controllers
         // GET: FilmRecipes
         public async Task<ActionResult> Index()
         {
-            return View(await db.FilmRecipes.ToListAsync());
+            return View(await db.FilmRecipes.Include(e => e.Extruder).ToListAsync());
         }
 
         // GET: FilmRecipes/Details/5
@@ -28,7 +29,7 @@ namespace Optel2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FilmRecipe filmRecipe = await db.FilmRecipes.FindAsync(id);
+            FilmRecipe filmRecipe = await db.FilmRecipes.Include(e => e.Extruder).FirstOrDefaultAsync(e => e.Id == id);
             if (filmRecipe == null)
             {
                 return HttpNotFound();
@@ -37,8 +38,15 @@ namespace Optel2.Controllers
         }
 
         // GET: FilmRecipes/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View();
         }
 
@@ -56,7 +64,13 @@ namespace Optel2.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View(filmRecipe);
         }
 
@@ -72,6 +86,13 @@ namespace Optel2.Controllers
             {
                 return HttpNotFound();
             }
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View(filmRecipe);
         }
 
@@ -88,6 +109,13 @@ namespace Optel2.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            List<Extruder> extruders = await db.Extruders.ToListAsync();
+            List<SelectListItem> extrudersDropDownList = new List<SelectListItem>();
+            foreach (Extruder extruder in extruders)
+            {
+                extrudersDropDownList.Add(new SelectListItem() { Text = extruder.Name.ToString(), Value = extruder.Id.ToString() });
+            }
+            ViewBag.Extruders = extrudersDropDownList;
             return View(filmRecipe);
         }
 
@@ -98,7 +126,7 @@ namespace Optel2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FilmRecipe filmRecipe = await db.FilmRecipes.FindAsync(id);
+            FilmRecipe filmRecipe = await db.FilmRecipes.Include(e => e.Extruder).FirstOrDefaultAsync(e => e.Id == id);
             if (filmRecipe == null)
             {
                 return HttpNotFound();

@@ -1,10 +1,10 @@
 ﻿@model Optel2.Models.FilmRecipe
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create new film recipe data";
 }
 
-<h2>Create</h2>
+<h2>Create new film recipe data</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,13 +12,12 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>FilmRecipe</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.ItemNumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ItemNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ItemNumber, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.ItemNumber, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -26,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Article, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Article, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Article, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.Article, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -34,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Recipe, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Recipe, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Recipe, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.Recipe, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -42,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Thickness, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Thickness, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Thickness, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.Thickness, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -50,7 +49,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NozzleInsert, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NozzleInsert, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.NozzleInsert, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.NozzleInsert, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -58,7 +57,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NozzleInsertAlternative, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NozzleInsertAlternative, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.NozzleInsertAlternative, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.NozzleInsertAlternative, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -66,7 +65,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CoolingLip, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CoolingLip, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CoolingLip, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.CoolingLip, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -74,7 +73,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProductionSpeed, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductionSpeed, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ProductionSpeed, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.ProductionSpeed, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -82,7 +81,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Output, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Output, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Output, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.Output, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -90,7 +89,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CalibrationDiameter, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CalibrationDiameter, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CalibrationDiameter, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.CalibrationDiameter, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -98,8 +97,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ExtruderId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ExtruderId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ExtruderId, "", new { @class = "text-danger" })
+				@Html.DropDownListFor(model => model.ExtruderId, ViewBag.Extruders as IEnumerable<SelectListItem>, new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.ExtruderId, "", new { @class = "text-danger" })
             </div>
         </div>
 

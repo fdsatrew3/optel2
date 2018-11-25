@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Optel2.Models.FilmRecipe>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Film recipes data";
 }
 
-<h2>Index</h2>
+<h2>Film recipes data</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create new film recipe data", "Create")
 </p>
 <table class="table">
     <tr>
@@ -80,11 +80,11 @@
             @Html.DisplayFor(modelItem => item.CalibrationDiameter)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ExtruderId)
+            @Html.DisplayFor(modelItem => item.Extruder.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) <br />
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) <br />
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>

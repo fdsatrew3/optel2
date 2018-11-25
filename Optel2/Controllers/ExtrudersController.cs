@@ -11,6 +11,7 @@ using Optel2.Models;
 
 namespace Optel2.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ExtrudersController : Controller
     {
         private OptelContext db = new OptelContext();

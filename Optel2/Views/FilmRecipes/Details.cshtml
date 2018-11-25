@@ -1,13 +1,12 @@
 ﻿@model Optel2.Models.FilmRecipe
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details of film recipe data";
 }
 
-<h2>Details</h2>
+<h2>Details of film recipe data</h2>
 
 <div>
-    <h4>FilmRecipe</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -95,7 +94,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ExtruderId)
+            @Html.DisplayFor(model => model.Extruder.Name)
         </dd>
 
     </dl>
