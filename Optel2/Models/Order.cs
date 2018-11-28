@@ -25,9 +25,12 @@ namespace Optel2.Models
         public decimal RollWeightNet { get; set; }
         public decimal Rolls { get; set; }
 
-        public bool Selected;
-        internal DateTime PlanedStartDate;
-        internal DateTime PlanedEndDate;
+        [NotMapped]
+        public bool Selected { get; set; }
+        [NotMapped]
+        internal DateTime PlanedStartDate { get; set; }
+        [NotMapped]
+        internal DateTime PlanedEndDate { get; set; }
 
         public bool CheckCompabilityWithLine(Extruder line)
         {

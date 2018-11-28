@@ -14,18 +14,20 @@ namespace Optel2.Models
         [Display(Name = "Planned end date")]
         [DataType(DataType.Date)]
         public DateTime PlannedEndDate { get; set; }
-        public ICollection<Order> Orders { get; set; }
-        public ICollection<Extruder> Extruders { get; set; }
+        public List<Order> Orders { get; set; }
+        public List<Extruder> Extruders { get; set; }
         public OptimizationCriterion Criterion { get; set; }
         public AObjectiveFunction Function { get; set; }
+        public enum SelectedAlgorithm { Genetic, BruteForce };
+        public SelectedAlgorithm Algorithm { get; set; }
 
         #region GeneticAlgorithmShit
-        public int MaxPopulation { get; set; }
-        public int MaxSelection { get; set; }
-        public int MutationPropability { get; set; }
-        public decimal PercentOfMutableGens { get; set; }
-        public int CrossoverPropability { get; set; }
+        [Display(Name = "Count of iterations")]
         public int NumberOfGAiterations { get; set; }
+        #endregion
+
+        #region BruteForceAlgorithmShit
+        // ???
         #endregion
 
         public PlanningModel()

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using static Algorithms.ProductionPlan;
 
 namespace Optel2.Controllers
 {
@@ -20,6 +21,15 @@ namespace Optel2.Controllers
         {
             PlanningModel planningModel = new PlanningModel();
             planningModel.Orders = await db.Orders.ToListAsync();
+            planningModel.Extruders = await db.Extruders.Include(e => e.ExtruderCalibrationChange)
+                .Include(e => e.ExtruderCoolingLipChange)
+                .Include(e => e.ExtruderNozzleChange)
+                .Include(e => e.ExtruderRecipeChange).ToListAsync();
+            List<SelectListItem> criterionDropDownList = new List<SelectListItem>();
+            criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Cost.ToString(), Value = OptimizationCriterion.Cost.ToString() });
+            criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Time.ToString(), Value = OptimizationCriterion.Time.ToString() });
+            ViewBag.Criterions = criterionDropDownList;
+            planningModel.NumberOfGAiterations = 100;
             return View(planningModel);
         }
 
@@ -28,20 +38,53 @@ namespace Optel2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Config([Bind(Include = "PlannedStartDate, PlannedEndDate, Orders, Extruders, Criterion, Function, MaxPopulation, MaxSelection, MutationPropability, PercentOfMutableGens, CrossoverPropability, NumberOfGAiterations")] PlanningModel planningConfig)
+        public async Task<ActionResult> Config(PlanningModel planningConfig)
         {
+            List<Order> sortedOrders = planningConfig.Orders.Where(order => order.Selected == true).ToList(); 
+            List<Extruder> sortedExtruders = planningConfig.Extruders.Where(extruder => extruder.Selected == true).ToList();
+
+            if (sortedOrders.Count < 2)
+            {
+                ModelState.AddModelError("", "You must select at least two orders.");
+            }
+
+            if (sortedExtruders.Count == 0)
+            {
+                ModelState.AddModelError("", "You must select at least one extruder.");
+            }
+
+            if (planningConfig.NumberOfGAiterations == 0)
+            {
+                ModelState.AddModelError("NumberOfGAiterations", "Count of iterations must be greater than zero.");
+            }
+            if(planningConfig.PlannedStartDate > planningConfig.PlannedEndDate)
+            {
+                ModelState.AddModelError("PlannedStartDate", "Planned start date must be earlier than planned end date.");
+            }
             if (ModelState.IsValid)
             {
-                Order order = planningConfig.Orders.First(o => o.OrderNumber.Equals("101576"));
-                return RedirectToAction("Result");
+                TempData["Orders"] = sortedOrders;
+                TempData["Extruders"] = sortedExtruders;
+                return RedirectToAction("Result", planningConfig);
             }
             PlanningModel planningModel = new PlanningModel();
             planningModel.Orders = await db.Orders.ToListAsync();
+            planningModel.Extruders = await db.Extruders.Include(e => e.ExtruderCalibrationChange)
+            .Include(e => e.ExtruderCoolingLipChange)
+            .Include(e => e.ExtruderNozzleChange)
+            .Include(e => e.ExtruderRecipeChange).ToListAsync();
+            List<SelectListItem> criterionDropDownList = new List<SelectListItem>();
+            criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Cost.ToString(), Value = OptimizationCriterion.Cost.ToString() });
+            criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Time.ToString(), Value = OptimizationCriterion.Time.ToString() });
+            ViewBag.Criterions = criterionDropDownList;
+            planningModel.NumberOfGAiterations = 100;
             return View(planningModel);
         }
 
-        public ActionResult Result()
+        public ActionResult Result(PlanningModel planningConfig)
         {
+            planningConfig.Extruders = (List<Extruder>)TempData["Extruders"];
+            planningConfig.Orders = (List<Order>)TempData["Orders"];
             return View();
         }
 
