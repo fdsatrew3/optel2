@@ -1,0 +1,81 @@
+﻿@model Optel2.Models.PlanningModel
+
+@{
+	ViewBag.Title = "Planning";
+}
+
+<h2>@ViewBag.Title - Step 1 of 4</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.PlannedStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PlannedStartDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.PlannedStartDate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.PlannedEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PlannedEndDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.PlannedEndDate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<table class="table">
+			<tr>
+				<th></th>
+				<th>
+					@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().OrderNumber)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Product)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Width)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().RollWeightNet)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Orders.FirstOrDefault().Rolls)
+				</th>
+				<th></th>
+			</tr>
+			@foreach (var item in Model.Orders)
+			{
+				<tr>
+					<td>
+						@Html.CheckBoxFor(modelItem => item.Selected)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.OrderNumber)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Product)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Width)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.RollWeightNet)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Rolls)
+					</td>
+				</tr>
+			}
+		</table>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Planning" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
