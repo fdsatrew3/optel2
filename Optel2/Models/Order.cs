@@ -24,13 +24,5 @@ namespace Optel2.Models
         public decimal QuanityInRunningMeter { get; set; }
         public decimal RollWeightNet { get; set; }
         public decimal Rolls { get; set; }
-
-        internal DateTime PlanedStartDate;
-        internal DateTime PlanedEndDate;
-
-        public bool CheckCompabilityWithLine(Extruder line)
-        {
-            return true;
-        }
     }
 }

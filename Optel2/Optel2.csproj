@@ -184,18 +184,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\BruteForce\BruteForceAlgorithm.cs" />
-    <Compile Include="Algorithms\Costs.cs" />
-    <Compile Include="Algorithms\ExecutionTimeAndCost.cs" />
-    <Compile Include="Algorithms\FisherYates.cs" />
-    <Compile Include="Algorithms\Genetic\GeneticAlgorithm.cs" />
-    <Compile Include="Algorithms\Genetic\Operators\CrossoverOperator.cs" />
-    <Compile Include="Algorithms\Genetic\Operators\MutationOperator.cs" />
-    <Compile Include="Algorithms\ObjectiveFunctions\AObjectiveFunction.cs" />
-    <Compile Include="Algorithms\ObjectiveFunctions\MondiObjectiveFunction.cs" />
-    <Compile Include="Algorithms\OrdersOnExtruderLine.cs" />
-    <Compile Include="Algorithms\ProductionPlan.cs" />
-    <Compile Include="Models\SliceLine.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
