@@ -18,8 +18,8 @@ namespace Optel2.Models
         public List<Extruder> Extruders { get; set; }
         public OptimizationCriterion Criterion { get; set; }
         public AObjectiveFunction Function { get; set; }
-        public enum SelectedAlgorithm { Genetic, BruteForce };
-        public SelectedAlgorithm Algorithm { get; set; }
+        public enum PlanningAlgorithm { Genetic, BruteForce };
+        public PlanningAlgorithm SelectedAlgorithm { get; set; }
 
         #region GeneticAlgorithmShit
         [Display(Name = "Count of iterations")]

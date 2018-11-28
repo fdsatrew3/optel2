@@ -29,6 +29,10 @@ namespace Optel2.Controllers
             criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Cost.ToString(), Value = OptimizationCriterion.Cost.ToString() });
             criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Time.ToString(), Value = OptimizationCriterion.Time.ToString() });
             ViewBag.Criterions = criterionDropDownList;
+            List<SelectListItem> algorithmDropDownList = new List<SelectListItem>();
+            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.Genetic.ToString(), Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
+            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.BruteForce.ToString(), Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
+            ViewBag.Algorithms = algorithmDropDownList;
             planningModel.NumberOfGAiterations = 100;
             return View(planningModel);
         }
@@ -77,6 +81,10 @@ namespace Optel2.Controllers
             criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Cost.ToString(), Value = OptimizationCriterion.Cost.ToString() });
             criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Time.ToString(), Value = OptimizationCriterion.Time.ToString() });
             ViewBag.Criterions = criterionDropDownList;
+            List<SelectListItem> algorithmDropDownList = new List<SelectListItem>();
+            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.Genetic.ToString(), Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
+            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.BruteForce.ToString(), Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
+            ViewBag.Algorithms = algorithmDropDownList;
             planningModel.NumberOfGAiterations = 100;
             return View(planningModel);
         }

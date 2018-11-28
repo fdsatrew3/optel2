@@ -1,47 +1,54 @@
 ﻿@model Optel2.Models.PlanningModel
+@using Optel2.Models
 
 @{
 	ViewBag.Title = "Planning";
 }
 
-<h2>@ViewBag.Title - Step 1 of 4</h2>
+<h2 id="CurrentStep">@ViewBag.Title - Step 1 of 4</h2>
 
 @using (Html.BeginForm())
 {
 	@Html.AntiForgeryToken()
+	<div id="Step1Container">
+		<div class="form-horizontal">
+			<hr />
+			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-	<div class="form-horizontal">
-		<hr />
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+			<div class="form-group">
+				@Html.LabelFor(model => model.PlannedStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PlannedStartDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+					@Html.ValidationMessageFor(model => model.PlannedStartDate, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.PlannedEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PlannedEndDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+					@Html.ValidationMessageFor(model => model.PlannedEndDate, "", new { @class = "text-danger" })
+				</div>
+			</div>
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.PlannedStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.PlannedStartDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-				@Html.ValidationMessageFor(model => model.PlannedStartDate, "", new { @class = "text-danger" })
+			<div class="form-group">
+				@Html.LabelFor(model => model.Criterion, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.DropDownListFor(model => model.Criterion, ViewBag.Criterions as IEnumerable<SelectListItem>, htmlAttributes: new { @class = "form-control" })
+					@Html.ValidationMessageFor(model => model.Criterion, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<br />
+			<div class="form-group">
+				<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 1)" id="prevStepButton1">Previous step</button>&nbsp;
+				<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 2)" id="nextStepButton2">Next step</button>
 			</div>
 		</div>
-		<div class="form-group">
-			@Html.LabelFor(model => model.PlannedEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.PlannedEndDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-				@Html.ValidationMessageFor(model => model.PlannedEndDate, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.Criterion, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.DropDownListFor(model => model.Criterion, ViewBag.Criterions as IEnumerable<SelectListItem>, htmlAttributes: new { @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.Criterion, "", new { @class = "text-danger" })
-			</div>
-		</div>
+	</div>
+	<div id="Step2Container">
 		<div class="form-group">
 			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 1)">Previous step</button>&nbsp;
-			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 2)">Next step</button>
+			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 3)">Next step</button>
 		</div>
-
-
 		<table class="table">
 			<tr>
 				<th></th>
@@ -91,11 +98,13 @@
 				</tr>
 			}
 		</table>
+		<br />
 		<div class="form-group">
-			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 1)">Previous step</button>&nbsp;
-			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 3)">Next step</button>
+			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 1)" id="prevStepButton3">Previous step</button>&nbsp;
+			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 3)" id="nextStepButton4">Next step</button>
 		</div>
-
+	</div>
+	<div id="Step3Container">
 		<table class="table">
 			<tr>
 				<th></th>
@@ -165,33 +174,87 @@
 				</tr>
 			}
 		</table>
+		<br />
 		<div class="form-group">
-			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 2)" id="prevStepButton2">Previous step</button>&nbsp;
-			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 4) ">Next step</button>
+			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 2)" id="prevStepButton5">Previous step</button>&nbsp;
+			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 4)" id="nextStepButton6">Next step</button>
 		</div>
-
+	</div>
+	<div id="Step4Container">
 		<div class="form-group">
-			@Html.LabelFor(model => model.NumberOfGAiterations, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.SelectedAlgorithm, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.NumberOfGAiterations, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-				@Html.ValidationMessageFor(model => model.NumberOfGAiterations, "", new { @class = "text-danger" })
+				@Html.DropDownListFor(model => model.SelectedAlgorithm, ViewBag.Algorithms as IEnumerable<SelectListItem>, htmlAttributes: new { @class = "form-control", id = "AlgorithmDropDown", onchange = "OnAlgorithmDropDownChange()" })
+				@Html.ValidationMessageFor(model => model.SelectedAlgorithm, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div id="Step4Container1">
+			<div class="form-group">
+				@Html.LabelFor(model => model.NumberOfGAiterations, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.NumberOfGAiterations, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+					@Html.ValidationMessageFor(model => model.NumberOfGAiterations, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+		<div id="Step4Container2">
+			<div class="form-group">
+				Brute Force algorithm doesn't have any parameters.
 			</div>
 		</div>
 		<div class="form-group">
-			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 3)" id="prevStepButton3">Previous step</button>&nbsp;
-			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(true, 4) " id="nextStepButton4">Next step</button>
+			<button type="button" class="btn btn-default" onclick="OnStepButtonPress(false, 3)" id="prevStepButton7">Previous step</button>&nbsp;
 		</div>
-
 		<div class="form-group" id="subminButton">
 			<div class="col-md-offset-2 col-md-10">
-				<input type="submit" value="Planning" class="btn btn-default" />
+				<input type="submit" value="Start planning" class="btn btn-default" />
 			</div>
 		</div>
 	</div>
 
 	<script>
-	function OnStepButtonPress(forward, step) {
-		onclick="isEmail()"
-	}
+			var Step1Container, Step2Container, Step3Container, Step4Container, Step4Container1, Step4Container2, CurrentStep, AlgorithmDropDown;
+		window.onload = function () {
+			Step1Container = document.getElementById("Step1Container");
+			Step2Container = document.getElementById("Step2Container");
+			Step3Container = document.getElementById("Step3Container");
+			Step4Container = document.getElementById("Step4Container");
+			Step4Container1 = document.getElementById("Step4Container1");
+			Step4Container2 = document.getElementById("Step4Container2");
+			CurrentStep = document.getElementById("CurrentStep");
+			AlgorithmDropDown = document.getElementById("AlgorithmDropDown");
+			OnStepButtonPress(false, 1);
+			OnAlgorithmDropDownChange();
+		}
+
+		function OnAlgorithmDropDownChange() {
+			var algorithm = AlgorithmDropDown.options[AlgorithmDropDown.selectedIndex].text;
+			var genetic = (algorithm == "@PlanningModel.PlanningAlgorithm.Genetic.ToString()");
+			Step4Container1.style.display = genetic ? "block" : "none";
+			Step4Container2.style.display = genetic ? "none" : "block";
+		}
+
+		function OnStepButtonPress(forward, step) {
+			var stageName;
+			switch (step) {
+				case 2:
+					stageName = "Choosing of orders"
+					break;
+				case 3:
+					stageName = "Choosing of extruders"
+					break;
+				case 4:
+					stageName = "Choosing of algorithm"
+					break;
+				case 1:
+				default:
+					stageName = "Initial settings";
+			}
+			CurrentStep.innerHTML = "@ViewBag.Title" + " - Step " + step + " of 4. " + stageName + ".";
+			Step1Container.style.display = step == 1 ? "block" : "none";
+			Step2Container.style.display = step == 2 ? "block" : "none";
+			Step3Container.style.display = step == 3 ? "block" : "none";
+			Step4Container.style.display = step == 4 ? "block" : "none";
+		}
 	</script>
 }
