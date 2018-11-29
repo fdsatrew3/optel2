@@ -99,33 +99,27 @@ namespace Optel2.Controllers
             return View(planningModel);
         }
 
-        public int ConvertToUnixTimestamp(DateTime date)
-        {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan diff = date.ToUniversalTime() - origin;
-            return(int)diff.TotalSeconds;
-        }
-
         public string GenerateJSON(ProductionPlan plan)
         {
-            string json = "[";
+            string json = "";
             int id = 1;
             for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
             {
                 json += "[{\r\n";
                 json += "\"id\": \"" + id + "\",\r\n";
-                json += "\"name\": \"" + plan.OrdersToLineConformity[0].Line.Name + "\",\r\n";
-                json += "\"periods\": [{\r\n";
-                for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; i++)
+                json += "\"name\": \"" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
+                json += "\"periods\": [\r\n";
+                for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
-                    json += "\"id\": \"" + id + "_" + j + "_" + plan.OrdersToLineConformity[0].Line.Name + "\",\r\n";
+                    json += "{\r\n\"id\": \"" + id + "_" + j + "_" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
                     json += "\"stroke\": \"#B8AA96\",\r\n";
-                    json += "\"start\": " + 1 + ",\r\n";
-                    json += "\"end\": " + 1 + ",\r\n";
+                    json += "\"start\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate.ToString("yyyy, M, d, H, m, s") + "),\r\n";
+                    json += "\"end\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate.ToString("yyyy, M, d, H, m, s") + "),\r\n},\r\n";
                 }
                 json += "],\r\n},";
                 id++;
             }
+            json = json.Substring(0, json.Length - 1);
             json += "\r\n]";
             return json;
         }
@@ -143,9 +137,9 @@ namespace Optel2.Controllers
             result.OrdersToLineConformity[0].Line = planningConfig.Extruders[0];
             result.OrdersToLineConformity[0].Orders = new List<Order> { planningConfig.Orders[0], planningConfig.Orders[1] };
             result.OrdersToLineConformity[0].Orders[0].PlanedStartDate = DateTime.Now;
-            result.OrdersToLineConformity[0].Orders[0].PlanedEndDate = DateTime.Now.AddHours(4);
-            result.OrdersToLineConformity[0].Orders[1].PlanedStartDate = result.OrdersToLineConformity[0].Orders[0].PlanedEndDate;
-            result.OrdersToLineConformity[0].Orders[1].PlanedEndDate = result.OrdersToLineConformity[0].Orders[1].PlanedStartDate.AddDays(1);
+            result.OrdersToLineConformity[0].Orders[0].PlanedEndDate = DateTime.Now.AddDays(4);
+            result.OrdersToLineConformity[0].Orders[1].PlanedStartDate = result.OrdersToLineConformity[0].Orders[0].PlanedEndDate.AddDays(1);
+            result.OrdersToLineConformity[0].Orders[1].PlanedEndDate = result.OrdersToLineConformity[0].Orders[1].PlanedStartDate.AddHours(4);
             /*switch (planningConfig.SelectedAlgorithm)
             {
                 case PlanningModel.PlanningAlgorithm.BruteForce:
