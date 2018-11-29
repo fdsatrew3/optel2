@@ -1,4 +1,5 @@
-﻿using Optel2.Models;
+﻿using Optel2.DestoyThisPls;
+using Optel2.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace Algorithms.ObjectiveFunctions
         {
             double d = DateTimeToDouble(Line.ChangeOfThicknessTime);
             ExecutionTimeAndCost executionTimeAndCost = new ExecutionTimeAndCost();
-            DateTime executionStart = DateTime.Now, executionEnd = DateTime.Now;
+            DateTime executionStart = MyLittleKostyl.startDate, executionEnd = MyLittleKostyl.endDate;
             double workTime = 0,
                     totalWorkTime = 0,
                     totalRetargetingTime = 0,
@@ -40,6 +41,7 @@ namespace Algorithms.ObjectiveFunctions
                 Orders[0].PlanedEndDate = executionStart.AddSeconds(totalWorkTime);
                 workTime = Convert.ToDouble(Orders[0].Rolls * Orders[0].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
                 Orders[0].PlanedEndDate.AddSeconds(workTime);
+                workCost += 3.23m;
                 //Extruder.StartupDelay + Extruder.ChangeofThickness(Order1, Order2) + Extruder.WidthAdj(Order1, Order2) + CalcRetargettingTIme(Order1, Order2) + (Order2.Rolls * Order2.width) / FilmRecipe.GetProductionSpeedByOrderCode(Order2)) 
 
                 //Orders[0].PlanedEndDate = Orders[0].PlanedStartDate.AddSeconds(DateTimeToDouble(Line.ChangeOfThicknessTime) + DateTimeToDouble(Line.WidthAdjustmentTime) + Convert.ToDecimal(Orders[0].Rolls * Orders[0].Width / filmRecipe.ProductionSpeed) * 60);
@@ -56,7 +58,7 @@ namespace Algorithms.ObjectiveFunctions
 
                         // i-тый заказ начнёт выполняться не раньше, чем перенастроится линия (отсчёт с первого 
                         // заказа: totalWorkTime хранит как полезную работу, так и предыдущие перенастройки).
-                        Orders[i].PlanedStartDate = Orders[i-1].PlanedEndDate;
+                        Orders[i].PlanedStartDate = Orders[i - 1].PlanedEndDate;
                         workTime += Convert.ToDouble(Orders[i].Rolls * Orders[i].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
                         // Отсчёт завершения работы i-того заказа - от времени начала его завершения.
                         Orders[i].PlanedEndDate = Orders[i].PlanedStartDate.AddSeconds(retargetingTime + workTime);
@@ -66,6 +68,7 @@ namespace Algorithms.ObjectiveFunctions
 
                         // Аккумулируем общее время работы.
                         totalWorkTime += workTime + retargetingTime;
+                        workCost += 3.23m;
                     }
                 }
 

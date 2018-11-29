@@ -18,6 +18,16 @@
 </style>
 <h2>@ViewBag.Title</h2>
 <div id="container"></div>
+@{
+	if (ViewBag.Criteria == "Cost")
+	{
+		<div>Required currency to execute plan: @ViewBag.Result$</div>
+	}
+	else
+	{
+		<div>Required time to execute plan: @ViewBag.Result1 </div>
+	}
+}
 <script type="text/javascript">
 	anychart.onDocumentReady(function () {
 		// create data tree

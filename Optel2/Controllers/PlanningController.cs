@@ -2,6 +2,7 @@
 using Algorithms.BruteForce;
 using Algorithms.ObjectiveFunctions;
 using GenetycAlgorithm;
+using Optel2.DestoyThisPls;
 using Optel2.Models;
 using System;
 using System.Collections.Generic;
@@ -108,7 +109,7 @@ namespace Optel2.Controllers
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
                     json += "{\r\n\"id\": \"" + id + "_" + j + "_" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
-                    json += "\"stroke\": \"#B8AA96\",\r\n";
+                    json += "\"stroke\": \"3 black\",\r\n";
                     json += "\"start\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate.ToString("yyyy, M, d, H, m, s") + "),\r\n";
                     json += "\"end\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate.ToString("yyyy, M, d, H, m, s") + "),\r\n},\r\n";
                 }
@@ -128,6 +129,8 @@ namespace Optel2.Controllers
             {
                 return RedirectToAction("Config");
             }
+            MyLittleKostyl.startDate = planningConfig.PlannedStartDate;
+            MyLittleKostyl.endDate = planningConfig.PlannedEndDate;
             ProductionPlan result = new ProductionPlan();
             /*result.OrdersToLineConformity = new List<OrdersOnExtruderLine>() { new OrdersOnExtruderLine() };
             result.OrdersToLineConformity[0].Line = planningConfig.Extruders[0];
@@ -162,6 +165,10 @@ namespace Optel2.Controllers
                     break;
             } 
             ViewBag.JsonString = GenerateJSON(result);
+            ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
+            decimal temp = result.GetWorkSpending(new Costs(), planningConfig.Criterion, new MondiObjectiveFunction());
+            ViewBag.Result = Math.Round(temp, 2);
+            ViewBag.Result1 = DateTime.MinValue.AddSeconds(Convert.ToDouble(temp)).ToString("d H:mm:ss");
             return View(planningConfig);
         }
 

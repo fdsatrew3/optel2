@@ -202,6 +202,7 @@
     <Compile Include="Algorithms\OrdersOnExtruderLine.cs" />
     <Compile Include="Algorithms\ProductionPlan.cs" />
     <Compile Include="Controllers\PlanningController.cs" />
+    <Compile Include="DestoyThisPls\MyLittleKostyl.cs" />
     <Compile Include="Models\PlanningModel.cs" />
     <Compile Include="Models\SliceLine.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
