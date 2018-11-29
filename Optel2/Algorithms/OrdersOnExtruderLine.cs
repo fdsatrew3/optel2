@@ -28,11 +28,11 @@ namespace Algorithms
 
             if (Orders.Count > 1)
             {
-                executionTime = (float)(Orders[Orders.Count - 1].PlanedEndDate.Subtract(Orders[0].PlanedStartDate)).TotalHours;
+                executionTime = (float)(Orders[Orders.Count - 1].PlanedEndDate.Subtract(Orders[0].PlanedStartDate)).TotalSeconds;
             }
             else if (Orders.Count == 1)
             {
-                executionTime = (float)(Orders[0].PlanedEndDate.Subtract(Orders[0].PlanedStartDate)).TotalHours;
+                executionTime = (float)(Orders[0].PlanedEndDate.Subtract(Orders[0].PlanedStartDate)).TotalSeconds;
             }
 
             return executionTime;

@@ -4,6 +4,7 @@ using Algorithms.ObjectiveFunctions;
 using Optel2.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -110,6 +111,7 @@ namespace GenetycAlgorithm
             // Начинаем "разводить" особей.           
             for (int i = 0; i < _numberOfGAIterations; i++)
             {
+                Debug.Print(i + "/" + _numberOfGAIterations);
                 // Обрабатываем популяции хромосом (каждая популяция имеет по EKLinesAmount хромосом).
                 // Не все популяции обрабатываются: выбираются случайные _maxAmountOfSelection
                 // популяций, которые могут быть обработаны.

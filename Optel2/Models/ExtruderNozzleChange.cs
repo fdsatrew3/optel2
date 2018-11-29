@@ -13,7 +13,6 @@ namespace Optel2.Models
         public Guid Id { get; set; }
         public decimal Nozzle { get; set; }
         [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Time)]
         public DateTime Duration { get; set; }
         public decimal Consumption { get; set; }
         public Guid ExtruderId { get; set; }

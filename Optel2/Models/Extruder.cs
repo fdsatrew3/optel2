@@ -25,13 +25,10 @@ namespace Optel2.Models
         public decimal LengthMin { get; set; }
         public decimal LengthMax { get; set; }
         [DisplayFormat(DataFormatString = "{0:H:mm:ss}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Time)]
         public DateTime WidthAdjustmentTime { get; set; }
         [DisplayFormat(DataFormatString = "{0:H:mm:ss}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Time)]
         public DateTime ChangeOfThicknessTime { get; set; }
         [DisplayFormat(DataFormatString = "{0:H:mm:ss}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Time)]
         public DateTime StartupDelay { get; set; }
         public decimal MachineHourCost { get; set; }
         public decimal WidthAdjustmentConsumption { get; set; }
