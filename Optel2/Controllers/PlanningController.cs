@@ -2,22 +2,18 @@
 using Algorithms.BruteForce;
 using Algorithms.ObjectiveFunctions;
 using GenetycAlgorithm;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Optel2.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using static Algorithms.ProductionPlan;
 
 namespace Optel2.Controllers
 {
+    [Authorize]
     public class PlanningController : Controller
     {
         private OptelContext db = new OptelContext();
@@ -133,14 +129,15 @@ namespace Optel2.Controllers
                 return RedirectToAction("Config");
             }
             ProductionPlan result = new ProductionPlan();
-            result.OrdersToLineConformity = new List<OrdersOnExtruderLine>() { new OrdersOnExtruderLine() };
+            /*result.OrdersToLineConformity = new List<OrdersOnExtruderLine>() { new OrdersOnExtruderLine() };
             result.OrdersToLineConformity[0].Line = planningConfig.Extruders[0];
             result.OrdersToLineConformity[0].Orders = new List<Order> { planningConfig.Orders[0], planningConfig.Orders[1] };
             result.OrdersToLineConformity[0].Orders[0].PlanedStartDate = DateTime.Now;
             result.OrdersToLineConformity[0].Orders[0].PlanedEndDate = DateTime.Now.AddDays(4);
             result.OrdersToLineConformity[0].Orders[1].PlanedStartDate = result.OrdersToLineConformity[0].Orders[0].PlanedEndDate.AddDays(1);
             result.OrdersToLineConformity[0].Orders[1].PlanedEndDate = result.OrdersToLineConformity[0].Orders[1].PlanedStartDate.AddHours(4);
-            /*switch (planningConfig.SelectedAlgorithm)
+            */
+            switch (planningConfig.SelectedAlgorithm)
             {
                 case PlanningModel.PlanningAlgorithm.BruteForce:
                     result = await Task.Run<ProductionPlan>(
@@ -163,7 +160,7 @@ namespace Optel2.Controllers
                         planningConfig.NumberOfGAiterations,
                         planningConfig.maxSelection));
                     break;
-            } */
+            } 
             ViewBag.JsonString = GenerateJSON(result);
             return View(planningConfig);
         }

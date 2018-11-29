@@ -8,17 +8,23 @@
 	<script src="https://cdn.anychart.com/releases/v8/js/anychart-core.min.js" type="text/javascript"></script>
 	<script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js" type="text/javascript"></script>
 </head>
-
+<style>
+	.anychart-credits-text {
+		display: none;
+	}
+	.anychart-credits-logo {
+		display: none;
+	}
+</style>
 <h2>@ViewBag.Title</h2>
 <div id="container"></div>
 <script type="text/javascript">
 	anychart.onDocumentReady(function () {
 		// create data tree
-		var treeData = anychart.data.tree(@Html.Raw(ViewBag.JsonString), 'as-table');
+		var treeData = anychart.data.tree(@Html.Raw(ViewBag.JsonString), 'as-tree');
 		console.log(@Html.Raw(ViewBag.JsonString));
         // create resource gantt chart
 		var chart = anychart.ganttResource();
-
 			// set data for the chart
 			chart.data(treeData);
         chart.rowSelectedFill('#D4DFE8')
@@ -46,7 +52,6 @@
 
         // initiate chart drawing
         chart.draw();
-		document.getElementsByClassName('anychart-credits-text')[0].innerHTML = "AnyChart";
 		document.getElementById('container').style.height = "500px";
 		});
 </script>
