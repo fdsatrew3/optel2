@@ -1,9 +1,52 @@
-﻿@model Optel2.Models.Planning
+﻿@model Optel2.Models.PlanningModel
 
 @{
-    ViewBag.Title = "Planning";
+	ViewBag.Title = "Gannt Chart";
 }
 
-<h2>@ViewBag.Title - Step 1 of 4</h2>
+<head>
+	<script src="https://cdn.anychart.com/releases/v8/js/anychart-core.min.js" type="text/javascript"></script>
+	<script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js" type="text/javascript"></script>
+</head>
 
-Krappa
+<h2>@ViewBag.Title</h2>
+<div id="container"></div>
+<script type="text/javascript">
+	anychart.onDocumentReady(function () {
+		// create data tree
+		var treeData = anychart.data.tree(@Html.Raw(ViewBag.JsonString), 'as-tree');
+		console.log(@Html.Raw(ViewBag.JsonString));
+        // create resource gantt chart
+		var chart = anychart.ganttResource();
+
+			// set data for the chart
+			chart.data(treeData);
+        chart.rowSelectedFill('#D4DFE8')
+                .rowHoverFill('#EAEFF3')
+                // set start splitter position settings
+                .splitterPosition(150);
+
+
+			// get chart data grid link to set column settings
+			var dataGrid = chart.dataGrid();
+
+			// set first column settings
+			dataGrid.column(0)
+                .title('#')
+                .width(30)
+                .labels({hAlign: 'center'});
+
+        // set second column settings
+        dataGrid.column(1)
+                .title('Extruder')
+                .width(120);
+
+			// set container id for the chart
+			chart.container('container');
+
+        // initiate chart drawing
+        chart.draw();
+		document.getElementsByClassName('anychart-credits-text')[0].innerHTML = "AnyChart";
+		document.getElementById('container').style.height = "500px";
+		});
+</script>

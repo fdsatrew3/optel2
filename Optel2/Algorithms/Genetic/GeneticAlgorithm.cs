@@ -60,8 +60,8 @@ namespace GenetycAlgorithm
         private AObjectiveFunction _objectiveFunction;
 
 
-        public ProductionPlan Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
-                                    int maxPopulation, int maxSelection, int mutationPropability, decimal percentOfMutableGens, int crossoverPropability, int numberOfGAiterations = 7)
+        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
+                                    int maxPopulation, int numberOfGAiterations, int maxSelection, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
         {
             ProductionPlan optimalPlan = new ProductionPlan();
             CrossoverOperator crossoverOperator = new CrossoverOperator();

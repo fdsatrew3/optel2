@@ -31,7 +31,7 @@ namespace Algorithms.BruteForce
         // В ЭТУ ШТУКУ БУДУТ ЗАПИСЫВАТЬСЯ САМЫЕ ОПТИМАЛЬНЫЕ ПЛАНЫ, ТАК ЧТО В СВОЙСТВО ИЗМЕНЕНИЯ ЭТОГО ПОЛЯ МОЖНО ДОБАВИТЬ ФУНКЦИЮ, ВЫВОДЯЩУЮ ПРОМЕЖУТОЧНЫЙ ПЛАН НА ЭКРАН
         public ProductionPlan SelectedPlan { get; set; }
 
-        public ProductionPlan Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function)
+        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function)
         {
             SelectedPlan = new ProductionPlan();
             
