@@ -33,10 +33,13 @@ namespace Optel2.Models
         public decimal MachineHourCost { get; set; }
         public decimal WidthAdjustmentConsumption { get; set; }
         public decimal ChangeOfThicknessConsumption { get; set; }
-        public ICollection<ExtruderCalibrationChange> ExtruderCalibrationChange { get; set; }
-        public ICollection<ExtruderCoolingLipChange> ExtruderCoolingLipChange { get; set; }
-        public ICollection<ExtruderNozzleChange> ExtruderNozzleChange { get; set; }
-        public ICollection<ExtruderRecipeChange> ExtruderRecipeChange { get; set; }
+        public List<ExtruderCalibrationChange> ExtruderCalibrationChange { get; set; }
+        public List<ExtruderCoolingLipChange> ExtruderCoolingLipChange { get; set; }
+        public List<ExtruderNozzleChange> ExtruderNozzleChange { get; set; }
+        public List<ExtruderRecipeChange> ExtruderRecipeChange { get; set; }
+
+        [NotMapped]
+        public bool Selected { get; set; }
 
         public Extruder()
         {
