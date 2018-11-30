@@ -1,6 +1,15 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿html {
+	height: 100%;
+}
+
+body {
+	background: #383836; /* Old browsers */
+	background: -moz-linear-gradient(top, #383836 0%, #4a4a4a 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #383836 0%,#4a4a4a 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #383836 0%,#4a4a4a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#383836', endColorstr='#4a4a4a',GradientType=0 ); /* IE6-9 */
+	min-height: 100%;
+	color: white;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +30,33 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.top-menu {
+	background: #494949; /* Old browsers */
+	background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+	margin-bottom: 40px;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Lato:300|Montserrat:700,400);
+
+.logo-text {
+	color: #fff;
+	font-size: 14pt;
+	font-weight: bold;
+	font-family: Helvetica;
+}
+
+.top-menu-url {
+	color: white;
+	background: transparent;
+	text-decoration: none;
+}
+
+.top-menu-url:hover {
+	text-decoration: none;
+	color: white;
 }
