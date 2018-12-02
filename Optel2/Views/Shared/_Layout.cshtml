@@ -4,21 +4,49 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<title>Optel - @ViewBag.Title</title>
 	@Styles.Render("~/Content/css")
 </head>
 <body>
-	<div class="top-menu row">
-		<div class="col">
-			<img src="~/Images/favicon.png" width="48px" height="48px" />
+	<div class="top-menu row justify-content-between align-items-center">
+		<div class="col-auto">
+			<div class="row">
+				<div class="col-auto mobile-menu-button align-middle">
+					<img src="~/Images/menu-button-fix.png" />&nbsp;<i class="fa fa-bars"></i>
+				</div>
+				<div class="col-auto optel-logo">
+					<img src="~/Images/favicon.png" width="48px" height="48px" />OPTEL
+				</div>
+			</div>
 		</div>
-		<div class="col-9">
+		<div class="col-auto optel-logo">
+		</div>
+		<div class="col-auto login-menu">
 			@Html.Partial("_LoginPartial")
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-2 left-page">
-			<a href="#" class="btn btn-dark"><img src="~/Images/favicon.png" width="32px" height="32px"/>&nbsp;Edit extruder nozzle data</a>
+		<div class="col-auto left-page">
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/calibration-data.png" width="32px" height="32px" />&nbsp;Edit extruders calibration data</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders nozzle data</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders cooling lip data</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders recipe data</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit film recipe costs</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit film recipes</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit customers</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit orders</div></a>
+			<br />
+			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Planning</div></a>
 		</div>
 		<div class="col right-page">
 			@RenderBody()

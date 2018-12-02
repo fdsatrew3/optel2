@@ -238,7 +238,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Menu\calibration-data.png" />
     <Content Include="Images\manage_profile.png" />
+    <Content Include="Images\menu-button-fix.png" />
+    <Content Include="Images\mobile-menu.png" />
     <Content Include="Images\user_f.png" />
     <Content Include="Images\user_m.png" />
     <Content Include="Images\favicon.png" />

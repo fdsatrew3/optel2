@@ -38,6 +38,7 @@ textarea {
 	background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+	margin-bottom: 10px;
 }
 
 a {
@@ -53,7 +54,7 @@ a {
 
 .left-menu-btn {
 	width: 100%;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 	border: none;
 	background: #494949; /* Old browsers */
 	background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
@@ -75,17 +76,17 @@ a {
 }
 
 .left-page {
-	background: gray;
+	padding: 5px 5px 5px 5px;
 }
 
-/*
-	Max width before this PARTICULAR table gets nasty. This query will take effect for any screen smaller than 760px and also iPads specifically.
-	*/
+/* Responsive tables */
+
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
 
 	/* Force table to not be like tables anymore */
 	table, thead, tbody, th, td, tr {
 		display: block;
+		table-layout: fixed;
 	}
 
 		/* Hide table headers (but not display: none;, for accessibility) */
@@ -125,4 +126,30 @@ a {
 		td:before {
 			content: attr(data-label);
 		}
+}
+
+/* Menu */
+.mobile-menu-button {
+	display: none;
+	color: white;
+	font-size: 14pt;
+}
+
+.optel-logo {
+	color: white;
+}
+
+@media screen and (max-width: 900px) {
+	.left-page {
+		display: none;
+	}
+
+	.mobile-menu-button {
+		display: block;
+	}
+
+	.optel-logo {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
 }

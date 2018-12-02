@@ -24,33 +24,8 @@
             Allowed production speed
         </th>
         <th>
-            Allowed diameter
-        </th>
-        <th>
-            Allowed weight
-        </th>
-        <th>
-            Allowed length
-        </th>
-        <th>
-            Width adjustment time
-        </th>
-        <th>
-			Change of thickness time
-        </th>
-		<th>
-			Width adjustment consumption
-		</th>
-		<th>
-			Change of thickness consumption
-		</th>
-        <th>
-            Startup delay
-        </th>
-        <th>
 			Machine hour cost
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -66,30 +41,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ProductionSpeedMin) - @Html.DisplayFor(modelItem => item.ProductionSpeedMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DiameterMin) - @Html.DisplayFor(modelItem => item.DiameterMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WeightMin) - @Html.DisplayFor(modelItem => item.WeightMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LengthMin) - @Html.DisplayFor(modelItem => item.LengthMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WidthAdjustmentTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ChangeOfThicknessTime)
-        </td>
-		<td>
-			@Html.DisplayFor(modelItem => item.WidthAdjustmentConsumption)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.ChangeOfThicknessConsumption)
-		</td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartupDelay)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.MachineHourCost)
