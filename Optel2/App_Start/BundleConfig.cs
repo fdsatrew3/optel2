@@ -18,8 +18,8 @@ namespace Optel2
                       "~/Scripts/bootstrap.bundle.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/site.css",
-                      "~/Content/bootstrap.css"));
+                      "~/Content/bootstrap.css",
+                       "~/Content/site.css"));
         }
     }
 }

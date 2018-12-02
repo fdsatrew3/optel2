@@ -9,23 +9,23 @@
 </head>
 <body>
 	<div class="top-menu row">
-		<div class="col-4">
-			<div class="logo-text"><img src="~/Images/favicon.png" width="48px" height="48px" />OPTEL</div>
+		<div class="col">
+			<img src="~/Images/favicon.png" width="48px" height="48px" />
 		</div>
-		<div class="col-8">
+		<div class="col-9">
 			@Html.Partial("_LoginPartial")
 		</div>
 	</div>
-		<div class="row">
-			<div class="col-3" style="border: 1px solid white;">
-				Menu
-			</div>
-			<div class="col-9" style="border: 1px solid white;">
-				@RenderBody()
-			</div>
+	<div class="row">
+		<div class="col-2 left-page">
+			<a href="#" class="btn btn-dark"><img src="~/Images/favicon.png" width="32px" height="32px"/>&nbsp;Edit extruder nozzle data</a>
 		</div>
-		@Scripts.Render("~/bundles/jquery")
-		@Scripts.Render("~/bundles/bootstrap")
-		@RenderSection("scripts", required: false)
+		<div class="col right-page">
+			@RenderBody()
+		</div>
+	</div>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
 </body>
 </html>
