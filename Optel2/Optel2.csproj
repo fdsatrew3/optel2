@@ -241,6 +241,14 @@
     <Content Include="Images\Menu\calibration-data.png" />
     <Content Include="Images\manage_profile.png" />
     <Content Include="Images\menu-button-fix.png" />
+    <Content Include="Images\Menu\cooling_lip.png" />
+    <Content Include="Images\Menu\extruder.png" />
+    <Content Include="Images\Menu\extruder_recipe.png" />
+    <Content Include="Images\Menu\film_recipe.png" />
+    <Content Include="Images\Menu\film_recipe_cost.png" />
+    <Content Include="Images\Menu\nozzle.png" />
+    <Content Include="Images\Menu\order.png" />
+    <Content Include="Images\Menu\planning.png" />
     <Content Include="Images\mobile-menu.png" />
     <Content Include="Images\user_f.png" />
     <Content Include="Images\user_m.png" />
@@ -261,6 +269,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jsmobiletablefixer.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

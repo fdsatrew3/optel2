@@ -8,12 +8,43 @@
 	<title>Optel - @ViewBag.Title</title>
 	@Styles.Render("~/Content/css")
 </head>
+@functions {
+	public class MenuItem
+	{
+		public string icon { get; set; }
+		public string url { get; set; }
+		public string text { get; set; }
+	}
+}
+
+@(            ViewBag.MenuItems = new List<MenuItem>() {
+                new MenuItem() { icon = "/Images/Menu/calibration-data.png", text = "Edit extruders calibration data", url = "/ExtruderCalibrationChanges/"},
+                new MenuItem() { icon = "/Images/Menu/nozzle.png", text = "Edit extruders nozzle data", url = "/ExtruderNozzleChanges/"},
+                new MenuItem() { icon = "/Images/Menu/cooling_lip.png", text = "Edit extruders cooling lip data", url = "/ExtruderCoolingLipChanges/"},
+                new MenuItem() { icon = "/Images/Menu/extruder_recipe.png", text = "Edit extruders recipe data", url = "/ExtruderRecipeChanges/"},
+                new MenuItem() { icon = "/Images/Menu/extruder.png", text = "Edit extruders", url = "/Extruders/"},
+                new MenuItem() { icon = "/Images/Menu/film_recipe_cost.png", text = "Edit film recipe costs", url = "/FilmRecipeCosts/" },
+                new MenuItem() { icon = "/Images/Menu/film_recipe.png", text = "Edit film recipes", url = "/FilmRecipes/" },
+                new MenuItem() { icon = "/Images/user_m.png", text = "Edit customers", url = "/Customers/" },
+                new MenuItem() { icon = "/Images/Menu/order.png", text = "Edit orders", url = "/Orders/" },
+                new MenuItem() { icon = "/Images/Menu/planning.png", text = "Planning", url = "/Planning/Config" }
+                });)
 <body>
 	<div class="top-menu row justify-content-between align-items-center">
 		<div class="col-auto">
 			<div class="row">
 				<div class="col-auto mobile-menu-button align-middle">
-					<img src="~/Images/menu-button-fix.png" />&nbsp;<i class="fa fa-bars"></i>
+					<div class="dropdown show">
+						<a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<img src="~/Images/menu-button-fix.png" /> &nbsp;<i class="fa fa-bars"></i>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							@foreach (var MenuItem in ViewBag.MenuItems)
+							{
+								<a href="@MenuItem.url" class="dropdown-item float-left"><img src="@MenuItem.icon" width="32px" height="32px" />&nbsp;@MenuItem.text</a>
+							}
+						</div>
+					</div>
 				</div>
 				<div class="col-auto optel-logo">
 					<img src="~/Images/favicon.png" width="48px" height="48px" />OPTEL
@@ -28,30 +59,24 @@
 	</div>
 	<div class="row">
 		<div class="col-auto left-page">
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/calibration-data.png" width="32px" height="32px" />&nbsp;Edit extruders calibration data</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders nozzle data</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders cooling lip data</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders recipe data</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit extruders</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit film recipe costs</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit film recipes</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit customers</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Edit orders</div></a>
-			<br />
-			<a href="#" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="32px" height="32px" />&nbsp;Planning</div></a>
+			@foreach (var MenuItem in ViewBag.MenuItems)
+			{
+				<a href="@MenuItem.url" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="@MenuItem.icon" width="32px" height="32px" />&nbsp;@MenuItem.text</div></a>
+				<br />
+			}
 		</div>
 		<div class="col right-page">
+
+
 			@RenderBody()
 		</div>
 	</div>
+	<script>
+		window.onload = function () {
+			// <:
+			document.body.innerHTML = document.body.innerHTML.replace("System.Collections.Generic.List`1[ASP._Page_Views_Shared__Layout_cshtml+MenuItem];)", "");
+		}
+	</script>
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
 	@RenderSection("scripts", required: false)
