@@ -11,7 +11,7 @@
 		<div class="col-auto top-menu-element">
 			<a href="/Manage/Index" title="Manage profile"><img src="~/Images/manage_profile.png" width="24px" height="24px" /></a>
 		</div>
-		<div class="col-auto top-menu-element" style="padding-right: 10px;">
+		<div class="col-auto top-menu-element" style="margin-right: 20px;">
 			@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
 			{
 				@Html.AntiForgeryToken()
@@ -24,7 +24,7 @@
 		<div class="col-auto">
 			@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "top-menu-url align-middle" })
 		</div>
-		<div class="col-auto" style="padding-right: 20px;">
+		<div class="col-auto" style="margin-right: 20px;">
 			@Html.ActionLink("Login", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "top-menu-url align-middle" })
 		</div>
 	}

@@ -15,22 +15,22 @@
 	</div>
 </div>
 
-<table class="table">
+<table class="custom-table desktop-ver">
 	<thead>
 		<tr>
 			<th>
 				@Html.DisplayNameFor(model => model.First().OrderNumber)
 			</th>
-			<th class="desktop-table-ver">
+			<th>
 				@Html.DisplayNameFor(model => model.First().Product)
 			</th>
-			<th class="desktop-table-ver">
+			<th>
 				@Html.DisplayNameFor(model => model.First().Width)
 			</th>
-			<th class="desktop-table-ver">
+			<th>
 				@Html.DisplayNameFor(model => model.First().RollWeightNet)
 			</th>
-			<th class="desktop-table-ver">
+			<th>
 				@Html.DisplayNameFor(model => model.First().Rolls)
 			</th>
 			<th></th>
@@ -42,16 +42,16 @@
 			<td>
 				@Html.DisplayFor(model => item.OrderNumber)
 			</td>
-			<td class="desktop-table-ver">
+			<td>
 				@Html.DisplayFor(model => item.Product)
 			</td>
-			<td class="desktop-table-ver">
+			<td>
 				@Html.DisplayFor(model => item.Width)
 			</td>
-			<td class="desktop-table-ver">
+			<td>
 				@Html.DisplayFor(model => item.RollWeightNet)
 			</td>
-			<td class="desktop-table-ver">
+			<td>
 				@Html.DisplayFor(model => item.Rolls)
 			</td>
 			<td>
@@ -62,6 +62,43 @@
 		</tr>
 	}
 </table>
+<div class="row justify-content-center mobile-ver">
+	@foreach (Order item in ViewBag.PageContent)
+	{
+		<div class="col-auto mt-3">
+			<table class="custom-table-horizontal">
+				<tr>
+					<td style="vertical-align: middle;" colspan="2">
+						<a href="@Url.Action("Edit", new { id=item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24px" height="24px"></a>
+						<a href="@Url.Action("Details", new { id=item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24px" height="24px"></a>
+						<a href="@Url.Action("Delete", new { id=item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24px" height="24px"></a>
+					</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.OrderNumber)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.OrderNumber)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.Product)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.Product)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.Width)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.Width)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.RollWeightNet)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.RollWeightNet)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.Rolls)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.Rolls)&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+		</div>
+	}
+</div>
+<br />
 @Html.PagedListPager((IPagedList)ViewBag.PageContent, page => Url.Action("Index", new { page = page }),
 	new PagedListRenderOptions
 	{
