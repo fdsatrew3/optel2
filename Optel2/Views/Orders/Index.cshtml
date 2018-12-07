@@ -6,6 +6,7 @@
 @using X.PagedList.Mvc;
 @using X.PagedList;
 @using X.PagedList.Mvc.Common;
+@using System.Web.Configuration;
 @using Optel2.Models;
 
 <div class="row">
@@ -14,22 +15,22 @@
 	</div>
 </div>
 
-<table>
+<table class="table">
 	<thead>
 		<tr>
 			<th>
 				@Html.DisplayNameFor(model => model.First().OrderNumber)
 			</th>
-			<th class="desktop-ver">
+			<th class="desktop-table-ver">
 				@Html.DisplayNameFor(model => model.First().Product)
 			</th>
-			<th class="desktop-ver">
+			<th class="desktop-table-ver">
 				@Html.DisplayNameFor(model => model.First().Width)
 			</th>
-			<th class="desktop-ver">
+			<th class="desktop-table-ver">
 				@Html.DisplayNameFor(model => model.First().RollWeightNet)
 			</th>
-			<th class="desktop-ver">
+			<th class="desktop-table-ver">
 				@Html.DisplayNameFor(model => model.First().Rolls)
 			</th>
 			<th></th>
@@ -41,16 +42,16 @@
 			<td>
 				@Html.DisplayFor(model => item.OrderNumber)
 			</td>
-			<td class="desktop-ver">
+			<td class="desktop-table-ver">
 				@Html.DisplayFor(model => item.Product)
 			</td>
-			<td class="desktop-ver">
+			<td class="desktop-table-ver">
 				@Html.DisplayFor(model => item.Width)
 			</td>
-			<td class="desktop-ver">
+			<td class="desktop-table-ver">
 				@Html.DisplayFor(model => item.RollWeightNet)
 			</td>
-			<td class="desktop-ver">
+			<td class="desktop-table-ver">
 				@Html.DisplayFor(model => item.Rolls)
 			</td>
 			<td>
@@ -65,5 +66,11 @@
 	new PagedListRenderOptions
 	{
 		LiElementClasses = new string[] { "page-item" },
-		PageClasses = new string[] { "page-link" }
+		PageClasses = new string[] { "page-link" },
+		MaximumPageNumbersToDisplay = Convert.ToInt32(WebConfigurationManager.AppSettings["MaxPagesInIndexPaginator"]),
+		DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+		DisplayLinkToLastPage = PagedListDisplayMode.Never,
+		DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+		DisplayLinkToNextPage = PagedListDisplayMode.Always,
+		DisplayEllipsesWhenNotShowingAllPageNumbers = false
 	})
