@@ -100,75 +100,89 @@ a {
 }
 
 /* Responsive */
-
-.mobile-ver {
-	display: none;
+.mobile-ver-flex {
+	display: none !important;
 }
 
 .mobile-ver {
-	display: none;
+	display: none !important;
+}
+
+.mobile-ver {
+	display: none !important;
 }
 
 table.mobile-ver {
-	display: none;
+	display: none !important;
 }
 
 td.mobile-ver {
-	display: none;
+	display: none !important;
 }
 
 tr.mobile-ver {
-	display: none;
+	display: none !important;
+}
+
+.desktop-ver-flex {
+	display: flex !important;
 }
 
 .desktop-ver {
-	display: block;
+	display: block !important;
 }
 
 table.desktop-ver {
-	display: table;
+	display: table !important;
 }
 
 td.desktop-ver {
-	display: table-cell;
+	display: table-cell !important;
 }
 
 tr.desktop-ver {
-	display: table-cell;
+	display: table-cell !important;
 }
 
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+	.mobile-ver-flex {
+		display: flex !important;
+	}
 
 	.mobile-ver {
-		display: block;
+		display: block !important;
 	}
 
 	table.mobile-ver {
-		display: table;
+		display: table !important;
 	}
 
 	td.mobile-ver {
-		display: table-cell;
+		display: table-cell !important;
 	}
 
 	tr.mobile-ver {
-		display: table-cell;
+		display: table-cell !important;
 	}
 
 	.desktop-ver {
-		display: none;
+		display: none !important;
 	}
 
 	table.desktop-ver {
-		display: none;
+		display: none !important;
 	}
 
 	td.desktop-ver {
-		display: none;
+		display: none !important;
 	}
 
 	tr.desktop-ver {
-		display: none;
+		display: none !important;
+	}
+
+	.desktop-ver-flex {
+		display: none !important;
 	}
 }
 
