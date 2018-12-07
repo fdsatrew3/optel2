@@ -243,6 +243,7 @@
     <Content Include="Images\manage_profile.png" />
     <Content Include="Images\menu-button-fix.png" />
     <Content Include="Images\Menu\cooling_lip.png" />
+    <Content Include="Images\Menu\cancel.png" />
     <Content Include="Images\Menu\delete.png" />
     <Content Include="Images\Menu\edit.png" />
     <Content Include="Images\Menu\extruder.png" />
