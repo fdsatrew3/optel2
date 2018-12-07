@@ -52,6 +52,14 @@ a {
 		color: white;
 	}
 
+.black-a {
+	color: black;
+}
+
+	.black-a:hover {
+		color: black;
+	}
+
 .left-menu-btn {
 	width: 100%;
 	margin-bottom: 10px;
@@ -80,52 +88,22 @@ a {
 }
 
 /* Responsive tables */
+.mobile-ver {
+	display: none;
+}
+
+.desktop-ver {
+	display: block;
+}
 
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-
-	/* Force table to not be like tables anymore */
-	table, thead, tbody, th, td, tr {
+	.mobile-ver {
 		display: block;
-		table-layout: fixed;
 	}
 
-		/* Hide table headers (but not display: none;, for accessibility) */
-		thead tr {
-			position: absolute;
-			top: -9999px;
-			left: -9999px;
-		}
-
-	tr {
-		margin: 0 0 1rem 0;
+	.desktop-ver {
+		display: none;
 	}
-
-		tr:nth-child(odd) {
-			background: #ccc;
-		}
-
-	td {
-		/* Behave  like a "row" */
-		border: none;
-		border-bottom: 1px solid #eee;
-		position: relative;
-		padding-left: 50%;
-	}
-
-		td:before {
-			/* Now like a table header */
-			position: absolute;
-			/* Top/left values mimic padding */
-			top: 0;
-			left: 6px;
-			width: 45%;
-			padding-right: 10px;
-			white-space: nowrap;
-		}
-
-		td:before {
-			content: attr(data-label);
-		}
 }
 
 /* Menu */
@@ -153,3 +131,25 @@ a {
 		padding-right: 0px;
 	}
 }
+
+/* Pages */
+.page-item.active .page-link {
+	background: #494949; /* Old browsers */
+	background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+	border-color: gray;
+}
+
+.page-link {
+	color: black;
+}
+
+	.page-link:hover {
+		color: black;
+	}
+
+	.page-link:focus {
+		box-shadow: none;
+	}

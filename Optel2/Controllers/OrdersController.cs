@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Optel2.Models;
+using System;
 using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using Optel2.Models;
+using X.PagedList;
+using System.Linq;
+using System.Web.Configuration;
 
 namespace Optel2.Controllers
 {
@@ -17,9 +16,12 @@ namespace Optel2.Controllers
         private OptelContext db = new OptelContext();
 
         // GET: Orders
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
-            return View(await db.Orders.ToListAsync());
+            var pageNumber = page ?? 1;
+            var pageContent = await db.Orders.OrderBy(i => i.OrderNumber).ToPagedListAsync(pageNumber, Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]));
+            ViewBag.PageContent = pageContent;
+            return View();
         }
 
         // GET: Orders/Details/5

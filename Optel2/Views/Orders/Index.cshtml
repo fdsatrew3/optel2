@@ -1,64 +1,69 @@
-﻿@model IEnumerable<Optel2.Models.Order>
+﻿@model IPagedList<Optel2.Models.Order>
 
 @{
 	ViewBag.Title = "Orders data";
 }
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using Optel2.Models;
 
-<h2>Orders data</h2>
+<div class="row">
+	<div class="col-auto">
+		<a href="@Url.Action("Create")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/add.png" width="24px" height="24px">&nbsp;Create new order data</div></a>
+	</div>
+</div>
 
-<p>
-	@Html.ActionLink("Create new order data", "Create")
-</p>
-<table class="table">
+<table>
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.OrderNumber)
+				@Html.DisplayNameFor(model => model.First().OrderNumber)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Product)
+			<th class="desktop-ver">
+				@Html.DisplayNameFor(model => model.First().Product)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Width)
+			<th class="desktop-ver">
+				@Html.DisplayNameFor(model => model.First().Width)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.RollWeightNet)
+			<th class="desktop-ver">
+				@Html.DisplayNameFor(model => model.First().RollWeightNet)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Rolls)
+			<th class="desktop-ver">
+				@Html.DisplayNameFor(model => model.First().Rolls)
 			</th>
 			<th></th>
 		</tr>
 	</thead>
-	@foreach (var item in Model)
+	@foreach (Order item in ViewBag.PageContent)
 	{
 		<tr>
-			<td data-label="@Html.DisplayNameFor(model => model.OrderNumber)">
-				<br />
-				@Html.DisplayFor(modelItem => item.OrderNumber)
+			<td>
+				@Html.DisplayFor(model => item.OrderNumber)
 			</td>
-			<td data-label="@Html.DisplayNameFor(model => model.Product)">
-				<br />
-				@Html.DisplayFor(modelItem => item.Product)
+			<td class="desktop-ver">
+				@Html.DisplayFor(model => item.Product)
 			</td>
-			<td data-label="@Html.DisplayNameFor(model => model.Width)">
-				<br />
-				@Html.DisplayFor(modelItem => item.Width)
+			<td class="desktop-ver">
+				@Html.DisplayFor(model => item.Width)
 			</td>
-			<td data-label="@Html.DisplayNameFor(model => model.RollWeightNet)">
-				<br />
-				@Html.DisplayFor(modelItem => item.RollWeightNet)
+			<td class="desktop-ver">
+				@Html.DisplayFor(model => item.RollWeightNet)
 			</td>
-			<td data-label="@Html.DisplayNameFor(model => model.Rolls)">
-				<br />
-				@Html.DisplayFor(modelItem => item.Rolls)
+			<td class="desktop-ver">
+				@Html.DisplayFor(model => item.Rolls)
 			</td>
 			<td>
-					  @Html.ActionLink("Edit", "Edit", new { id=item.Id }) <br>
-					  @Html.ActionLink("Details", "Details", new { id=item.Id }) <br>
-					  @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-			 </td>
+				<a href="@Url.Action("Edit", new { id=item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24px" height="24px"></a>
+				<a href="@Url.Action("Details", new { id=item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24px" height="24px"></a>
+				<a href="@Url.Action("Delete", new { id=item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24px" height="24px"></a>
+			</td>
 		</tr>
 	}
-
 </table>
+@Html.PagedListPager((IPagedList)ViewBag.PageContent, page => Url.Action("Index", new { page = page }),
+	new PagedListRenderOptions
+	{
+		LiElementClasses = new string[] { "page-item" },
+		PageClasses = new string[] { "page-link" }
+	})
