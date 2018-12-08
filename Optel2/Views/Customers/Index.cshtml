@@ -1,39 +1,83 @@
-﻿@model IEnumerable<Optel2.Models.Customer>
+﻿@model IPagedList<Optel2.Models.Customer>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Customers data";
 }
 
-<h2>Index</h2>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using System.Web.Configuration;
+@using Optel2.Models;
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Number)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Number)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
+<div class="row">
+	<div class="col-auto">
+		<a href="@Url.Action("Create")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/add.png" width="24px" height="24px">&nbsp;Create new customer data</div></a>
+	</div>
+</div>
+<table class="custom-table desktop-ver">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.First().Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().Number)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	@foreach (Customer item in ViewBag.PageContent)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(model => item.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(model => item.Number)
+			</td>
+			<td>
+				<a href="@Url.Action("Edit", new { id=item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24px" height="24px"></a>
+				<a href="@Url.Action("Details", new { id=item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24px" height="24px"></a>
+				<a href="@Url.Action("Delete", new { id=item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24px" height="24px"></a>
+			</td>
+		</tr>
+	}
 </table>
+<div class="d-flex flex-row flex-wrap justify-content-center mobile-ver-flex">
+	@foreach (Customer item in ViewBag.PageContent)
+	{
+		<div class="p-1" style="width: 192px;">
+			<table class="custom-table-horizontal">
+				<tr>
+					<td style="vertical-align: middle;" colspan="2">
+						<a href="@Url.Action("Edit", new { id=item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24px" height="24px"></a>
+						<a href="@Url.Action("Details", new { id=item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24px" height="24px"></a>
+						<a href="@Url.Action("Delete", new { id=item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24px" height="24px"></a>
+					</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.Name)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.Name)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.Number)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.Number)&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+		</div>
+	}
+</div>
+<br />
+@Html.PagedListPager((IPagedList)ViewBag.PageContent, page => Url.Action("Index", new { page = page }),
+	new PagedListRenderOptions
+	{
+		LiElementClasses = new string[] { "page-item" },
+		PageClasses = new string[] { "page-link" },
+		MaximumPageNumbersToDisplay = Convert.ToInt32(WebConfigurationManager.AppSettings["MaxPagesInIndexPaginator"]),
+		DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+		DisplayLinkToLastPage = PagedListDisplayMode.Never,
+		DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+		DisplayLinkToNextPage = PagedListDisplayMode.Always,
+		DisplayEllipsesWhenNotShowingAllPageNumbers = false
+	})
