@@ -1,105 +1,46 @@
 ﻿@model Optel2.Models.FilmRecipe
 
 @{
-    ViewBag.Title = "Details of film recipe data";
+	ViewBag.Title = "Details of film recipe data";
 }
 
-<h2>Details of film recipe data</h2>
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ItemNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ItemNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Article)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Article)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Recipe)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Recipe)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Thickness)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Thickness)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NozzleInsert)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NozzleInsert)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NozzleInsertAlternative)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NozzleInsertAlternative)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CoolingLip)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CoolingLip)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductionSpeed)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductionSpeed)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Output)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Output)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CalibrationDiameter)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CalibrationDiameter)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ExtruderId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Extruder.Name)
-        </dd>
-
-    </dl>
-</div>
+<table class="custom-table-horizontal">
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Article)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Article)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Thickness)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Thickness)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.NozzleInsert)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.NozzleInsert)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.CoolingLip)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.CoolingLip)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.ProductionSpeed)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.ProductionSpeed)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.CalibrationDiameter)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.CalibrationDiameter)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.ExtruderId)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Extruder.Name)&nbsp;&nbsp;</td>
+	</tr>
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+	<div class="row">
+		<div class="col-auto">
+			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24px" height="24px">&nbsp;Edit</div></a>
+		</div>
+		<div class="col-auto">
+			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24px" height="24px">&nbsp;Cancel</div></a>
+		</div>
+	</div>
 </p>

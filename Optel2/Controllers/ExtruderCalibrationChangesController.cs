@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Optel2.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
+using System.Web.Configuration;
 using System.Web.Mvc;
-using Optel2.Models;
+using X.PagedList;
 
 namespace Optel2.Controllers
 {
@@ -17,9 +18,12 @@ namespace Optel2.Controllers
         private OptelContext db = new OptelContext();
 
         // GET: ExtruderCalibrationChanges
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
-            return View(await db.ExtruderCalibrationChanges.Include(e => e.Extruder).ToListAsync());
+            var pageNumber = page ?? 1;
+            var pageContent = await db.ExtruderCalibrationChanges.Include(i => i.Extruder).OrderBy(i => i.Extruder.Name).ToPagedListAsync(pageNumber, Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]));
+            ViewBag.PageContent = pageContent;
+            return View();
         }
 
         // GET: ExtruderCalibrationChanges/Details/5

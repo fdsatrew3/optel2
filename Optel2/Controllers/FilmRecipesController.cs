@@ -8,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Optel2.Models;
+using X.PagedList;
+using System.Web.Configuration;
 
 namespace Optel2.Controllers
 {
@@ -17,9 +19,12 @@ namespace Optel2.Controllers
         private OptelContext db = new OptelContext();
 
         // GET: FilmRecipes
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
-            return View(await db.FilmRecipes.Include(e => e.Extruder).ToListAsync());
+            var pageNumber = page ?? 1;
+            var pageContent = await db.FilmRecipes.Include(i => i.Extruder).OrderBy(i => i.Recipe).ToPagedListAsync(pageNumber, Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]));
+            ViewBag.PageContent = pageContent;
+            return View();
         }
 
         // GET: FilmRecipes/Details/5
