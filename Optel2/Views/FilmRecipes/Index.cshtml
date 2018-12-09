@@ -1,7 +1,7 @@
 ﻿@model IPagedList<Optel2.Models.FilmRecipe>
 
 @{
-    ViewBag.Title = "Film recipes data";
+	ViewBag.Title = "Film recipes data";
 }
 
 @using X.PagedList.Mvc;
@@ -16,33 +16,34 @@
 	</div>
 </div>
 <table class="custom-table desktop-ver">
-	<tr>
-		<th>
-			@Html.DisplayNameFor(model => model.First().Article)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.First().Thickness)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.First().NozzleInsert)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.First().CoolingLip)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.First().ProductionSpeed)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.First().CalibrationDiameter)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.First().ExtruderId)
-		</th>
-		<th></th>
-	</tr>
-
-@foreach (FilmRecipe item in ViewBag.PageContent)
-{
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.First().Article)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().Thickness)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().NozzleInsert)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().CoolingLip)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().ProductionSpeed)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().CalibrationDiameter)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().ExtruderId)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	@foreach (FilmRecipe item in ViewBag.PageContent)
+	{
 		<tr>
 			<td>
 				@Html.DisplayFor(modelItem => item.Article)
