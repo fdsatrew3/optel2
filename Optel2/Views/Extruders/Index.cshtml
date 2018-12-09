@@ -1,56 +1,66 @@
-﻿@model IEnumerable<Optel2.Models.Extruder>
+﻿@model IPagedList<Optel2.Models.Extruder>
 
 @{
-    ViewBag.Title = "Extruders data";
+	ViewBag.Title = "Extruders data";
 }
 
-<h2>Extruders data</h2>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using System.Web.Configuration;
+@using Optel2.Models;
 
-<p>
-    @Html.ActionLink("Create new extruder data", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            Allowed width
-        </th>
-        <th>
-            Allowed thickness
-        </th>
-        <th>
-            Allowed production speed
-        </th>
-        <th>
-			Machine hour cost
-        </th>
-    </tr>
+<div class="row">
+	<div class="col-auto">
+		<a href="@Url.Action("Create")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/add.png" width="24px" height="24px">&nbsp;Create new extruder data</div></a>
+	</div>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WidthMin) - @Html.DisplayFor(modelItem => item.WidthMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ThicknessMin) - @Html.DisplayFor(modelItem => item.ThicknessMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductionSpeedMin) - @Html.DisplayFor(modelItem => item.ProductionSpeedMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MachineHourCost)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) <br>
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) <br>
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+<table class="custom-table desktop-ver">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.First().Name)
+			</th>
+			<th>
+				Allowed width
+			</th>
+			<th>
+				Allowed thickness
+			</th>
+			<th>
+				Allowed production speed
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().MachineHourCost)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	@foreach (Extruder item in ViewBag.PageContent)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.WidthMin) - @Html.DisplayFor(modelItem => item.WidthMax)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ThicknessMin) - @Html.DisplayFor(modelItem => item.ThicknessMax)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ProductionSpeedMin) - @Html.DisplayFor(modelItem => item.ProductionSpeedMax)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.MachineHourCost)
+			</td>
+			<td>
+				<a href="@Url.Action("Edit", new { id=item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24px" height="24px"></a>
+				<a href="@Url.Action("Details", new { id=item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24px" height="24px"></a>
+				<a href="@Url.Action("Delete", new { id=item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24px" height="24px"></a>
+			</td>
+		</tr>
+	}
 
 </table>
