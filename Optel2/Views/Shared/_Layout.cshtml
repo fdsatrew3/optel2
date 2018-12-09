@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<title>Optel - @ViewBag.Title</title>
 	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
+	@RenderSection("styles", required: false)
 </head>
 <body>
 	<div class="top-menu row justify-content-between align-items-center">
@@ -67,8 +71,5 @@
 			@RenderBody()
 		</div>
 	</div>
-	@Scripts.Render("~/bundles/jquery")
-	@Scripts.Render("~/bundles/bootstrap")
-	@RenderSection("scripts", required: false)
 </body>
 </html>

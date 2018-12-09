@@ -1,7 +1,7 @@
 ﻿@model Optel2.Models.Extruder
 
 @{
-    ViewBag.Title = "Create new extruder data";
+	ViewBag.Title = "Create new extruder data";
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editForm" }))
@@ -10,8 +10,6 @@
 
 	<div class="form-horizontal">
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		@Html.HiddenFor(model => model.Id)
-
 		<div class="form-group">
 			@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="">
@@ -67,7 +65,7 @@
 				@Html.ValidationMessageFor(model => model.ProductionSpeedMax, "", new { @class = "text-danger" })
 			</div>
 		</div>
-
+		<!--
 		<div class="form-group">
 			@Html.LabelFor(model => model.DiameterMin, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="">
@@ -115,7 +113,7 @@
 				@Html.ValidationMessageFor(model => model.LengthMax, "", new { @class = "text-danger" })
 			</div>
 		</div>
-
+		-->
 		<div class="form-group">
 			@Html.LabelFor(model => model.WidthAdjustmentTime, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="">
@@ -135,7 +133,7 @@
 		<div class="form-group">
 			@Html.LabelFor(model => model.StartupDelay, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="">
-				@Html.EditorFor(model => model.StartupDelay, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.EditorFor(model => model.StartupDelay, new { htmlAttributes = new { @class = "form-control", data_val = "false"} })
 				@Html.ValidationMessageFor(model => model.StartupDelay, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -161,6 +159,17 @@
 	</div>
 }
 
+<script>
+	$('#@(nameof(Model.WidthAdjustmentTime))').timepicker({ 'timeFormat': 'H:i:s' }).val("00:00:00");
+	$('#@(nameof(Model.ChangeOfThicknessTime))').timepicker({ 'timeFormat': 'H:i:s' }).val("00:00:00");
+	$('#@(nameof(Model.StartupDelay))').timepicker({ 'timeFormat': 'H:i:s' }).val("00:00:00");
+</script>
+
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jquerytimepicker")
+}
+
+@section Styles {
+	@Styles.Render("~/bundles/jquerytimepicker/css")
 }

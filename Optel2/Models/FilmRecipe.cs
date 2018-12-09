@@ -13,6 +13,7 @@ namespace Optel2.Models
         public Guid Id { get; set; }
         [Display(Name = "Item number")]
         public string ItemNumber { get; set; }
+        [Display(Name = "Recipe")]
         public string Article { get; set; }
         public string Recipe { get; set; }
         public decimal Thickness { get; set; }

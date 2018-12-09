@@ -51,8 +51,20 @@ namespace Optel2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,WidthMin,WidthMax,ThicknessMin,ThicknessMax,ProductionSpeedMin,ProductionSpeedMax,DiameterMin,DiameterMax,WeightMin,WeightMax,LenghtMin,LenghtMax,WidthAdjustmentTime,ChangeOfThicknessTime,StartupDelay,MachineHourCost,WidthAdjustmentConsumption,ChangeOfThicknessTimeConsumption")] Extruder extruder)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,WidthMin,WidthMax,ThicknessMin,ThicknessMax,ProductionSpeedMin,ProductionSpeedMax,WidthAdjustmentTime,ChangeOfThicknessTime,StartupDelay,MachineHourCost")] Extruder extruder)
         {
+            if (extruder.ThicknessMin >= extruder.ThicknessMax)
+            {
+                ModelState.AddModelError("ThicknessMin", "Allowed min thickness must be smaller than allowed max thickness.");
+            }
+            if (extruder.ProductionSpeedMin >= extruder.ProductionSpeedMax)
+            {
+                ModelState.AddModelError("ProductionSpeedMin", "Allowed min production speed must be smaller than allowed max production speed.");
+            }
+            if (extruder.WidthMin >= extruder.WidthMax)
+            {
+                ModelState.AddModelError("WidthMin", "Allowed min width must be smaller than allowed max width.");
+            }
             if (ModelState.IsValid)
             {
                 extruder.Id = Guid.NewGuid();
@@ -86,6 +98,18 @@ namespace Optel2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name,WidthMin,WidthMax,ThicknessMin,ThicknessMax,ProductionSpeedMin,ProductionSpeedMax,DiameterMin,DiameterMax,WeightMin,WeightMax,LenghtMin,LenghtMax,WidthAdjustmentTime,ChangeOfThicknessTime,StartupDelay,MachineHourCost,WidthAdjustmentConsumption,ChangeOfThicknessTimeConsumption")] Extruder extruder)
         {
+            if (extruder.ThicknessMin >= extruder.ThicknessMax)
+            {
+                ModelState.AddModelError("ThicknessMin", "Allowed min thickness must be smaller than allowed max thickness.");
+            }
+            if (extruder.ProductionSpeedMin >= extruder.ProductionSpeedMax)
+            {
+                ModelState.AddModelError("ProductionSpeedMin", "Allowed min production speed must be smaller than allowed max production speed.");
+            }
+            if (extruder.WidthMin >= extruder.WidthMax)
+            {
+                ModelState.AddModelError("WidthMin", "Allowed min width must be smaller than allowed max width.");
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(extruder).State = EntityState.Modified;
