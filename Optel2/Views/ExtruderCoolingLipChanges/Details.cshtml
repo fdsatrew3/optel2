@@ -1,49 +1,30 @@
 ﻿@model Optel2.Models.ExtruderCoolingLipChange
 
 @{
-    ViewBag.Title = "Details of extruder cooling lip data";
+	ViewBag.Title = "Details of exturder cooling lip change data";
 }
 
-<h2>Details of extruder cooling lip data</h2>
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-        Cooling Lip
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CoolingLip)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Consumption)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Consumption)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Extruder)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Extruder.Name)
-        </dd>
-
-    </dl>
-</div>
+<table class="custom-table-horizontal">
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.CoolingLip)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.CoolingLip)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Duration)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Duration)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.ExtruderId)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Extruder.Name)&nbsp;&nbsp;</td>
+	</tr>
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+	<div class="row">
+		<div class="col-auto">
+			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24px" height="24px">&nbsp;Edit</div></a>
+		</div>
+		<div class="col-auto">
+			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24px" height="24px">&nbsp;Cancel</div></a>
+		</div>
+	</div>
 </p>
