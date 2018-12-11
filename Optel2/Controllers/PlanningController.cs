@@ -24,7 +24,7 @@ namespace Optel2.Controllers
         public async Task<ActionResult> Config()
         {
             PlanningModel planningModel = new PlanningModel();
-            planningModel.Orders = await db.Orders.ToListAsync();
+            planningModel.Orders = await db.Orders.OrderBy(o => o.OrderNumber).ToListAsync();
             planningModel.Extruders = await db.Extruders.Include(e => e.ExtruderCalibrationChange)
                 .Include(e => e.ExtruderCoolingLipChange)
                 .Include(e => e.ExtruderNozzleChange)
@@ -34,8 +34,8 @@ namespace Optel2.Controllers
             criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Time.ToString(), Value = OptimizationCriterion.Time.ToString() });
             ViewBag.Criterions = criterionDropDownList;
             List<SelectListItem> algorithmDropDownList = new List<SelectListItem>();
-            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.Genetic.ToString(), Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
-            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.BruteForce.ToString(), Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
+            algorithmDropDownList.Add(new SelectListItem() { Text = "Genetic", Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
+            algorithmDropDownList.Add(new SelectListItem() { Text = "Brute force", Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
             ViewBag.Algorithms = algorithmDropDownList;
             planningModel.NumberOfGAiterations = 100;
             planningModel.maxPopulation = 10;
@@ -130,6 +130,8 @@ namespace Optel2.Controllers
             {
                 return RedirectToAction("Config");
             }
+            TempData["Extruders"] = planningConfig.Extruders;
+            TempData["Orders"] = planningConfig.Orders;
             MyLittleKostyl.startDate = planningConfig.PlannedStartDate;
             MyLittleKostyl.endDate = planningConfig.PlannedEndDate;
             ProductionPlan result = new ProductionPlan();
@@ -164,7 +166,7 @@ namespace Optel2.Controllers
                         planningConfig.NumberOfGAiterations,
                         planningConfig.maxSelection));
                     break;
-            } 
+            }
             ViewBag.JsonString = GenerateJSON(result);
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
             decimal temp = result.GetWorkSpending(new Costs(), planningConfig.Criterion, new MondiObjectiveFunction());

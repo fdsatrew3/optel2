@@ -17,10 +17,11 @@ namespace Optel2.Models
         public DateTime PlannedEndDate { get; set; }
         public List<Order> Orders { get; set; }
         public List<Extruder> Extruders { get; set; }
+        [Display(Name = "Objective function")]
         public OptimizationCriterion Criterion { get; set; }
         public AObjectiveFunction Function { get; set; }
         public enum PlanningAlgorithm { Genetic, BruteForce };
-        [Display(Name = "Algorithm")]
+        [Display(Name = "Planning algorithm")]
         public PlanningAlgorithm SelectedAlgorithm { get; set; }
 
         #region GeneticAlgorithmShit
