@@ -1,7 +1,7 @@
 ﻿@model Optel2.Models.Customer
 
 @{
-    ViewBag.Title = "Details of customer data";
+	ViewBag.Title = "Details of customer data";
 }
 
 <table class="custom-table-horizontal">
@@ -16,9 +16,11 @@
 </table>
 <p>
 	<div class="row">
+		@if (User.IsInRole(Optel2.Utils.User.Roles.Admin) {
 		<div class="col-auto">
 			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24px" height="24px">&nbsp;Edit</div></a>
 		</div>
+		}
 		<div class="col-auto">
 			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24px" height="24px">&nbsp;Cancel</div></a>
 		</div>
