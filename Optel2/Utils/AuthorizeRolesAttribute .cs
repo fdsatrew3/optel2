@@ -14,5 +14,16 @@ namespace Optel2.Utils
         {
             Roles = String.Join(",", roles);
         }
+        /*
+                public override void OnAuthorization(AuthorizationContext filterContext)
+                {
+                    base.OnAuthorization(filterContext);
+
+                    if (filterContext.Result is HttpUnauthorizedResult)
+                    {
+                        filterContext.Result = new RedirectResult("~/Account/AccessDenied");
+                    }
+                }
+        */
     }
 }

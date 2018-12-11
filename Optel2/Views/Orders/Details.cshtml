@@ -28,13 +28,14 @@
 </table>
 <p>
 	<div class="row">
-		@if (User.IsInRole(Optel2.Utils.User.Roles.Admin) {
+@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+{
 		<div class="col-auto">
-			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24px" height="24px">&nbsp;Edit</div></a>
+			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24" height="24">&nbsp;Edit</div></a>
 		</div>
 		}
 		<div class="col-auto">
-			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24px" height="24px">&nbsp;Cancel</div></a>
+			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24" height="24">&nbsp;Cancel</div></a>
 		</div>
 	</div>
 </p>
