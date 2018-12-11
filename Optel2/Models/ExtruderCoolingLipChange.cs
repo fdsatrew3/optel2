@@ -11,6 +11,7 @@ namespace Optel2.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        [Display(Name = "Cooling lip")]
         public decimal CoolingLip { get; set; }
         [DisplayFormat(DataFormatString = "{0:H:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Duration { get; set; }

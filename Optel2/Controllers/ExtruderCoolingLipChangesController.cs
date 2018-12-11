@@ -10,10 +10,11 @@ using System.Web.Mvc;
 using Optel2.Models;
 using X.PagedList;
 using System.Web.Configuration;
+using Optel2.Utils;
 
 namespace Optel2.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRoles]
     public class ExtruderCoolingLipChangesController : Controller
     {
         private OptelContext db = new OptelContext();
@@ -41,7 +42,7 @@ namespace Optel2.Controllers
             }
             return View(extruderCoolingLipChange);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: ExtruderCoolingLipChanges/Create
         public async Task<ActionResult> Create()
         {
@@ -54,7 +55,7 @@ namespace Optel2.Controllers
             ViewBag.Extruders = extrudersDropDownList;
             return View();
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: ExtruderCoolingLipChanges/Create
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -78,7 +79,7 @@ namespace Optel2.Controllers
             ViewBag.Extruders = extrudersDropDownList;
             return View(extruderCoolingLipChange);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: ExtruderCoolingLipChanges/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
@@ -100,7 +101,7 @@ namespace Optel2.Controllers
             ViewBag.Extruders = extrudersDropDownList;
             return View(extruderCoolingLipChange);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: ExtruderCoolingLipChanges/Edit/5
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -123,7 +124,7 @@ namespace Optel2.Controllers
             ViewBag.Extruders = extrudersDropDownList;
             return View(extruderCoolingLipChange);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: ExtruderCoolingLipChanges/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
@@ -138,7 +139,7 @@ namespace Optel2.Controllers
             }
             return View(extruderCoolingLipChange);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: ExtruderCoolingLipChanges/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

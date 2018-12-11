@@ -4,6 +4,7 @@ using Algorithms.ObjectiveFunctions;
 using GenetycAlgorithm;
 using Optel2.DestoyThisPls;
 using Optel2.Models;
+using Optel2.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -14,7 +15,7 @@ using static Algorithms.ProductionPlan;
 
 namespace Optel2.Controllers
 {
-    [Authorize]
+    [AuthorizeRoles]
     public class PlanningController : Controller
     {
         private OptelContext db = new OptelContext();

@@ -7,10 +7,11 @@ using System.Web.Mvc;
 using X.PagedList;
 using System.Linq;
 using System.Web.Configuration;
+using Optel2.Utils;
 
 namespace Optel2.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRoles]
     public class OrdersController : Controller
     {
         private OptelContext db = new OptelContext();
@@ -38,13 +39,13 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Orders/Create
         public ActionResult Create()
         {
             return View();
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Orders/Create
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -62,7 +63,7 @@ namespace Optel2.Controllers
 
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Orders/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
@@ -77,7 +78,7 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Orders/Edit/5
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -93,7 +94,7 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Orders/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
@@ -108,7 +109,7 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

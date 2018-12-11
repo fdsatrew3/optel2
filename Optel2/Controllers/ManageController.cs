@@ -7,10 +7,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Optel2.Models;
+using Optel2.Utils;
 
 namespace Optel2.Controllers
 {
-    [Authorize]
+    [AuthorizeRoles]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

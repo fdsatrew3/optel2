@@ -1,4 +1,5 @@
 ﻿using Optel2.Models;
+using Optel2.Utils;
 using System;
 using System.Data;
 using System.Data.Entity;
@@ -11,7 +12,7 @@ using X.PagedList;
 
 namespace Optel2.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRoles]
     public class ExtrudersController : Controller
     {
         private OptelContext db = new OptelContext();
@@ -39,7 +40,7 @@ namespace Optel2.Controllers
             }
             return View(extruder);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Extruders/Create
         public ActionResult Create()
         {
@@ -75,7 +76,7 @@ namespace Optel2.Controllers
 
             return View(extruder);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Extruders/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
@@ -90,7 +91,7 @@ namespace Optel2.Controllers
             }
             return View(extruder);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Extruders/Edit/5
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -118,7 +119,7 @@ namespace Optel2.Controllers
             }
             return View(extruder);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Extruders/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
@@ -133,7 +134,7 @@ namespace Optel2.Controllers
             }
             return View(extruder);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Extruders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

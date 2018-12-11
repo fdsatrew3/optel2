@@ -26,7 +26,7 @@ namespace Optel2.Models
         [Display(Name = "Production speed")]
         public decimal ProductionSpeed { get; set; }
         public decimal Output { get; set; }
-        [Display(Name = "Calibration Diameter")]
+        [Display(Name = "Calibration diameter")]
         public decimal CalibrationDiameter { get; set; }
         [Display(Name = "Extruder")]
         public Guid ExtruderId { get; set; }

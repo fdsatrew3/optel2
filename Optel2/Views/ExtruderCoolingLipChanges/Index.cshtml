@@ -9,13 +9,14 @@
 @using X.PagedList.Mvc.Common;
 @using System.Web.Configuration;
 @using Optel2.Models;
-
+@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+{
 <div class="row">
 	<div class="col-auto">
-		<a href="@Url.Action("Create")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/add.png" width="24px" height="24px">&nbsp;Create new extruder cooling lip change data</div></a>
+		<a href="@Url.Action("Create")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/add.png" width="24" height="24">&nbsp;Create new extruder cooling lip change data</div></a>
 	</div>
 </div>
-
+}
 <table class="custom-table desktop-ver">
 	<thead>
 		<tr>
@@ -44,9 +45,16 @@
 				@Html.DisplayFor(modelItem => item.Extruder.Name)
 			</td>
 			<td>
-				<a href="@Url.Action("Edit", new { id=item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24px" height="24px"></a>
-				<a href="@Url.Action("Details", new { id=item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24px" height="24px"></a>
-				<a href="@Url.Action("Delete", new { id=item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24px" height="24px"></a>
+				@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+				{
+					<a href="@Url.Action("Edit", new { id = item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24" height="24"></a>
+					<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+					<a href="@Url.Action("Delete", new { id = item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24" height="24"></a>
+				}
+				else
+				{
+					<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+				}
 			</td>
 		</tr>
 	}
@@ -58,9 +66,16 @@
 			<table class="custom-table-horizontal">
 				<tr>
 					<td style="vertical-align: middle;" colspan="2">
-						<a href="@Url.Action("Edit", new { id=item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24px" height="24px"></a>
-						<a href="@Url.Action("Details", new { id=item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24px" height="24px"></a>
-						<a href="@Url.Action("Delete", new { id=item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24px" height="24px"></a>
+						@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+						{
+							<a href="@Url.Action("Edit", new { id = item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24" height="24"></a>
+							<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+							<a href="@Url.Action("Delete", new { id = item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24" height="24"></a>
+						}
+						else
+						{
+							<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+						}
 					</td>
 				</tr>
 				<tr>
