@@ -62,11 +62,9 @@ namespace Optel2.Controllers
             {
                 ModelState.AddModelError("", "You must select at least one extruder.");
             }
-
-            if (planningConfig.NumberOfGAiterations == 0)
-            {
-                ModelState.AddModelError("NumberOfGAiterations", "Count of iterations must be greater than zero.");
-            }
+            planningConfig.NumberOfGAiterations = 100;
+            planningConfig.maxPopulation = 10;
+            planningConfig.maxSelection = 10;
             if (planningConfig.PlannedStartDate > planningConfig.PlannedEndDate)
             {
                 ModelState.AddModelError("PlannedStartDate", "Planned start date must be earlier than planned end date.");
