@@ -17,9 +17,8 @@ namespace Optel2
             bundles.Add(new ScriptBundle("~/bundles/jquerytimepicker").Include(
                        "~/Scripts/jquery.timepicker.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquerydatatables").Include(
-                      "~/Scripts/jquery.dataTables.js",
-                      "~/Scripts/dataTables.bootstrap4.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jquerypaginate").Include(
+                      "~/Scripts/jquery.paginate.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.js"));
@@ -31,8 +30,8 @@ namespace Optel2
             bundles.Add(new StyleBundle("~/bundles/jquerytimepicker/css").Include(
                        "~/Content/jquery.timepicker.css"));
 
-            bundles.Add(new StyleBundle("~/bundles/jquerydatatables/css").Include(
-                       "~/Content/dataTables.bootstrap4.css"));
+            bundles.Add(new StyleBundle("~/bundles/jquerypaginate/css").Include(
+                       "~/Content/jquery.paginate.css"));
         }
     }
 }

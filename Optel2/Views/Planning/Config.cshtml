@@ -7,7 +7,7 @@
 
 @using System.Web.Configuration;
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "planningForm" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "planningForm", onsubmit = "OnSubmit()" }))
 {
 	@Html.AntiForgeryToken()
 	<div id="Step1Container">
@@ -81,28 +81,27 @@
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].OrderNumber)
-						@Html.HiddenFor(Model => Model.Orders[i].OrderNumber, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Orders[i].OrderNumber)
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].Product)
-						@Html.HiddenFor(Model => Model.Orders[i].Product, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Orders[i].Product)
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].Width)
-						@Html.HiddenFor(Model => Model.Orders[i].Width, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Orders[i].Width)
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].RollWeightNet)
-						@Html.HiddenFor(Model => Model.Orders[i].RollWeightNet, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Orders[i].RollWeightNet)
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].Rolls)
-						@Html.HiddenFor(Model => Model.Orders[i].Rolls, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Orders[i].Rolls)
 					</td>
 				</tr>
 			}
 		</table>
-		<br />
 		<div class="form-group">
 			<div class="row" style="padding-left: 15px;">
 				<div class="col-auto">
@@ -133,15 +132,15 @@
 			{
 				<tr>
 					<td>
-						@Html.CheckBoxFor(Model => Model.Extruders[i].Selected, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+						@Html.CheckBoxFor(Model => Model.Extruders[i].Selected, new { id = "extruder_" + i + "_checkbox", htmlAttributes = new { @class = "form-control", data_val = "false" } })
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Extruders[i].Name)
-						@Html.HiddenFor(Model => Model.Extruders[i].Name, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].Name)
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Extruders[i].MachineHourCost)
-						@Html.HiddenFor(Model => Model.Extruders[i].MachineHourCost, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].MachineHourCost)
 					</td>
 					@Html.HiddenFor(Model => Model.Extruders[i].LengthMax, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
 					@Html.HiddenFor(Model => Model.Extruders[i].LengthMin, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
@@ -261,53 +260,49 @@
 			Step4Container.style.display = step == 4 ? "block" : "none";
 		}
 
-	</script>
-	<script>
 		$(document).ready(function () {
-			var ordersTable = $('#orders').DataTable({
-				"ordering": false,
-				"info": false,
-				"searching": false,
-				"lengthChange": false,
-				"pageLength": @Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]),
-				"pagingType": "simple_numbers",
-				"language": {
-					"paginate": {
-						"previous": "<",
-						"next": ">"
-					}
+			$('#orders').paginate({
+				'elemsPerPage': @Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]),
+				'maxButtons': @Convert.ToInt32(WebConfigurationManager.AppSettings["MaxPagesInIndexPaginator"]),
+				'previousText': '<',
+				'nextText': '>',
+				'activeClass': 'active',
+				'containerClass': 'mt-3',
+				'listClass': 'pagination',
+				'anchorClass': 'page-link',
+				'pageClass': 'page-item'
+			});
+			$('#extruders').paginate({
+				'elemsPerPage': @Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]),
+				'maxButtons': @Convert.ToInt32(WebConfigurationManager.AppSettings["MaxPagesInIndexPaginator"]),
+				'previousText': '<',
+				'nextText': '>',
+				'activeClass': 'active',
+				'containerClass': 'mt-3',
+				'listClass': 'pagination',
+				'anchorClass': 'page-link',
+				'pageClass': 'page-item'
+			});
+			$("#selectAllOrders").click(function () {
+				var checked = document.getElementById("selectAllOrders").checked;
+				for (var i = 0; i < @(Model.Orders.Count); i++) {
+					document.getElementById("order_" + i + "_checkbox").checked = checked;
 				}
 			});
-			$('#selectAllOrders').on('click', function () {
-				var rows = ordersTable.rows({ 'search': 'applied' }).nodes();
-				$('input[type="checkbox"]', rows).prop('checked', this.checked);
-			});
-			var extrudersTable = $('#extruders').DataTable({
-				"ordering": false,
-				"info": false,
-				"searching": false,
-				"lengthChange": false,
-				"pageLength": @Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]),
-				"pagingType": "simple_numbers",
-				"language": {
-					"paginate": {
-						"previous": "<",
-						"next": ">"
-					}
+			$("#selectAllExtruders").click(function () {
+				var checked = document.getElementById("selectAllExtruders").checked;
+				for (var i = 0; i < @(Model.Extruders.Count); i++) {
+					document.getElementById("extruder_" + i + "_checkbox").checked = checked;
 				}
-			});
-			$('#selectAllExtruders').on('click', function () {
-				var rows = extrudersTable.rows({ 'search': 'applied' }).nodes();
-				$('input[type="checkbox"]', rows).prop('checked', this.checked);
 			});
 		});
 	</script>
 }
 
 @section Scripts {
-	@Scripts.Render("~/bundles/jquerydatatables")
+	@Scripts.Render("~/bundles/jquerypaginate")
 }
 
 @section Styles {
-	@Styles.Render("~/bundles/jquerydatatables/css")
+	@Styles.Render("~/bundles/jquerypaginate/css")
 }

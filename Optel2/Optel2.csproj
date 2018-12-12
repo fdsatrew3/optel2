@@ -235,7 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\dataTables.bootstrap4.css" />
+    <Content Include="Content\jquery.paginate.css" />
     <Content Include="Content\jquery.timepicker.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -297,9 +297,8 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\dataTables.bootstrap4.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery.paginate.js" />
     <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
