@@ -33,20 +33,12 @@ namespace Algorithms.BruteForce
 
         public List<ProductionPlan> Plans { get; set; }
 
-        private List<decimal> priority; // list of priority (Ganoes addition!!!)
+        private bool IsSortByPriority; // priority (Ganoes addition!!!)
 
-        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function)
+        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function, bool sortByPriority)
         {
             // GANOES work with priority
-            priority = new List<decimal>();
-
-            for (int i = 0; i < ordersToExecute.Count; i++)
-            {
-                if (!priority.Contains(ordersToExecute[i].Priority))
-                    priority.Add(ordersToExecute[i].Priority);
-            }
-
-            priority.Sort();
+            IsSortByPriority = sortByPriority;
             //GANOES 
 
             Plans = new List<ProductionPlan>(); //new EDITION!!!
@@ -173,7 +165,10 @@ namespace Algorithms.BruteForce
 
             try
             {
-                newPlan = plan.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).First();
+                if (IsSortByPriority)
+                    newPlan = plan.OrderBy(spending => spending.Priority).First();
+                else
+                    newPlan = plan.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).First();
             }
             catch (Exception)
             { newPlan = plan[0]; }

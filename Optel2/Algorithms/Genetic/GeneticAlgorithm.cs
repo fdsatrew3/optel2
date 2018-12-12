@@ -60,24 +60,16 @@ namespace GenetycAlgorithm
         private OptimizationCriterion _optimizationCriterion;
         private AObjectiveFunction _objectiveFunction;
 
-        private List<decimal> priority; // list of priority (Ganoes addition!!!)
+        private bool IsSortByPriority; // priority (Ganoes addition!!!)
 
         public List<List<ProductionPlan>> Plans { get; set; } // new edition with plans
 
 
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
-                                    int maxPopulation, int numberOfGAiterations, int maxSelection, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
+                                    int maxPopulation, int numberOfGAiterations, int maxSelection, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95, bool sortByPriority)
         {
             // GANOES work with priority
-            priority = new List<decimal>();
-
-            for (int i = 0; i < ordersToExecute.Count; i++)
-            {
-                if (!priority.Contains(ordersToExecute[i].Priority))
-                    priority.Add(ordersToExecute[i].Priority);
-            }
-
-            priority.Sort();
+            IsSortByPriority = sortByPriority;
             //GANOES 
 
             Plans = new List<List<ProductionPlan>>(); // new EDITION!!!
@@ -339,7 +331,11 @@ namespace GenetycAlgorithm
         */
         private ProductionPlan _GetBestGens()
         {
-            _populations = _populations.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).ToList();
+            if (IsSortByPriority)
+                _populations = _populations.OrderBy(spending => spending.Priority).ToList();
+            else
+                _populations = _populations.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).ToList();
+
             return _populations[0];
         }
 
@@ -347,7 +343,11 @@ namespace GenetycAlgorithm
         {
             if (_populations.Count > _maxPopulationsAmount)
             {
-                _populations = _populations.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).ToList();
+                if (IsSortByPriority)
+                    _populations = _populations.OrderBy(spending => spending.Priority).ToList();
+                else
+                    _populations = _populations.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).ToList();
+
                 _populations = _populations.GetRange(0, _maxPopulationsAmount);
                 Plans.Add(_populations);
             }

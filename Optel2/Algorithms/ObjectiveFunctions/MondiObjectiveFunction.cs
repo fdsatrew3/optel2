@@ -97,15 +97,13 @@ namespace Algorithms.ObjectiveFunctions
 
         protected FilmRecipe GetFilmRecipe(Order order)
         {
-            for (int i = 0; i < filmRecipes.Count; i++)
-            {
-                if (filmRecipes[i].Article.Equals($"{order.Product}{order.Width}"))
-                {
-                    return filmRecipes[i];
-                }
-            }
-            return filmRecipes[0];
-        }
+            FilmRecipe filmRecipe = order.GetFilmRecipe();
+            // it is trap!!!! 13.12.2018
+            if (filmRecipe == null)
+                filmRecipe = db.FilmRecipes.ToList()[0];
+
+            return filmRecipe;
+        }        
 
         protected double RetargetingTimeCalculator(Extruder line, Order previousOrder, Order newOrder)
         {

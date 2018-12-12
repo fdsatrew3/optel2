@@ -36,6 +36,24 @@ namespace Algorithms
         public enum OptimizationCriterion { Time, Cost }
         private ExecutionTimeAndCost _timeAndCost;
 
+        //показатель приоритетности
+        public decimal Priority { get { return CalcPriority(); } }
+
+        private decimal CalcPriority()
+        {
+            decimal result = 0;
+
+            for (int i = 0; i < OrdersToLineConformity.Count; i++)
+            {
+                for (int j = 0; j < OrdersToLineConformity[i].Orders.Count; j++)
+                {
+                    result += OrdersToLineConformity[i].Orders[j].Priority * j;
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Возвращает объект типа float, хранящего данные о затратах согласно требуемому критерию.
         /// Также сохраняет полученные результаты в float MaxWorkTime, float RetargetingTime и float WorkCosts
