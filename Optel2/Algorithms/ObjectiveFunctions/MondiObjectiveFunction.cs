@@ -42,9 +42,6 @@ namespace Algorithms.ObjectiveFunctions
                 workTime = Convert.ToDouble(Orders[0].Rolls * Orders[0].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
                 Orders[0].PlanedEndDate.AddSeconds(workTime);
                 workCost += 3.23m;
-                //Extruder.StartupDelay + Extruder.ChangeofThickness(Order1, Order2) + Extruder.WidthAdj(Order1, Order2) + CalcRetargettingTIme(Order1, Order2) + (Order2.Rolls * Order2.width) / FilmRecipe.GetProductionSpeedByOrderCode(Order2)) 
-
-                //Orders[0].PlanedEndDate = Orders[0].PlanedStartDate.AddSeconds(DateTimeToDouble(Line.ChangeOfThicknessTime) + DateTimeToDouble(Line.WidthAdjustmentTime) + Convert.ToDecimal(Orders[0].Rolls * Orders[0].Width / filmRecipe.ProductionSpeed) * 60);
 
                 // Прочие заказы.
                 if (Orders.Count > 1)

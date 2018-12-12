@@ -31,8 +31,26 @@ namespace Algorithms.BruteForce
         // В ЭТУ ШТУКУ БУДУТ ЗАПИСЫВАТЬСЯ САМЫЕ ОПТИМАЛЬНЫЕ ПЛАНЫ, ТАК ЧТО В СВОЙСТВО ИЗМЕНЕНИЯ ЭТОГО ПОЛЯ МОЖНО ДОБАВИТЬ ФУНКЦИЮ, ВЫВОДЯЩУЮ ПРОМЕЖУТОЧНЫЙ ПЛАН НА ЭКРАН
         public ProductionPlan SelectedPlan { get; set; }
 
+        public List<ProductionPlan> Plans { get; set; }
+
+        private List<decimal> priority; // list of priority (Ganoes addition!!!)
+
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function)
         {
+            // GANOES work with priority
+            priority = new List<decimal>();
+
+            for (int i = 0; i < ordersToExecute.Count; i++)
+            {
+                if (!priority.Contains(ordersToExecute[i].Priority))
+                    priority.Add(ordersToExecute[i].Priority);
+            }
+
+            priority.Sort();
+            //GANOES 
+
+            Plans = new List<ProductionPlan>(); //new EDITION!!!
+
             SelectedPlan = new ProductionPlan();
             
             _optimizationCriterion = criterion;
@@ -90,8 +108,8 @@ namespace Algorithms.BruteForce
                     CreateListForce(++iteration, ref len);
                 else
                 {
-                    ProductionPlan newPlan = CreatePlanByArray(len);
-                    SelectedPlan = ChooseBestPlan(new List<ProductionPlan>() { newPlan, SelectedPlan });
+                    Plans.Add(CreatePlanByArray(len));
+                    SelectedPlan = ChooseBestPlan(new List<ProductionPlan>() { Plans[Plans.Count - 1], SelectedPlan });
                 }
             }
         }
