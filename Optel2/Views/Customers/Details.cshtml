@@ -1,34 +1,29 @@
 ﻿@model Optel2.Models.Customer
 
 @{
-    ViewBag.Title = "Details";
+	ViewBag.Title = "Details of customer data";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Customer</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Number)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Number)
-        </dd>
-
-    </dl>
-</div>
+<table class="custom-table-horizontal">
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Name)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Name)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Number)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Number)&nbsp;&nbsp;</td>
+	</tr>
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+	<div class="row">
+@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+{
+		<div class="col-auto">
+			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24" height="24">&nbsp;Edit</div></a>
+		</div>
+		}
+		<div class="col-auto">
+			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24" height="24">&nbsp;Cancel</div></a>
+		</div>
+	</div>
 </p>

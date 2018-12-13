@@ -12,11 +12,17 @@ namespace Optel2.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string Name { get; set; }
+        [Display(Name = "Allowed min width")]
         public decimal WidthMin { get; set; }
+        [Display(Name = "Allowed max width")]
         public decimal WidthMax { get; set; }
+        [Display(Name = "Allowed min thickness")]
         public decimal ThicknessMin { get; set; }
+        [Display(Name = "Allowed max thickness")]
         public decimal ThicknessMax { get; set; }
+        [Display(Name = "Allowed min production speed")]
         public decimal ProductionSpeedMin { get; set; }
+        [Display(Name = "Allowed max production speed")]
         public decimal ProductionSpeedMax { get; set; }
         public decimal DiameterMin { get; set; }
         public decimal DiameterMax { get; set; }
@@ -24,12 +30,13 @@ namespace Optel2.Models
         public decimal WeightMax { get; set; }
         public decimal LengthMin { get; set; }
         public decimal LengthMax { get; set; }
-        [DisplayFormat(DataFormatString = "{0:H:mm:ss}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true), Display(Name = "Time to adjust width")]
         public DateTime WidthAdjustmentTime { get; set; }
-        [DisplayFormat(DataFormatString = "{0:H:mm:ss}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true), Display(Name = "Time to change thickness")]
         public DateTime ChangeOfThicknessTime { get; set; }
-        [DisplayFormat(DataFormatString = "{0:H:mm:ss}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true), Display(Name = "Startup delay")]
         public DateTime StartupDelay { get; set; }
+        [Display(Name = "Machine hour cost")]
         public decimal MachineHourCost { get; set; }
         public decimal WidthAdjustmentConsumption { get; set; }
         public decimal ChangeOfThicknessConsumption { get; set; }

@@ -15,6 +15,7 @@ namespace Optel2.Models
         [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Duration { get; set; }
         public decimal Consumption { get; set; }
+        [Display(Name = "Extruder")]
         public Guid ExtruderId { get; set; }
         public Extruder Extruder { get; set; }
     }

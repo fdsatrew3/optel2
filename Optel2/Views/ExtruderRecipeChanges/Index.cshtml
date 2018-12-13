@@ -1,57 +1,121 @@
-﻿@model IEnumerable<Optel2.Models.ExtruderRecipeChange>
+﻿@model IPagedList<Optel2.Models.ExtruderRecipeChange>
 
 @{
-    ViewBag.Title = "Extruders recipe data";
+	ViewBag.Title = "Extruders recipe change data";
 }
 
-<h2>Extruders recipe data</h2>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using System.Web.Configuration;
+@using Optel2.Models;
 
-<p>
-    @Html.ActionLink("Create new extruder recipe data", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.From)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.On)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Consumption)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Extruder)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.From)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.On)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Duration)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Consumption)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Extruder.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+{
+<div class="row">
+	<div class="col-auto">
+		<a href="@Url.Action("Create")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/add.png" width="24" height="24">&nbsp;Create new extruder recipe change data</div></a>
+	</div>
+</div>
 }
+<table class="custom-table desktop-ver">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.First().From)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().On)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().Duration)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.First().Extruder)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+@foreach (ExtruderRecipeChange item in ViewBag.PageContent)
+{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.From)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.On)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Duration)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Extruder.Name)
+				</td>
+				<td>
+					@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+					{
+						<a href="@Url.Action("Edit", new { id = item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24" height="24"></a>
+						<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+						<a href="@Url.Action("Delete", new { id = item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24" height="24"></a>
+					}
+					else
+					{
+						<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+					}
+				</td>
+			</tr>
+		}
 
 </table>
+<div class="d-flex flex-row flex-wrap justify-content-center mobile-ver-flex">
+	@foreach (ExtruderRecipeChange item in ViewBag.PageContent)
+	{
+		<div class="p-1" style="width: 192px;">
+			<table class="custom-table-horizontal">
+				<tr>
+					<td style="vertical-align: middle;" colspan="2">
+						@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+						{
+							<a href="@Url.Action("Edit", new { id = item.Id })" title="Edit"><img src="/Images/Menu/edit.png" width="24" height="24"></a>
+							<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+							<a href="@Url.Action("Delete", new { id = item.Id })" title="Delete"><img src="~/Images/Menu/delete.png" width="24" height="24"></a>
+						}
+						else
+						{
+							<a href="@Url.Action("Details", new { id = item.Id })" title="Details"><img src="~/Images/Menu/info.png" width="24" height="24"></a>
+						}
+					</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.From)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.From)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.On)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.On)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.Duration)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.Duration)&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => item.ExtruderId)&nbsp;&nbsp;</th>
+					<td>&nbsp;&nbsp;@Html.DisplayFor(model => item.Extruder.Name)&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+		</div>
+	}
+</div>
+<br />
+@Html.PagedListPager((IPagedList)ViewBag.PageContent, page => Url.Action("Index", new { page = page }),
+	new PagedListRenderOptions
+	{
+		LiElementClasses = new string[] { "page-item" },
+		PageClasses = new string[] { "page-link" },
+		MaximumPageNumbersToDisplay = Convert.ToInt32(WebConfigurationManager.AppSettings["MaxPagesInIndexPaginator"]),
+		DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+		DisplayLinkToLastPage = PagedListDisplayMode.Never,
+		DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+		DisplayLinkToNextPage = PagedListDisplayMode.Always,
+		DisplayEllipsesWhenNotShowingAllPageNumbers = false
+	})

@@ -1,25 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Optel2.Models;
+using Optel2.Utils;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
+using System.Web.Configuration;
 using System.Web.Mvc;
-using Optel2.Models;
+using X.PagedList;
 
 namespace Optel2.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRoles]
     public class FilmRecipeCostsController : Controller
     {
         private OptelContext db = new OptelContext();
 
         // GET: FilmRecipeCosts
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
-            return View(await db.FilmRecipeCosts.ToListAsync());
+            var pageNumber = page ?? 1;
+            var pageContent = await db.FilmRecipeCosts.OrderBy(i => i.Recipe).ToPagedListAsync(pageNumber, Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]));
+            ViewBag.PageContent = pageContent;
+            return View();
         }
 
         // GET: FilmRecipeCosts/Details/5
@@ -36,13 +40,13 @@ namespace Optel2.Controllers
             }
             return View(filmRecipeCost);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: FilmRecipeCosts/Create
         public ActionResult Create()
         {
             return View();
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: FilmRecipeCosts/Create
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -60,7 +64,7 @@ namespace Optel2.Controllers
 
             return View(filmRecipeCost);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: FilmRecipeCosts/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
@@ -75,7 +79,7 @@ namespace Optel2.Controllers
             }
             return View(filmRecipeCost);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: FilmRecipeCosts/Edit/5
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -91,7 +95,7 @@ namespace Optel2.Controllers
             }
             return View(filmRecipeCost);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: FilmRecipeCosts/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
@@ -106,7 +110,7 @@ namespace Optel2.Controllers
             }
             return View(filmRecipeCost);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: FilmRecipeCosts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

@@ -1,223 +1,177 @@
 ﻿@model Optel2.Models.Extruder
 
 @{
-    ViewBag.Title = "Edit exturder data";
+	ViewBag.Title = "Edit exturder data";
 }
 
-<h2>Edit extruder data</h2>
-
-
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editForm" }))
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+	@Html.AntiForgeryToken()
 
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Name</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Min allowed width</b>
-			</div>
-			<div class="">
-					@Html.EditorFor(model => model.WidthMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-					@Html.ValidationMessageFor(model => model.WidthMin, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Max allowed width</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.WidthMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.WidthMax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Min allowed thickness</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.ThicknessMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.ThicknessMin, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Max allowed thickness</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.ThicknessMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.ThicknessMax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Min allowed production speed</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.ProductionSpeedMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.ProductionSpeedMin, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Max allowed production speed</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.ProductionSpeedMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.ProductionSpeedMax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Min allowed diameter</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.DiameterMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.DiameterMin, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Max allowed diameter</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.DiameterMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.DiameterMax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Min allowed weight</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.WeightMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.WeightMin, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Max allowed weight</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.WeightMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.WeightMax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Min allowed length</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.LengthMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.LengthMin, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Max allowed length</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.LengthMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.LengthMax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Width adjustment duration</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.WidthAdjustmentTime, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.WidthAdjustmentTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Change of thickness duration</b>
-			</div>
-            <div class="">
-                @Html.EditorFor(model => model.ChangeOfThicknessTime, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.ChangeOfThicknessTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.Id)
 
 		<div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Width adjustment consumption</b>
-			</div>
+			@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="">
-				@Html.EditorFor(model => model.WidthAdjustmentConsumption, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-				@Html.ValidationMessageFor(model => model.WidthAdjustmentConsumption, "", new { @class = "text-danger" })
+				@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
 		<div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Change of thickness consumption</b>
-			</div>
+			@Html.LabelFor(model => model.WidthMin, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="">
-				@Html.EditorFor(model => model.ChangeOfThicknessConsumption, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-				@Html.ValidationMessageFor(model => model.ChangeOfThicknessConsumption, "", new { @class = "text-danger" })
+				@Html.EditorFor(model => model.WidthMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.WidthMin, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Startup delay</b>
+		<div class="form-group">
+			@Html.LabelFor(model => model.WidthMax, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.WidthMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.WidthMax, "", new { @class = "text-danger" })
 			</div>
-            <div class="">
-                @Html.EditorFor(model => model.StartupDelay, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.StartupDelay, "", new { @class = "text-danger" })
-            </div>
-        </div>
+		</div>
 
-        <div class="form-group">
-			<div class="control-label" style="text-align: left; margin-left: 10px;">
-				<b>Machine hour cost</b>
+		<div class="form-group">
+			@Html.LabelFor(model => model.ThicknessMin, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.ThicknessMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.ThicknessMin, "", new { @class = "text-danger" })
 			</div>
-            <div class="">
-                @Html.EditorFor(model => model.MachineHourCost, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.MachineHourCost, "", new { @class = "text-danger" })
-            </div>
-        </div>
+		</div>
 
-        <div class="form-group">
-            <div class="">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.ThicknessMax, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.ThicknessMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.ThicknessMax, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ProductionSpeedMin, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.ProductionSpeedMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.ProductionSpeedMin, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ProductionSpeedMax, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.ProductionSpeedMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.ProductionSpeedMax, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<!--
+		<div class="form-group">
+			@Html.LabelFor(model => model.DiameterMin, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.DiameterMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.DiameterMin, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.DiameterMax, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.DiameterMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.DiameterMax, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.WeightMin, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.WeightMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.WeightMin, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.WeightMax, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.WeightMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.WeightMax, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.LengthMin, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.LengthMin, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.LengthMin, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.LengthMax, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.LengthMax, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.LengthMax, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		-->
+		<div class="form-group">
+			@Html.LabelFor(model => model.WidthAdjustmentTime, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.WidthAdjustmentTime, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.WidthAdjustmentTime, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ChangeOfThicknessTime, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.ChangeOfThicknessTime, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.ChangeOfThicknessTime, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.StartupDelay, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.StartupDelay, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.StartupDelay, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.MachineHourCost, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="">
+				@Html.EditorFor(model => model.MachineHourCost, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.MachineHourCost, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="row" style="padding-left: 15px;">
+				<div class="col-auto">
+					<a href="javascript:document.getElementById('editForm').submit()" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/save.png" width="24px" height="24px">&nbsp;Save</div></a>
+				</div>
+				<div class="col-auto">
+					<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24px" height="24px">&nbsp;Cancel</div></a>
+				</div>
+			</div>
+		</div>
+	</div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script>
+	$('#@(nameof(Model.WidthAdjustmentTime))').timepicker({ 'timeFormat': 'H:i:s' });
+	$('#@(nameof(Model.ChangeOfThicknessTime))').timepicker({ 'timeFormat': 'H:i:s' });
+	$('#@(nameof(Model.StartupDelay))').timepicker({ 'timeFormat': 'H:i:s' });
+</script>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jquerytimepicker")
+}
+
+@section Styles {
+	@Styles.Render("~/bundles/jquerytimepicker/css")
 }

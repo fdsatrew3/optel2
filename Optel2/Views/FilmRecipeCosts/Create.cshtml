@@ -4,15 +4,11 @@
     ViewBag.Title = "Create new film recipe cost data";
 }
 
-<h2>@ViewBag.Title</h2>
-
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editForm" }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Recipe, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -38,17 +34,18 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+		<div class="form-group">
+			<div class="row" style="padding-left: 15px;">
+				<div class="col-auto">
+					<a href="javascript:document.getElementById('editForm').submit()" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/add.png" width="24px" height="24px">&nbsp;Create</div></a>
+				</div>
+				<div class="col-auto">
+					<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24px" height="24px">&nbsp;Cancel</div></a>
+				</div>
+			</div>
+		</div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -1,25 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Optel2.Models;
+using System;
 using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using Optel2.Models;
+using X.PagedList;
+using System.Linq;
+using System.Web.Configuration;
+using Optel2.Utils;
 
 namespace Optel2.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRoles]
     public class OrdersController : Controller
     {
         private OptelContext db = new OptelContext();
 
         // GET: Orders
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
-            return View(await db.Orders.ToListAsync());
+            var pageNumber = page ?? 1;
+            var pageContent = await db.Orders.OrderBy(i => i.OrderNumber).ToPagedListAsync(pageNumber, Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]));
+            ViewBag.PageContent = pageContent;
+            return View();
         }
 
         // GET: Orders/Details/5
@@ -36,13 +39,13 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Orders/Create
         public ActionResult Create()
         {
             return View();
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Orders/Create
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -60,7 +63,7 @@ namespace Optel2.Controllers
 
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Orders/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
@@ -75,7 +78,7 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Orders/Edit/5
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -91,7 +94,7 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Orders/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
@@ -106,7 +109,7 @@ namespace Optel2.Controllers
             }
             return View(order);
         }
-
+        [AuthorizeRoles(Utils.User.Roles.Admin)]
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

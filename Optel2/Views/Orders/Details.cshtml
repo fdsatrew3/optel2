@@ -1,121 +1,41 @@
 ﻿@model Optel2.Models.Order
 
 @{
-    ViewBag.Title = "Details of order data";
+	ViewBag.Title = "Details of order data";
 }
 
-<h2>Details of order data</h2>
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-		<dt>
-			Order number
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.OrderNumber)
-		</dd>
-
-		<dt>
-			@Html.DisplayNameFor(model => model.Product)
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.Product)
-		</dd>
-
-		<dt>
-			@Html.DisplayNameFor(model => model.Width)
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.Width)
-		</dd>
-
-		<dt>
-			Setup time
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.SetupTime)
-		</dd>
-
-		<dt>
-			Production time
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.ProductionTime)
-		</dd>
-
-		<dt>
-			Production interruption time
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.ProductionInterruptionTime)
-		</dd>
-
-		<dt>
-			Total time
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.TotalTime)
-		</dd>
-
-		<dt>
-			Finished goods
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.FinishedGoods)
-		</dd>
-
-		<dt>
-			@Html.DisplayNameFor(model => model.Granules)
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.Granules)
-		</dd>
-
-		<dt>
-			@Html.DisplayNameFor(model => model.Waste)
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.Waste)
-		</dd>
-
-		<dt>
-			Quanity in running meter
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.QuanityInRunningMeter)
-		</dd>
-
-		<dt>
-			Roll weight net
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.RollWeightNet)
-		</dd>
-
-		<dt>
-			@Html.DisplayNameFor(model => model.Rolls)
-		</dt>
-
-		<dd>
-			@Html.DisplayFor(model => model.Rolls)
-		</dd>
-
-    </dl>
-</div>
+<table class="custom-table-horizontal">
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.OrderNumber)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.OrderNumber)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Product)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Product)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Width)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Width)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.RollWeightNet)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.RollWeightNet)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Rolls)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Rolls)&nbsp;&nbsp;</td>
+	</tr>
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+	<div class="row">
+@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+{
+		<div class="col-auto">
+			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24" height="24">&nbsp;Edit</div></a>
+		</div>
+		}
+		<div class="col-auto">
+			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24" height="24">&nbsp;Cancel</div></a>
+		</div>
+	</div>
 </p>

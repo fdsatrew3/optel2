@@ -4,6 +4,7 @@ using Algorithms.ObjectiveFunctions;
 using GenetycAlgorithm;
 using Optel2.DestoyThisPls;
 using Optel2.Models;
+using Optel2.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -14,7 +15,7 @@ using static Algorithms.ProductionPlan;
 
 namespace Optel2.Controllers
 {
-    [Authorize]
+    [AuthorizeRoles]
     public class PlanningController : Controller
     {
         private OptelContext db = new OptelContext();
@@ -23,7 +24,7 @@ namespace Optel2.Controllers
         public async Task<ActionResult> Config()
         {
             PlanningModel planningModel = new PlanningModel();
-            planningModel.Orders = await db.Orders.ToListAsync();
+            planningModel.Orders = await db.Orders.OrderBy(o => o.OrderNumber).ToListAsync();
             planningModel.Extruders = await db.Extruders.Include(e => e.ExtruderCalibrationChange)
                 .Include(e => e.ExtruderCoolingLipChange)
                 .Include(e => e.ExtruderNozzleChange)
@@ -33,8 +34,8 @@ namespace Optel2.Controllers
             criterionDropDownList.Add(new SelectListItem() { Text = OptimizationCriterion.Time.ToString(), Value = OptimizationCriterion.Time.ToString() });
             ViewBag.Criterions = criterionDropDownList;
             List<SelectListItem> algorithmDropDownList = new List<SelectListItem>();
-            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.Genetic.ToString(), Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
-            algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.BruteForce.ToString(), Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
+            algorithmDropDownList.Add(new SelectListItem() { Text = "Genetic", Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
+            algorithmDropDownList.Add(new SelectListItem() { Text = "Brute force", Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
             ViewBag.Algorithms = algorithmDropDownList;
             planningModel.NumberOfGAiterations = 100;
             planningModel.maxPopulation = 10;
@@ -61,11 +62,9 @@ namespace Optel2.Controllers
             {
                 ModelState.AddModelError("", "You must select at least one extruder.");
             }
-
-            if (planningConfig.NumberOfGAiterations == 0)
-            {
-                ModelState.AddModelError("NumberOfGAiterations", "Count of iterations must be greater than zero.");
-            }
+            planningConfig.NumberOfGAiterations = 100;
+            planningConfig.maxPopulation = 10;
+            planningConfig.maxSelection = 10;
             if (planningConfig.PlannedStartDate > planningConfig.PlannedEndDate)
             {
                 ModelState.AddModelError("PlannedStartDate", "Planned start date must be earlier than planned end date.");
@@ -96,6 +95,11 @@ namespace Optel2.Controllers
             return View(planningModel);
         }
 
+        public string DateTimeToDateUTC(DateTime dt)
+        {
+            return dt.Year + ", " + (dt.Month - 1) + ", " + dt.Day + ", " + dt.Hour + ", " + dt.Minute + ", " + dt.Second;
+        }
+
         public string GenerateJSON(ProductionPlan plan)
         {
             string json = "";
@@ -108,10 +112,51 @@ namespace Optel2.Controllers
                 json += "\"periods\": [\r\n";
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
-                    json += "{\r\n\"id\": \"" + id + "_" + j + "_" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
-                    json += "\"stroke\": \"3 black\",\r\n";
-                    json += "\"start\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate.ToString("yyyy, M, d, H, m, s") + "),\r\n";
-                    json += "\"end\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate.ToString("yyyy, M, d, H, m, s") + "),\r\n},\r\n";
+                    json += "{\r\n\"id\": \"" + plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "\",\r\n";
+                    //json += "\"stroke\": \"3 black\",\r\n";
+                    json += "\"start\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + "),\r\n";
+                    json += "\"end\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + "),\r\n";
+                    if (j % 2 == 0)
+                    {
+                        json += "\"stroke\": \"#B8AA96\",\r\n";
+                        json += "\"fill\": {\r\n";
+                        json += "\"angle\": 90,\r\n";
+                        json += "\"keys\": [\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#CFC0A9\",\r\n";
+                        json += "\"position\": 0\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#E6D5BC\",\r\n";
+                        json += "\"position\": 0.38\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#E8D9C3\",\r\n";
+                        json += "\"position\": 1\r\n";
+                        json += "}\r\n";
+                        json += "]\r\n";
+                        json += "}\r\n},\r\n";
+                    } else
+                    {
+                        json += "\"stroke\": \"#9B9292\",\r\n";
+                        json += "\"fill\": {\r\n";
+                        json += "\"angle\": 90,\r\n";
+                        json += "\"keys\": [\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#AFA4A4\",\r\n";
+                        json += "\"position\": 0\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#C2B6B6\",\r\n";
+                        json += "\"position\": 0.38\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#C8BDBD\",\r\n";
+                        json += "\"position\": 1\r\n";
+                        json += "}\r\n";
+                        json += "]\r\n";
+                        json += "}\r\n},\r\n";
+                    }
                 }
                 json += "],\r\n},";
                 id++;
@@ -129,6 +174,8 @@ namespace Optel2.Controllers
             {
                 return RedirectToAction("Config");
             }
+            TempData["Extruders"] = planningConfig.Extruders;
+            TempData["Orders"] = planningConfig.Orders;
             MyLittleKostyl.startDate = planningConfig.PlannedStartDate;
             MyLittleKostyl.endDate = planningConfig.PlannedEndDate;
             ProductionPlan result = new ProductionPlan();
@@ -163,13 +210,22 @@ namespace Optel2.Controllers
                         planningConfig.NumberOfGAiterations,
                         planningConfig.maxSelection));
                     break;
-            } 
+            }
             ViewBag.JsonString = GenerateJSON(result);
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
             decimal temp = result.GetWorkSpending(new Costs(), planningConfig.Criterion, new MondiObjectiveFunction());
             ViewBag.Result = Math.Round(temp, 2);
-            ViewBag.Result1 = DateTime.MinValue.AddSeconds(Convert.ToDouble(temp)).ToString("d H:mm:ss");
+            ViewBag.Result1 = GetTotalTime(Convert.ToDouble(temp));
             return View(planningConfig);
+        }
+
+        public string GetTotalTime(double seconds)
+        {
+            DateTime dt = DateTime.MinValue.AddSeconds(Convert.ToDouble(seconds));
+            int months = dt.Month - 1;
+            int days = dt.Day - 1;
+            string result = (months > 0 ? months.ToString() + " months, " : "") + (days > 0 ? days.ToString() + " days, " : "") + dt.ToString("H:mm:ss");
+            return result;
         }
 
         protected override void Dispose(bool disposing)
