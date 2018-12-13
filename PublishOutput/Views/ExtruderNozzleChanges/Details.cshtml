@@ -1,0 +1,49 @@
+﻿@model Optel2.Models.ExtruderNozzleChange
+
+@{
+    ViewBag.Title = "Details of exturder nozzle change data";
+}
+
+<h2>Details of exturder nozzle change data</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nozzle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nozzle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Consumption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Consumption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Extruder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Extruder.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

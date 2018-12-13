@@ -42,9 +42,6 @@ namespace Algorithms.ObjectiveFunctions
                 workTime = Convert.ToDouble(Orders[0].Rolls * Orders[0].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
                 Orders[0].PlanedEndDate.AddSeconds(workTime);
                 workCost += 3.23m;
-                //Extruder.StartupDelay + Extruder.ChangeofThickness(Order1, Order2) + Extruder.WidthAdj(Order1, Order2) + CalcRetargettingTIme(Order1, Order2) + (Order2.Rolls * Order2.width) / FilmRecipe.GetProductionSpeedByOrderCode(Order2)) 
-
-                //Orders[0].PlanedEndDate = Orders[0].PlanedStartDate.AddSeconds(DateTimeToDouble(Line.ChangeOfThicknessTime) + DateTimeToDouble(Line.WidthAdjustmentTime) + Convert.ToDecimal(Orders[0].Rolls * Orders[0].Width / filmRecipe.ProductionSpeed) * 60);
 
                 // Прочие заказы.
                 if (Orders.Count > 1)
@@ -100,15 +97,13 @@ namespace Algorithms.ObjectiveFunctions
 
         protected FilmRecipe GetFilmRecipe(Order order)
         {
-            for (int i = 0; i < filmRecipes.Count; i++)
-            {
-                if (filmRecipes[i].Article.Equals($"{order.Product}{order.Width}"))
-                {
-                    return filmRecipes[i];
-                }
-            }
-            return filmRecipes[0];
-        }
+            FilmRecipe filmRecipe = order.GetFilmRecipe();
+            // it is trap!!!! 13.12.2018
+            if (filmRecipe == null)
+                filmRecipe = db.FilmRecipes.ToList()[0];
+
+            return filmRecipe;
+        }        
 
         protected double RetargetingTimeCalculator(Extruder line, Order previousOrder, Order newOrder)
         {

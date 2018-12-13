@@ -28,6 +28,8 @@ namespace Optel2.Models
         public decimal RollWeightNet { get; set; }
         public decimal Rolls { get; set; }
 
+        public decimal Priority { get; set; } // Ganoes addition!!! (10.12.2018 23:03)
+
         [NotMapped]
         public bool Selected { get; set; }
         [NotMapped]
@@ -38,6 +40,50 @@ namespace Optel2.Models
         public bool CheckCompabilityWithLine(Extruder line)
         {
             return true;
+        }
+
+        // Возвращает рецепт из базы данных; в случае, если его нет, возвращает null 
+        public FilmRecipe GetFilmRecipe()
+        {
+            OptelContext db = new OptelContext();
+            List<FilmRecipe> filmRecipes = db.FilmRecipes.ToList();
+
+            if (Product.Contains("red"))
+            {
+                string _newProduct = Product.Substring(0, Product.IndexOf("red") - 1);
+
+                for (int i = 0; i < filmRecipes.Count; i++)
+                {
+                    if (filmRecipes[i].Article.Equals($"{Product}{Width}_red"))
+                    {
+                        return filmRecipes[i];
+                    }
+                }
+
+            }
+            else if (Product.Contains("ESDD-T"))
+            {
+                for (int i = 0; i < filmRecipes.Count; i++)
+                {
+                    if (filmRecipes[i].Article.Substring(0, 7).Equals("{Product}-") && filmRecipes[i].Article.Substring(10, 4).Equals("-{Width}"))
+                    {
+                        return filmRecipes[i];
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < filmRecipes.Count; i++)
+                {
+                    if (filmRecipes[i].Article.Equals($"{Product}{Width}"))
+                    {
+                        return filmRecipes[i];
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
