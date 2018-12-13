@@ -1,22 +1,18 @@
 ﻿@model Optel2.Models.PlanningModel
 
 @{
-	ViewBag.Title = "Gannt Chart";
+	ViewBag.Title = "Planning results";
 }
 
-<head>
-	<script src="https://cdn.anychart.com/releases/v8/js/anychart-core.min.js" type="text/javascript"></script>
-	<script src="https://cdn.anychart.com/releases/v8/js/anychart-gantt.min.js" type="text/javascript"></script>
-</head>
 <style>
 	.anychart-credits-text {
 		display: none;
 	}
+
 	.anychart-credits-logo {
 		display: none;
 	}
 </style>
-<h2>@ViewBag.Title</h2>
 <div id="container"></div>
 @{
 	if (ViewBag.Criteria == "Cost")
@@ -31,16 +27,46 @@
 <script type="text/javascript">
 	anychart.onDocumentReady(function () {
 		// create data tree
-		var treeData = anychart.data.tree(@Html.Raw(ViewBag.JsonString), 'as-tree');
-		console.log(@Html.Raw(ViewBag.JsonString));
-        // create resource gantt chart
+		console.log(@Html.Raw(ViewBag.JsonString))
+		var treeData = anychart.data.tree(@Html.Raw(ViewBag.JsonString), 'as-table');
+		// create resource gantt chart
 		var chart = anychart.ganttResource();
 			// set data for the chart
 			chart.data(treeData);
-        chart.rowSelectedFill('#D4DFE8')
-                .rowHoverFill('#EAEFF3')
-                // set start splitter position settings
-                .splitterPosition(150);
+		chart.dataGrid().rowOddFill('#fff');
+		chart.dataGrid().rowEvenFill('#fff');
+		chart.getTimeline().rowOddFill('#fff');
+		chart.getTimeline().rowEvenFill('#fff');
+		chart.splitterPosition(150);
+		var scale = chart.xScale();
+		scale.minimum(Date.UTC(@(Model.PlannedStartDate.Year), @(Model.PlannedStartDate.Month-1), @(Model.PlannedStartDate.Day)));
+		scale.maximum(Date.UTC(@(Model.PlannedEndDate.Year), @(Model.PlannedEndDate.Month-1), @(Model.PlannedEndDate.Day)));
+		var timeline = chart.getTimeline();
+
+		// getting timeline's tooltip
+		var tlTooltip = timeline.tooltip();
+
+		tlTooltip.titleFormat(function () {
+			return this['name'];
+		});
+
+		tlTooltip.format(function () {
+			var hoveredPeriod = this['period'];
+
+			if (hoveredPeriod) {
+				var hoveredPeriodIndex = this['periodIndex'] + 1;
+
+				// Getting period object's fields.
+				var startDate = new Date(hoveredPeriod['start']).toUTCString();
+
+				// Getting period object's field.
+				var endDate = new Date(hoveredPeriod['end']).toUTCString();
+
+				return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate;
+			} else {
+				return 'No data under cursor.';
+			}
+		});
 
 
 			// get chart data grid link to set column settings
@@ -59,9 +85,12 @@
 
 			// set container id for the chart
 			chart.container('container');
-
         // initiate chart drawing
         chart.draw();
 		document.getElementById('container').style.height = "500px";
-		});
+	});
 </script>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/anychart")
+}

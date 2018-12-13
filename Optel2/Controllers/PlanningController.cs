@@ -95,6 +95,11 @@ namespace Optel2.Controllers
             return View(planningModel);
         }
 
+        public string DateTimeToDateUTC(DateTime dt)
+        {
+            return dt.Year + ", " + (dt.Month - 1) + ", " + dt.Day + ", " + dt.Hour + ", " + dt.Minute + ", " + dt.Second;
+        }
+
         public string GenerateJSON(ProductionPlan plan)
         {
             string json = "";
@@ -107,10 +112,51 @@ namespace Optel2.Controllers
                 json += "\"periods\": [\r\n";
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
-                    json += "{\r\n\"id\": \"" + id + "_" + j + "_" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
-                    json += "\"stroke\": \"3 black\",\r\n";
-                    json += "\"start\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate.ToString("yyyy, M, d, H, m, s") + "),\r\n";
-                    json += "\"end\": Date.UTC(" + plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate.ToString("yyyy, M, d, H, m, s") + "),\r\n},\r\n";
+                    json += "{\r\n\"id\": \"" + plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "\",\r\n";
+                    //json += "\"stroke\": \"3 black\",\r\n";
+                    json += "\"start\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + "),\r\n";
+                    json += "\"end\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + "),\r\n";
+                    if (j % 2 == 0)
+                    {
+                        json += "\"stroke\": \"#B8AA96\",\r\n";
+                        json += "\"fill\": {\r\n";
+                        json += "\"angle\": 90,\r\n";
+                        json += "\"keys\": [\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#CFC0A9\",\r\n";
+                        json += "\"position\": 0\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#E6D5BC\",\r\n";
+                        json += "\"position\": 0.38\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#E8D9C3\",\r\n";
+                        json += "\"position\": 1\r\n";
+                        json += "}\r\n";
+                        json += "]\r\n";
+                        json += "}\r\n},\r\n";
+                    } else
+                    {
+                        json += "\"stroke\": \"#9B9292\",\r\n";
+                        json += "\"fill\": {\r\n";
+                        json += "\"angle\": 90,\r\n";
+                        json += "\"keys\": [\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#AFA4A4\",\r\n";
+                        json += "\"position\": 0\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#C2B6B6\",\r\n";
+                        json += "\"position\": 0.38\r\n";
+                        json += "},\r\n";
+                        json += "{\r\n";
+                        json += "\"color\": \"#C8BDBD\",\r\n";
+                        json += "\"position\": 1\r\n";
+                        json += "}\r\n";
+                        json += "]\r\n";
+                        json += "}\r\n},\r\n";
+                    }
                 }
                 json += "],\r\n},";
                 id++;
@@ -169,8 +215,17 @@ namespace Optel2.Controllers
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
             decimal temp = result.GetWorkSpending(new Costs(), planningConfig.Criterion, new MondiObjectiveFunction());
             ViewBag.Result = Math.Round(temp, 2);
-            ViewBag.Result1 = DateTime.MinValue.AddSeconds(Convert.ToDouble(temp)).ToString("d H:mm:ss");
+            ViewBag.Result1 = GetTotalTime(Convert.ToDouble(temp));
             return View(planningConfig);
+        }
+
+        public string GetTotalTime(double seconds)
+        {
+            DateTime dt = DateTime.MinValue.AddSeconds(Convert.ToDouble(seconds));
+            int months = dt.Month - 1;
+            int days = dt.Day - 1;
+            string result = (months > 0 ? months.ToString() + " months, " : "") + (days > 0 ? days.ToString() + " days, " : "") + dt.ToString("H:mm:ss");
+            return result;
         }
 
         protected override void Dispose(bool disposing)
