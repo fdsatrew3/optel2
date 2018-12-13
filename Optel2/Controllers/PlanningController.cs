@@ -37,7 +37,7 @@ namespace Optel2.Controllers
             algorithmDropDownList.Add(new SelectListItem() { Text = "Genetic", Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
             algorithmDropDownList.Add(new SelectListItem() { Text = "Brute force", Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
             ViewBag.Algorithms = algorithmDropDownList;
-            planningModel.NumberOfGAiterations = 100;
+            planningModel.NumberOfGAiterations = 7;
             planningModel.maxPopulation = 10;
             planningModel.maxSelection = 10;
             return View(planningModel);
@@ -62,7 +62,7 @@ namespace Optel2.Controllers
             {
                 ModelState.AddModelError("", "You must select at least one extruder.");
             }
-            planningConfig.NumberOfGAiterations = 100;
+            planningConfig.NumberOfGAiterations = 7;
             planningConfig.maxPopulation = 10;
             planningConfig.maxSelection = 10;
             if (planningConfig.PlannedStartDate > planningConfig.PlannedEndDate)
@@ -89,7 +89,7 @@ namespace Optel2.Controllers
             algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.Genetic.ToString(), Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
             algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.BruteForce.ToString(), Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
             ViewBag.Algorithms = algorithmDropDownList;
-            planningModel.NumberOfGAiterations = 100;
+            planningModel.NumberOfGAiterations = 7;
             planningModel.maxPopulation = 10;
             planningModel.maxSelection = 10;
             return View(planningModel);

@@ -111,7 +111,7 @@ namespace GenetycAlgorithm
             // Начинаем "разводить" особей.           
             for (int i = 0; i < _numberOfGAIterations; i++)
             {
-                Debug.Print(i + "/" + _numberOfGAIterations);
+                Debug.Print("Progress " + i + "/" + _numberOfGAIterations);
                 // Обрабатываем популяции хромосом (каждая популяция имеет по EKLinesAmount хромосом).
                 // Не все популяции обрабатываются: выбираются случайные _maxAmountOfSelection
                 // популяций, которые могут быть обработаны.
