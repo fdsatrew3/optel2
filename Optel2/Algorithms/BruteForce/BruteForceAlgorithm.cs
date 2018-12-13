@@ -31,8 +31,18 @@ namespace Algorithms.BruteForce
         // В ЭТУ ШТУКУ БУДУТ ЗАПИСЫВАТЬСЯ САМЫЕ ОПТИМАЛЬНЫЕ ПЛАНЫ, ТАК ЧТО В СВОЙСТВО ИЗМЕНЕНИЯ ЭТОГО ПОЛЯ МОЖНО ДОБАВИТЬ ФУНКЦИЮ, ВЫВОДЯЩУЮ ПРОМЕЖУТОЧНЫЙ ПЛАН НА ЭКРАН
         public ProductionPlan SelectedPlan { get; set; }
 
-        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function)
+        public List<ProductionPlan> Plans { get; set; }
+
+        private bool IsSortByPriority; // priority (Ganoes addition!!!)
+
+        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function, bool sortByPriority)
         {
+            // GANOES work with priority
+            IsSortByPriority = sortByPriority;
+            //GANOES 
+
+            Plans = new List<ProductionPlan>(); //new EDITION!!!
+
             SelectedPlan = new ProductionPlan();
             
             _optimizationCriterion = criterion;
@@ -90,8 +100,8 @@ namespace Algorithms.BruteForce
                     CreateListForce(++iteration, ref len);
                 else
                 {
-                    ProductionPlan newPlan = CreatePlanByArray(len);
-                    SelectedPlan = ChooseBestPlan(new List<ProductionPlan>() { newPlan, SelectedPlan });
+                    Plans.Add(CreatePlanByArray(len));
+                    SelectedPlan = ChooseBestPlan(new List<ProductionPlan>() { Plans[Plans.Count - 1], SelectedPlan });
                 }
             }
         }
@@ -155,7 +165,10 @@ namespace Algorithms.BruteForce
 
             try
             {
-                newPlan = plan.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).First();
+                if (IsSortByPriority)
+                    newPlan = plan.OrderBy(spending => spending.Priority).First();
+                else
+                    newPlan = plan.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).First();
             }
             catch (Exception)
             { newPlan = plan[0]; }

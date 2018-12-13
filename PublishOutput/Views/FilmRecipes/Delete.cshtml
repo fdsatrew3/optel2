@@ -1,0 +1,109 @@
+﻿@model Optel2.Models.FilmRecipe
+
+@{
+    ViewBag.Title = "Delete film recipe data";
+}
+
+<h3>Are you sure you want to delete this film recipe data?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Article)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Article)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recipe)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Thickness)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Thickness)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NozzleInsert)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NozzleInsert)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NozzleInsertAlternative)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NozzleInsertAlternative)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CoolingLip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CoolingLip)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionSpeed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductionSpeed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Output)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Output)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalibrationDiameter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalibrationDiameter)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExtruderId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Extruder.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

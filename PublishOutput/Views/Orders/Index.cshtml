@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Optel2.Models.Order>
+
+@{
+    ViewBag.Title = "Orders data";
+}
+
+<h2>Orders data</h2>
+
+<p>
+    @Html.ActionLink("Create new order data", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Order number
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Width)
+        </th>
+        <th>
+           Setup time
+        </th>
+        <th>
+			Production Time
+        </th>
+        <th>
+			Production Interruption Time
+        </th>
+        <th>
+            Total time
+        </th>
+        <th>
+            Finished goods
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Granules)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Waste)
+        </th>
+        <th>
+			Quanity in running meter
+        </th>
+        <th>
+			Roll weight net
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rolls)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Width)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SetupTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductionTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductionInterruptionTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FinishedGoods)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Granules)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Waste)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QuanityInRunningMeter)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RollWeightNet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rolls)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) <br>
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) <br>
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -36,6 +36,24 @@ namespace Algorithms
         public enum OptimizationCriterion { Time, Cost }
         private ExecutionTimeAndCost _timeAndCost;
 
+        //показатель приоритетности
+        public decimal Priority { get { return CalcPriority(); } }
+
+        private decimal CalcPriority()
+        {
+            decimal result = 0;
+
+            for (int i = 0; i < OrdersToLineConformity.Count; i++)
+            {
+                for (int j = 0; j < OrdersToLineConformity[i].Orders.Count; j++)
+                {
+                    result += OrdersToLineConformity[i].Orders[j].Priority * j;
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Возвращает объект типа float, хранящего данные о затратах согласно требуемому критерию.
         /// Также сохраняет полученные результаты в float MaxWorkTime, float RetargetingTime и float WorkCosts
@@ -97,6 +115,73 @@ namespace Algorithms
             }
 
             return spending;
+        }
+
+        // print changes between production plans
+        public static string GetDifferences(ProductionPlan priviousPlan, ProductionPlan nextPlan)
+        {
+            int betterFlag = 0;
+            StringBuilder result = new StringBuilder();
+
+            decimal differenceMaxWorkTime = priviousPlan.MaxWorkTime - nextPlan.MaxWorkTime;
+
+            if (differenceMaxWorkTime < 0)
+            {
+                result.AppendLine($"First plan is better in work time for {differenceMaxWorkTime} minuts.");
+                betterFlag--;
+            }
+            else if (differenceMaxWorkTime > 0)
+            {
+                result.AppendLine($"Secound plan is better in work time for {differenceMaxWorkTime} minuts.");
+                betterFlag++;
+            }
+
+            decimal differenceRetargetingTime = priviousPlan.RetargetingTime - nextPlan.RetargetingTime;
+
+            if (differenceRetargetingTime < 0)
+            {
+                result.AppendLine($"First plan is better in retargeting time for {differenceRetargetingTime} minuts.");
+                betterFlag--;
+            }
+            else if (differenceRetargetingTime > 0)
+            {
+                result.AppendLine($"Secound plan is better in retargeting time for {differenceRetargetingTime} minuts.");
+                betterFlag++;
+            }
+
+            decimal differenceCost = priviousPlan.WorkCosts - nextPlan.WorkCosts;
+
+            if (differenceCost < 0)
+            {
+                result.AppendLine($"First plan is better in cost for {differenceCost}.");
+                betterFlag--;
+            }
+            else if (differenceCost > 0)
+            {
+                result.AppendLine($"Secound plan is better in cost for {differenceCost}.");
+                betterFlag++;
+            }
+
+            if (priviousPlan.OrdersToLineConformity.Count - nextPlan.OrdersToLineConformity.Count != 0)
+                result.AppendLine($"First plan use {priviousPlan.OrdersToLineConformity.Count} lines and secound plan use {nextPlan.OrdersToLineConformity.Count} lines.");
+
+
+            for (int i = 0; i < priviousPlan.OrdersToLineConformity.Count; i++)
+            {
+                for (int j = 0; j < nextPlan.OrdersToLineConformity.Count; j++)
+                    if (priviousPlan.OrdersToLineConformity[i].Line.ID == nextPlan.OrdersToLineConformity[j].Line.ID)
+                    {
+                        for (int k = 0; k < priviousPlan.OrdersToLineConformity[i].Orders; k++)
+                        {
+                            if (!nextPlan.OrdersToLineConformity[j].Orders.Contains(priviousPlan.OrdersToLineConformity[i].Orders[k]))
+                                result.AppendLine($"Second plan has no order by ID { priviousPlan.OrdersToLineConformity[i].Ordders[k].ID.ToString() } on line { priviousPlan.OrdersToLineConformity[i].Line.Name }.");
+                            else if (nextPlan.OrdersToLineConformity[j].Orders.IndexOf(priviousPlan.OrdersToLineConformity[i].Orders[k]) != k)
+                                result.AppendLine($"In first plan order by ID { priviousPlan.OrdersToLineConformity[i].Ordders[k].ID.ToString() } was in {k} position but in second plan it has { nextPlan.OrdersToLineConformity[j].Orders.IndexOf(priviousPlan.OrdersToLineConformity[i].Orders[k]) } position.");
+                        }
+                    }
+            }
+
+            return result.ToString();
         }
     }
 }
