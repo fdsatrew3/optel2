@@ -13,19 +13,163 @@
 		display: none;
 	}
 </style>
-<div id="container"></div>
-@{
-	if (ViewBag.Criteria == "Cost")
-	{
-		<div>Required currency to execute plan: @ViewBag.Result$</div>
-	}
-	else
-	{
-		<div>Required time to execute plan: @ViewBag.Result1 </div>
-	}
-}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<script src="http://aeonian.in/jquery-horizontal-tree/js/jquery.tree.js"></script>
+<link href="http://aeonian.in/jquery-horizontal-tree/style.css" rel="stylesheet" type="text/css">
+<div id="ganttChart">
+	<div id="container"></div>
+	<div class="form-group">
+		<div class="row">
+			<div class="col-auto" style="margin-top: 8px;">
+				@{
+					if (ViewBag.Criteria == "Cost")
+					{
+						<div>Required currency to execute plan: @ViewBag.Result$</div>
+					}
+					else
+					{
+						<div>Required time to execute plan: @ViewBag.Result1 </div>
+					}
+				}
+			</div>
+			<div class="col-auto float-right">
+				<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="decisionTree" style="display: none;">
+	<div class="overflow">
+		<div>
+			<ul class="tree">
+				<li>
+					<div>1</div>
+					<ul>
+						<li>
+							<div>1.1</div>
+							<ul>
+								<li>
+									<div>1.1.1</div>
+								</li>
+								<li>
+									<div>1.1.2</div>
+								</li>
+								<li>
+									<div>1.1.3</div>
+									<ul>
+										<li>
+											<div>1.1.3.1</div>
+											<ul>
+												<li>
+													<div>1.1.3.1.1</div>
+												</li>
+												<li>
+													<div>1.1.3.1.2</div>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<div>1.1.3.1</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div>1.2</div>
+							<ul>
+								<li>
+									<div>1.2.1</div>
+								</li>
+								<li>
+									<div>1.2.2</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div>1.3</div>
+							<ul>
+								<li>
+									<div>1.3.1</div>
+								</li>
+								<li>
+									<div>1.3.2</div>
+								</li>
+								<li>
+									<div>1.3.3</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div>1.4</div>
+							<ul>
+								<li>
+									<div>1.4.1</div>
+								</li>
+								<li>
+									<div>1.4.2</div>
+								</li>
+								<li>
+									<div>1.4.3</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div>1.5</div>
+							<ul>
+								<li>
+									<div>1.5.1</div>
+								</li>
+								<li>
+									<div>1.5.2</div>
+								</li>
+								<li>
+									<div>1.5.3</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="row">
+			<div class="col-auto float-right">
+				<a href="#" onclick="onSwitchButtonPress(true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show Gantt chart</div></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function () {
+		$('.tree').tree_structure({
+			'add_option': false,
+			'edit_option': false,
+			'delete_option': false,
+			'confirm_before_delete': true,
+			'animate_option': false,
+			'fullwidth_option': false,
+			'align_option': 'center',
+			'draggable_option': false
+		});
+	});
+</script>
+
+
 <script type="text/javascript">
+	var ganntChart, decisionTree;
+
+	function onSwitchButtonPress(chart) {
+		ganntChart.style.display = chart ? "block" : "none";
+		decisionTree.style.display = chart ? "none" : "block";
+	}
+
 	anychart.onDocumentReady(function () {
+		ganntChart = document.getElementById('ganttChart');
+		decisionTree = document.getElementById('decisionTree');
 		// create data tree
 		console.log(@Html.Raw(ViewBag.JsonString))
 		var treeData = anychart.data.tree(@Html.Raw(ViewBag.JsonString), 'as-table');
@@ -93,4 +237,5 @@
 
 @section Scripts {
 	@Scripts.Render("~/bundles/anychart")
+	@Scripts.Render("~/bundles/dragscroll")
 }

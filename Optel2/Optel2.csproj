@@ -284,6 +284,7 @@
     <Content Include="Images\Menu\planning.png" />
     <Content Include="Images\Menu\save.png" />
     <Content Include="Images\mobile-menu.png" />
+    <Content Include="Images\tree.png" />
     <Content Include="Images\user_f.png" />
     <Content Include="Images\user_m.png" />
     <Content Include="Images\favicon.png" />
@@ -297,7 +298,9 @@
     <Content Include="Scripts\anychart-gantt.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\dragscroll.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.paginate.js" />
     <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
