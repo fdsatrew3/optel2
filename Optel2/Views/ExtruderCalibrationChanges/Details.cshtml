@@ -1,50 +1,33 @@
 ﻿@model Optel2.Models.ExtruderCalibrationChange
 
 @{
-    ViewBag.Title = "Details";
+	ViewBag.Title = "Details of exturder calibration change data";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>ExtruderCalibrationChange</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Calibration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Calibration)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Consumption)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Consumption)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ExtruderId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ExtruderId)
-        </dd>
-
-    </dl>
-</div>
+<table class="custom-table-horizontal">
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Calibration)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Calibration)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.Duration)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Duration)&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<th>&nbsp;&nbsp;@Html.DisplayNameFor(model => model.ExtruderId)&nbsp;&nbsp;</th>
+		<td>&nbsp;&nbsp;@Html.DisplayFor(model => model.Extruder.Name)&nbsp;&nbsp;</td>
+	</tr>
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+	<div class="row">
+		@if (User.IsInRole(Optel2.Utils.User.Roles.Admin)) {
+		<div class="col-auto">
+			<a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="24" height="24">&nbsp;Edit</div></a>
+		</div>
+		}
+		<div class="col-auto">
+			<a href="@Url.Action("Index")" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/cancel.png" width="24" height="24">&nbsp;Cancel</div></a>
+		</div>
+	</div>
 </p>
+

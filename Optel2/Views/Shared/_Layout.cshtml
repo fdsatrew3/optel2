@@ -1,45 +1,97 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title – приложение ASP.NET</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>Optel - @ViewBag.Title</title>
+	<link rel="apple-touch-icon" sizes="57x57" href="/Images/Favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/Images/Favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/Images/Favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/Images/Favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/Images/Favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/Images/Favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/Images/Favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/Images/Favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/Images/Favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="/Images/Favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/Images/Favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/Images/Favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/Images/Favicon/favicon-16x16.png">
+	<link rel="manifest" href="/Images/Favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/Images/Favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
+	@RenderSection("styles", required: false)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Имя приложения", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
-        </footer>
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+	<div class="top-menu row justify-content-between align-items-center">
+		<div class="col-auto" style="padding-right: 0px;">
+			<div class="row">
+				@if (Request.IsAuthenticated)
+				{
+					<div class="col-auto mobile-menu-button align-middle top-menu-element" style="margin-left: 5px;">
+						<div class="dropdown show">
+							<a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="~/Images/menu-button-fix.png" /> &nbsp;<i class="fa fa-bars"></i>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a href="/ExtruderCalibrationChanges/" class="dropdown-item float-left"><img src="/Images/Menu/calibration-data.png" width="32" height="32">&nbsp;Extruder calibration change data</a>
+								<a href="/ExtruderNozzleChanges/" class="dropdown-item float-left"><img src="/Images/Menu/nozzle.png" width="32" height="32">&nbsp;Extruder nozzle change data</a>
+								<a href="/ExtruderCoolingLipChanges/" class="dropdown-item float-left"><img src="/Images/Menu/cooling_lip.png" width="32" height="32">&nbsp;Extruder cooling lip change data</a>
+								<a href="/ExtruderRecipeChanges/" class="dropdown-item float-left"><img src="/Images/Menu/extruder_recipe.png" width="32" height="32">&nbsp;Extruder recipe change data</a>
+								<a href="/Extruders/" class="dropdown-item float-left"><img src="/Images/Menu/extruder.png" width="32" height="32">&nbsp;Extruder data</a>
+								<a href="/FilmRecipeCosts/" class="dropdown-item float-left"><img src="/Images/Menu/film_recipe_cost.png" width="32" height="32">&nbsp;Film recipe costs data</a>
+								<a href="/FilmRecipes/" class="dropdown-item float-left"><img src="/Images/Menu/film_recipe.png" width="32" height="32">&nbsp;Film recipes data</a>
+								<a href="/Customers/" class="dropdown-item float-left"><img src="/Images/user_m.png" width="32" height="32">&nbsp;Customers data</a>
+								<a href="/Orders/" class="dropdown-item float-left"><img src="/Images/Menu/order.png" width="32" height="32">&nbsp;Orders data</a>
+								<a href="/Planning/Config" class="dropdown-item float-left"><img src="/Images/favicon.png" width="32" height="32">&nbsp;Planning</a>
+							</div>
+						</div>
+					</div>
+				}
+				<div class="col-auto optel-logo top-menu-element desktop-ver">
+					<img src="~/Images/favicon.png" width="48" height="48" />OPTEL
+				</div>
+			</div>
+		</div>
+		<div class="col-auto login-menu" style="padding-left: 0px;">
+			@Html.Partial("_LoginPartial")
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-auto left-page">
+			@if (Request.IsAuthenticated)
+			{
+				<a href="/ExtruderCalibrationChanges/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/calibration-data.png" width="32" height="32">&nbsp;Extruder calibration data</div></a>
+				<br>
+				<a href="/ExtruderNozzleChanges/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/nozzle.png" width="32" height="32">&nbsp;Extruder nozzle change data</div></a>
+				<br>
+				<a href="/ExtruderCoolingLipChanges/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/cooling_lip.png" width="32" height="32">&nbsp;Extruder cooling lip change data</div></a>
+				<br>
+				<a href="/ExtruderRecipeChanges/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/extruder_recipe.png" width="32" height="32">&nbsp;Extruder recipe change data</div></a>
+				<br>
+				<a href="/Extruders/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/extruder.png" width="32" height="32">&nbsp;Extruder data</div></a>
+				<br>
+				<a href="/FilmRecipeCosts/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/film_recipe_cost.png" width="32" height="32">&nbsp;Film recipe costs data</div></a>
+				<br>
+				<a href="/FilmRecipes/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/film_recipe.png" width="32" height="32">&nbsp;Film recipes data</div></a>
+				<br>
+				<a href="/Customers/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/user_m.png" width="32" height="32">&nbsp;Customers data</div></a>
+				<br>
+				<a href="/Orders/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/order.png" width="32" height="32">&nbsp;Orders data</div></a>
+				<br>
+				<a href="/Planning/Config" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/favicon.png" width="32" height="32">&nbsp;Planning</div></a>
+			}
+		</div>
+		<div class="col right-page">
+			@RenderBody()
+		</div>
+	</div>
 </body>
 </html>

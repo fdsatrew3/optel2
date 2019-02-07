@@ -1,22 +1,31 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
-
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Здравствуйте, " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
-    </ul>
-    }
-}
-else
-{
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Регистрация", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Выполнить вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}
+<div class="row float-right align-items-center" style="height:100%;">
+	@if (Request.IsAuthenticated)
+	{
+		<div class="col-auto top-menu-element" style="padding-right: 0px;">
+			<img src="~/Images/user_m.png" width="48px" height="48px" />
+		</div>
+		<div class="col-auto top-menu-element" style="padding-left: 0px; padding-right: 2px; margin-left: 0px; margin-right: 0px; color:white;">
+			@User.Identity.GetUserName()
+		</div>
+		<div class="col-auto top-menu-element">
+			<a href="/Manage/Index" title="Manage profile"><img src="~/Images/manage_profile.png" width="24px" height="24px" /></a>
+		</div>
+		<div class="col-auto top-menu-element" style="margin-right: 20px;">
+			@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+			{
+				@Html.AntiForgeryToken()
+				<a href="javascript:document.getElementById('logoutForm').submit()" title="Logout"><img src="~/Images/logout.png" width="24px" height="24px" /></a>
+			}
+		</div>
+	}
+	else
+	{
+		<div class="col-auto">
+			@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "top-menu-url align-middle" })
+		</div>
+		<div class="col-auto" style="margin-right: 20px;">
+			@Html.ActionLink("Login", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "top-menu-url align-middle" })
+		</div>
+	}
+</div>

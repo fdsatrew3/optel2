@@ -1,0 +1,308 @@
+﻿@model Optel2.Models.PlanningModel
+@using Optel2.Models
+
+@{
+	ViewBag.Title = "Planning";
+}
+
+@using System.Web.Configuration;
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "planningForm", onsubmit = "OnSubmit()" }))
+{
+	@Html.AntiForgeryToken()
+	<div id="Step1Container">
+		<div class="form-horizontal">
+			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.PlannedStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PlannedStartDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+					@Html.ValidationMessageFor(model => model.PlannedStartDate, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.PlannedEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PlannedEndDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+					@Html.ValidationMessageFor(model => model.PlannedEndDate, "", new { @class = "text-danger" })
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.Criterion, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.DropDownListFor(model => model.Criterion, ViewBag.Criterions as IEnumerable<SelectListItem>, htmlAttributes: new { @class = "form-control" })
+					@Html.ValidationMessageFor(model => model.Criterion, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<br />
+			<div class="form-group">
+				<div class="row" style="padding-left: 15px;">
+					<div class="col-auto">
+						<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(false, 1)" id="prevStepButton1"><div class="float-left"><img src="~/Images/Menu/back.png" width="24" height="24">&nbsp;Previous step</div></a>
+					</div>
+					<div class="col-auto">
+						<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(true, 2)" id="nextStepButton2"><div class="float-left">Next step&nbsp;<img src="~/Images/Menu/forward.png" width="24" height="24"></div></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="Step2Container" style="display: none;">
+		<table class="custom-table" id="orders">
+			<thead>
+				<tr>
+					<th>
+						<input id="selectAllOrders" type="checkbox">
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Orders.First().OrderNumber)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Orders.First().Product)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Orders.First().Width)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Orders.First().RollWeightNet)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Orders.First().Rolls)
+					</th>
+				</tr>
+			</thead>
+			@for (int i = 0; i < Model.Orders.Count; i++)
+			{
+				<tr>
+					<td>
+						@Html.CheckBoxFor(Model => Model.Orders[i].Selected, new { htmlAttributes = new { @class = "form-control", data_val = "false" }, id = "order_" + i + "_checkbox" })
+					</td>
+					<td>
+						@Html.DisplayFor(Model => Model.Orders[i].OrderNumber)
+						@Html.HiddenFor(Model => Model.Orders[i].OrderNumber)
+					</td>
+					<td>
+						@Html.DisplayFor(Model => Model.Orders[i].Product)
+						@Html.HiddenFor(Model => Model.Orders[i].Product)
+					</td>
+					<td>
+						@Html.DisplayFor(Model => Model.Orders[i].Width)
+						@Html.HiddenFor(Model => Model.Orders[i].Width)
+					</td>
+					<td>
+						@Html.DisplayFor(Model => Model.Orders[i].RollWeightNet)
+						@Html.HiddenFor(Model => Model.Orders[i].RollWeightNet)
+					</td>
+					<td>
+						@Html.DisplayFor(Model => Model.Orders[i].Rolls)
+						@Html.HiddenFor(Model => Model.Orders[i].Rolls)
+					</td>
+				</tr>
+			}
+		</table>
+		<div class="form-group">
+			<div class="row" style="padding-left: 15px;">
+				<div class="col-auto">
+					<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(false, 1)" id="prevStepButton1"><div class="float-left"><img src="~/Images/Menu/back.png" width="24" height="24">&nbsp;Previous step</div></a>
+				</div>
+				<div class="col-auto">
+					<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(true, 3)" id="nextStepButton2"><div class="float-left">Next step&nbsp;<img src="~/Images/Menu/forward.png" width="24" height="24"></div></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="Step3Container" style="display: none;">
+		<table class="custom-table" id="extruders">
+			<thead>
+				<tr>
+					<th>
+						<input id="selectAllExtruders" type="checkbox">
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Extruders.First().Name)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Extruders.First().MachineHourCost)
+					</th>
+				</tr>
+			</thead>
+			@for (int i = 0; i < Model.Extruders.Count; i++)
+			{
+				<tr>
+					<td>
+						@Html.CheckBoxFor(Model => Model.Extruders[i].Selected, new { id = "extruder_" + i + "_checkbox", htmlAttributes = new { @class = "form-control", data_val = "false" } })
+					</td>
+					<td>
+						@Html.DisplayFor(Model => Model.Extruders[i].Name)
+						@Html.HiddenFor(Model => Model.Extruders[i].Name)
+					</td>
+					<td>
+						@Html.DisplayFor(Model => Model.Extruders[i].MachineHourCost)
+						@Html.HiddenFor(Model => Model.Extruders[i].MachineHourCost)
+					</td>
+					@Html.HiddenFor(Model => Model.Extruders[i].LengthMax, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].LengthMin, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].ProductionSpeedMax, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].ProductionSpeedMin, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].StartupDelay, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].ThicknessMax, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].ThicknessMin, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].WeightMax, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].WeightMin, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].WidthAdjustmentConsumption, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].WidthAdjustmentTime, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].WidthMax, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].WidthMin, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].ChangeOfThicknessConsumption, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].ChangeOfThicknessTime, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].DiameterMax, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@Html.HiddenFor(Model => Model.Extruders[i].DiameterMin, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					@for (int j = 0; j < Model.Extruders[i].ExtruderCalibrationChange.Count; j++)
+					{
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderCalibrationChange[j].Calibration, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderCalibrationChange[j].Consumption, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderCalibrationChange[j].Duration, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					}
+					@for (int j = 0; j < Model.Extruders[i].ExtruderCoolingLipChange.Count; j++)
+					{
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderCoolingLipChange[j].Consumption, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderCoolingLipChange[j].CoolingLip, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderCoolingLipChange[j].Duration, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					}
+					@for (int j = 0; j < Model.Extruders[i].ExtruderNozzleChange.Count; j++)
+					{
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderNozzleChange[j].Consumption, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderNozzleChange[j].Nozzle, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderNozzleChange[j].Duration, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					}
+					@for (int j = 0; j < Model.Extruders[i].ExtruderRecipeChange.Count; j++)
+					{
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderRecipeChange[j].Consumption, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderRecipeChange[j].From, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderRecipeChange[j].On, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+						@Html.HiddenFor(Model => Model.Extruders[i].ExtruderRecipeChange[j].Duration, new { htmlAttributes = new { @class = "hidden", data_val = "false" } })
+					}
+				</tr>
+			}
+		</table>
+		<br />
+		<div class="form-group">
+			<div class="row" style="padding-left: 15px;">
+				<div class="col-auto">
+					<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(false, 2)" id="prevStepButton1"><div class="float-left"><img src="~/Images/Menu/back.png" width="24" height="24">&nbsp;Previous step</div></a>
+				</div>
+				<div class="col-auto">
+					<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(true, 4)" id="nextStepButton2"><div class="float-left">Next step&nbsp;<img src="~/Images/Menu/forward.png" width="24" height="24"></div></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="Step4Container" style="display: none;">
+		<div class="form-group">
+			@Html.LabelFor(model => model.SelectedAlgorithm, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.SelectedAlgorithm, ViewBag.Algorithms as IEnumerable<SelectListItem>, htmlAttributes: new { @class = "form-control", id = "AlgorithmDropDown", onchange = "OnAlgorithmDropDownChange()" })
+				@Html.ValidationMessageFor(model => model.SelectedAlgorithm, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div id="Step4Container1" style="padding-left: 15px;">
+			<div class="form-group">
+				Genetic algorithm effective in terms of computation time, when you have a large planning task.
+				<br />Genetic algorithm may not give best possible plan.
+			</div>
+		</div>
+		<div id="Step4Container2" style="padding-left: 15px;">
+			<div class="form-group">
+				Brute force algorithm will always give you best possible plan, but will take a lot of computation time, if you have a large planning task.
+				<br />Use it only when you have small planning task (10-15 orders, 1-2 extruders).
+			</div>
+		</div>
+		<div class="form-group" id="subminButton">
+			<div class="row" style="padding-left: 15px;">
+				<div class="col-auto">
+					<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(false, 3)" id="prevStepButton1"><div class="float-left"><img src="~/Images/Menu/back.png" width="24" height="24">&nbsp;Previous step</div></a>
+				</div>
+				<div class="col-auto">
+					<a href="javascript:document.getElementById('planningForm').submit()" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Start planning</div></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+			var Step1Container, Step2Container, Step3Container, Step4Container, Step4Container1, Step4Container2, CurrentStep, AlgorithmDropDown;
+		window.onload = function () {
+			Step1Container = document.getElementById("Step1Container");
+			Step2Container = document.getElementById("Step2Container");
+			Step3Container = document.getElementById("Step3Container");
+			Step4Container = document.getElementById("Step4Container");
+			Step4Container1 = document.getElementById("Step4Container1");
+			Step4Container2 = document.getElementById("Step4Container2");
+			CurrentStep = document.getElementById("CurrentStep");
+			AlgorithmDropDown = document.getElementById("AlgorithmDropDown");
+			OnStepButtonPress(false, 1);
+			OnAlgorithmDropDownChange();
+		}
+
+		function OnAlgorithmDropDownChange() {
+			var algorithm = AlgorithmDropDown.options[AlgorithmDropDown.selectedIndex].text;
+			var genetic = (algorithm == "@PlanningModel.PlanningAlgorithm.Genetic.ToString()");
+			Step4Container1.style.display = genetic ? "block" : "none";
+			Step4Container2.style.display = genetic ? "none" : "block";
+		}
+
+		function OnStepButtonPress(forward, step) {
+			Step1Container.style.display = step == 1 ? "block" : "none";
+			Step2Container.style.display = step == 2 ? "block" : "none";
+			Step3Container.style.display = step == 3 ? "block" : "none";
+			Step4Container.style.display = step == 4 ? "block" : "none";
+		}
+
+		$(document).ready(function () {
+			$('#orders').paginate({
+				'elemsPerPage': @Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]),
+				'maxButtons': @Convert.ToInt32(WebConfigurationManager.AppSettings["MaxPagesInIndexPaginator"]),
+				'previousText': '<',
+				'nextText': '>',
+				'activeClass': 'active',
+				'containerClass': 'mt-3',
+				'listClass': 'pagination',
+				'anchorClass': 'page-link',
+				'pageClass': 'page-item'
+			});
+			$('#extruders').paginate({
+				'elemsPerPage': @Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]),
+				'maxButtons': @Convert.ToInt32(WebConfigurationManager.AppSettings["MaxPagesInIndexPaginator"]),
+				'previousText': '<',
+				'nextText': '>',
+				'activeClass': 'active',
+				'containerClass': 'mt-3',
+				'listClass': 'pagination',
+				'anchorClass': 'page-link',
+				'pageClass': 'page-item'
+			});
+			$("#selectAllOrders").click(function () {
+				var checked = document.getElementById("selectAllOrders").checked;
+				for (var i = 0; i < @(Model.Orders.Count); i++) {
+					document.getElementById("order_" + i + "_checkbox").checked = checked;
+				}
+			});
+			$("#selectAllExtruders").click(function () {
+				var checked = document.getElementById("selectAllExtruders").checked;
+				for (var i = 0; i < @(Model.Extruders.Count); i++) {
+					document.getElementById("extruder_" + i + "_checkbox").checked = checked;
+				}
+			});
+		});
+	</script>
+}
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jquerypaginate")
+}
+
+@section Styles {
+	@Styles.Render("~/bundles/jquerypaginate/css")
+}

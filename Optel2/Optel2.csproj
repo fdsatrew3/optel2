@@ -59,6 +59,24 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -76,32 +94,8 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -111,11 +105,14 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="X.PagedList, Version=7.6.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.7.6.0\lib\net461\X.PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList.Mvc, Version=7.6.0.0, Culture=neutral, PublicKeyToken=c6e0b5b21f916f4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.Mvc.7.6.0\lib\net461\X.PagedList.Mvc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -184,6 +181,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\BruteForce\BruteForceAlgorithm.cs" />
+    <Compile Include="Algorithms\Costs.cs" />
+    <Compile Include="Algorithms\ExecutionTimeAndCost.cs" />
+    <Compile Include="Algorithms\FisherYates.cs" />
+    <Compile Include="Algorithms\Genetic\GeneticAlgorithm.cs" />
+    <Compile Include="Algorithms\Genetic\Operators\CrossoverOperator.cs" />
+    <Compile Include="Algorithms\Genetic\Operators\MutationOperator.cs" />
+    <Compile Include="Algorithms\ObjectiveFunctions\AObjectiveFunction.cs" />
+    <Compile Include="Algorithms\ObjectiveFunctions\MondiObjectiveFunction.cs" />
+    <Compile Include="Algorithms\OrdersOnExtruderLine.cs" />
+    <Compile Include="Algorithms\ProductionPlan.cs" />
+    <Compile Include="Controllers\PlanningController.cs" />
+    <Compile Include="DestoyThisPls\MyLittleKostyl.cs" />
+    <Compile Include="Models\PlanningModel.cs" />
+    <Compile Include="Models\SliceLine.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -218,30 +230,80 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\AuthorizeRolesAttribute .cs" />
+    <Compile Include="Utils\UserRoles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="favicon.ico" />
+    <Content Include="Content\jquery.paginate.css" />
+    <Content Include="Content\jquery.timepicker.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Images\Favicon\android-icon-144x144.png" />
+    <Content Include="Images\Favicon\android-icon-192x192.png" />
+    <Content Include="Images\Favicon\android-icon-36x36.png" />
+    <Content Include="Images\Favicon\android-icon-48x48.png" />
+    <Content Include="Images\Favicon\android-icon-72x72.png" />
+    <Content Include="Images\Favicon\android-icon-96x96.png" />
+    <Content Include="Images\Favicon\apple-icon-114x114.png" />
+    <Content Include="Images\Favicon\apple-icon-120x120.png" />
+    <Content Include="Images\Favicon\apple-icon-144x144.png" />
+    <Content Include="Images\Favicon\apple-icon-152x152.png" />
+    <Content Include="Images\Favicon\apple-icon-180x180.png" />
+    <Content Include="Images\Favicon\apple-icon-57x57.png" />
+    <Content Include="Images\Favicon\apple-icon-60x60.png" />
+    <Content Include="Images\Favicon\apple-icon-72x72.png" />
+    <Content Include="Images\Favicon\apple-icon-76x76.png" />
+    <Content Include="Images\Favicon\apple-icon-precomposed.png" />
+    <Content Include="Images\Favicon\apple-icon.png" />
+    <Content Include="Images\Favicon\browserconfig.xml" />
+    <Content Include="Images\Favicon\favicon-16x16.png" />
+    <Content Include="Images\Favicon\favicon-32x32.png" />
+    <Content Include="Images\Favicon\favicon-96x96.png" />
+    <Content Include="Images\Favicon\favicon.ico" />
+    <Content Include="Images\Favicon\ms-icon-144x144.png" />
+    <Content Include="Images\Favicon\ms-icon-150x150.png" />
+    <Content Include="Images\Favicon\ms-icon-310x310.png" />
+    <Content Include="Images\Favicon\ms-icon-70x70.png" />
+    <Content Include="Images\Menu\add.png" />
+    <Content Include="Images\Menu\back.png" />
+    <Content Include="Images\manage_profile.png" />
+    <Content Include="Images\menu-button-fix.png" />
+    <Content Include="Images\Menu\calibration-data.png" />
+    <Content Include="Images\Menu\cooling_lip.png" />
+    <Content Include="Images\Menu\cancel.png" />
+    <Content Include="Images\Menu\delete.png" />
+    <Content Include="Images\Menu\edit.png" />
+    <Content Include="Images\Menu\extruder.png" />
+    <Content Include="Images\Menu\extruder_recipe.png" />
+    <Content Include="Images\Menu\film_recipe.png" />
+    <Content Include="Images\Menu\film_recipe_cost.png" />
+    <Content Include="Images\Menu\forward.png" />
+    <Content Include="Images\Menu\info.png" />
+    <Content Include="Images\Menu\nozzle.png" />
+    <Content Include="Images\Menu\order.png" />
+    <Content Include="Images\Menu\planning.png" />
+    <Content Include="Images\Menu\save.png" />
+    <Content Include="Images\mobile-menu.png" />
+    <Content Include="Images\user_f.png" />
+    <Content Include="Images\user_m.png" />
+    <Content Include="Images\favicon.png" />
+    <Content Include="Images\logout.png" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Images\Favicon\manifest.json" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Scripts\anychart-core.min.js" />
+    <Content Include="Scripts\anychart-gantt.min.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery.paginate.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -255,8 +317,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -323,6 +383,8 @@
     <Content Include="Views\Orders\Details.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Planning\Config.cshtml" />
+    <Content Include="Views\Planning\Result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -338,7 +400,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

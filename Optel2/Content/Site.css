@@ -1,24 +1,308 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿html {
+	height: 100%;
+	overflow-x: hidden;
+}
+
+body {
+	background: rgb(243, 243, 243);
+	/*background: #383836; /* Old browsers 
+	background: -moz-linear-gradient(top, #383836 0%, #4a4a4a 100%); /* FF3.6-15 
+	background: -webkit-linear-gradient(top, #383836 0%,#4a4a4a 100%); /* Chrome10-25,Safari5.1-6 
+	background: linear-gradient(to bottom, #383836 0%,#4a4a4a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#383836', endColorstr='#4a4a4a',GradientType=0 ); /* IE6-9 */
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
-    white-space: normal;
+	white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+	max-width: 280px;
+}
+
+.top-menu {
+	background: #494949; /* Old browsers */
+	background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+	margin-bottom: 10px;
+}
+
+.top-menu-element {
+	margin-left: 3px;
+	margin-right: 3px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+a {
+	color: white;
+	background: transparent;
+	text-decoration: none;
+}
+
+	a:hover {
+		text-decoration: none;
+		color: white;
+	}
+
+.black-a {
+	color: black;
+}
+
+	.black-a:hover {
+		color: black;
+	}
+
+.left-menu-btn {
+	width: 100%;
+	margin-bottom: 10px;
+	border: none;
+	background: #494949; /* Old browsers */
+	background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+}
+
+	.left-menu-btn:hover {
+		background: #6d6d6d; /* Old browsers */
+		background: -moz-linear-gradient(top, #6d6d6d 0%, #1e1e1e 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, #6d6d6d 0%,#1e1e1e 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, #6d6d6d 0%,#1e1e1e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d6d6d', endColorstr='#1e1e1e',GradientType=0 ); /* IE6-9 */
+	}
+
+.optel-logo {
+	color: white;
+	padding-left: 8px;
+}
+
+.right-page {
+	margin: 20px 15px 15px 15px;
+}
+
+.left-page {
+	padding: 5px 5px 5px 5px;
+}
+
+/* Responsive */
+.mobile-ver-flex {
+	display: none !important;
+}
+
+.mobile-ver {
+	display: none !important;
+}
+
+.mobile-ver {
+	display: none !important;
+}
+
+table.mobile-ver {
+	display: none !important;
+}
+
+td.mobile-ver {
+	display: none !important;
+}
+
+tr.mobile-ver {
+	display: none !important;
+}
+
+.desktop-ver-flex {
+	display: flex !important;
+}
+
+.desktop-ver {
+	display: block !important;
+}
+
+table.desktop-ver {
+	display: table !important;
+}
+
+td.desktop-ver {
+	display: table-cell !important;
+}
+
+tr.desktop-ver {
+	display: table-cell !important;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+	.mobile-ver-flex {
+		display: flex !important;
+	}
+
+	.mobile-ver {
+		display: block !important;
+	}
+
+	table.mobile-ver {
+		display: table !important;
+	}
+
+	td.mobile-ver {
+		display: table-cell !important;
+	}
+
+	tr.mobile-ver {
+		display: table-cell !important;
+	}
+
+	.desktop-ver {
+		display: none !important;
+	}
+
+	table.desktop-ver {
+		display: none !important;
+	}
+
+	td.desktop-ver {
+		display: none !important;
+	}
+
+	tr.desktop-ver {
+		display: none !important;
+	}
+
+	.desktop-ver-flex {
+		display: none !important;
+	}
+}
+
+/* Tables */
+.custom-table {
+	width: 100%;
+	border-spacing: 1;
+	border-collapse: collapse;
+	background: white;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 0 auto;
+	box-shadow: 0px 0px 1px gray;
+}
+
+	.custom-table tr {
+		text-align: center;
+	}
+
+		.custom-table tr:nth-child(even) {
+			background-color: #f5f5f5;
+		}
+
+	.custom-table thead tr {
+		height: 40px;
+		background: #494949;
+		background: -moz-linear-gradient(left, #494949 0%, #1c1c1c 100%);
+		background: -webkit-linear-gradient(left, #494949 0%,#1c1c1c 100%);
+		background: linear-gradient(to right, #494949 0%,#1c1c1c 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=1 );
+		color: white;
+		text-align: center;
+	}
+
+.custom-table-horizontal {
+	border-spacing: 1;
+	border-collapse: collapse;
+	background: white;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 0 auto;
+	box-shadow: 0px 0px 1px gray;
+	table-layout: auto;
+	margin-left: 0px;
+}
+
+.custom-table-horizontal {
+	text-align: center;
+}
+
+	.custom-table-horizontal th {
+		background: #494949; /* Old browsers */
+		height: 40px;
+		color: white;
+		background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+	}
+
+	.custom-table-horizontal tr:nth-child(even) {
+		background-color: #f5f5f5;
+	}
+
+	.custom-table-horizontal thead tr {
+		width: 20px;
+		background: #494949; /* Old browsers */
+		background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+		color: white;
+		text-align: center;
+	}
+/* Menu */
+.mobile-menu-button {
+	padding-left: 4px;
+	display: none;
+	color: white;
+	font-size: 20pt;
+}
+
+@media screen and (max-width: 900px) {
+	.left-page {
+		display: none;
+	}
+
+	.mobile-menu-button {
+		display: block;
+	}
+}
+
+/* Pages */
+.page-item.active .page-link {
+	background: #494949; /* Old browsers */
+	background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+	border-color: transparent;
+}
+
+.page-link {
+	color: black;
+}
+
+	.page-link:hover {
+		color: black;
+	}
+
+	.page-link:focus {
+		box-shadow: none;
+	}
+
+.dropdown-item.active, .dropdown-item:active {
+	color: #ffffff;
+	text-decoration: none;
+	background: #494949; /* Old browsers */
+	background: -moz-linear-gradient(top, #494949 0%, #1c1c1c 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #494949 0%,#1c1c1c 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #494949 0%,#1c1c1c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#494949', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
 }

@@ -11,8 +11,10 @@ namespace Optel2.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        [Display(Name = "Order number")]
         public string OrderNumber { get; set; }
         public string Product { get; set; }
+        [Display(Name = "Width")]
         public decimal Width { get; set; }
         public decimal SetupTime { get; set; }
         public decimal ProductionTime { get; set; }
@@ -22,7 +24,20 @@ namespace Optel2.Models
         public decimal Granules { get; set; }
         public decimal Waste { get; set; }
         public decimal QuanityInRunningMeter { get; set; }
+        [Display(Name = "Weight")]
         public decimal RollWeightNet { get; set; }
         public decimal Rolls { get; set; }
+
+        [NotMapped]
+        public bool Selected { get; set; }
+        [NotMapped]
+        internal DateTime PlanedStartDate { get; set; }
+        [NotMapped]
+        internal DateTime PlanedEndDate { get; set; }
+
+        public bool CheckCompabilityWithLine(Extruder line)
+        {
+            return true;
+        }
     }
 }
