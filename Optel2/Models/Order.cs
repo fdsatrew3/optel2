@@ -27,6 +27,9 @@ namespace Optel2.Models
         [Display(Name = "Weight")]
         public decimal RollWeightNet { get; set; }
         public decimal Rolls { get; set; }
+        [Display(Name = "Film recipe")]
+        public Guid FilmRecipeId { get; set; }
+        public FilmRecipe FilmRecipe { get; set; }
 
         [NotMapped]
         public bool Selected { get; set; }

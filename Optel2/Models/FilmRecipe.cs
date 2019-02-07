@@ -31,5 +31,6 @@ namespace Optel2.Models
         [Display(Name = "Extruder")]
         public Guid ExtruderId { get; set; }
         public Extruder Extruder { get; set; }
+        public decimal Cost { get; set; }
     }
 }
