@@ -17,9 +17,9 @@ namespace Optel2.Models
         public string Article { get; set; }
         public string Recipe { get; set; }
         public decimal Thickness { get; set; }
-        [Display(Name = "Nozzle insert")]
+        [Display(Name = "Nozzle")]
         public decimal NozzleInsert { get; set; }
-        [Display(Name = "Alternative nozzle insert")]
+        [Display(Name = "Alternative nozzle")]
         public decimal NozzleInsertAlternative { get; set; }
         [Display(Name = "Cooling lip")]
         public decimal CoolingLip { get; set; }

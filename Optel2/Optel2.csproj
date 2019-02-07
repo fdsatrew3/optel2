@@ -208,7 +208,6 @@
     <Compile Include="Controllers\ExtruderNozzleChangesController.cs" />
     <Compile Include="Controllers\ExtruderRecipeChangesController.cs" />
     <Compile Include="Controllers\ExtrudersController.cs" />
-    <Compile Include="Controllers\FilmRecipeCostsController.cs" />
     <Compile Include="Controllers\FilmRecipesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -220,7 +219,6 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\FilmRecipe.cs" />
-    <Compile Include="Models\FilmRecipeCost.cs" />
     <Compile Include="Models\Extruder.cs" />
     <Compile Include="Models\ExtruderRecipeChange.cs" />
     <Compile Include="Models\ExtruderNozzleChange.cs" />
@@ -373,11 +371,6 @@
     <Content Include="Views\FilmRecipes\Details.cshtml" />
     <Content Include="Views\FilmRecipes\Edit.cshtml" />
     <Content Include="Views\FilmRecipes\Index.cshtml" />
-    <Content Include="Views\FilmRecipeCosts\Create.cshtml" />
-    <Content Include="Views\FilmRecipeCosts\Delete.cshtml" />
-    <Content Include="Views\FilmRecipeCosts\Details.cshtml" />
-    <Content Include="Views\FilmRecipeCosts\Edit.cshtml" />
-    <Content Include="Views\FilmRecipeCosts\Index.cshtml" />
     <Content Include="Views\Orders\Create.cshtml" />
     <Content Include="Views\Orders\Delete.cshtml" />
     <Content Include="Views\Orders\Details.cshtml" />

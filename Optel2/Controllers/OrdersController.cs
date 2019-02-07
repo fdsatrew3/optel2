@@ -8,6 +8,7 @@ using X.PagedList;
 using System.Linq;
 using System.Web.Configuration;
 using Optel2.Utils;
+using System.Collections.Generic;
 
 namespace Optel2.Controllers
 {
@@ -20,7 +21,7 @@ namespace Optel2.Controllers
         public async Task<ActionResult> Index(int? page)
         {
             var pageNumber = page ?? 1;
-            var pageContent = await db.Orders.OrderBy(i => i.OrderNumber).ToPagedListAsync(pageNumber, Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]));
+            var pageContent = await db.Orders.OrderBy(i => i.OrderNumber).Include(i => i.FilmRecipe).ToPagedListAsync(pageNumber, Convert.ToInt32(WebConfigurationManager.AppSettings["ElementsPerIndexPage"]));
             ViewBag.PageContent = pageContent;
             return View();
         }
@@ -32,7 +33,7 @@ namespace Optel2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.Orders.Include(e => e.FilmRecipe).FirstOrDefaultAsync(e => e.Id == id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -41,8 +42,15 @@ namespace Optel2.Controllers
         }
         [AuthorizeRoles(Utils.User.Roles.Admin)]
         // GET: Orders/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            List<FilmRecipe> filmRecipes = await db.FilmRecipes.OrderBy(f => f.Article).ToListAsync();
+            List<SelectListItem> filmRecipesDropDownList = new List<SelectListItem>();
+            foreach (FilmRecipe recipe in filmRecipes)
+            {
+                filmRecipesDropDownList.Add(new SelectListItem() { Text = recipe.Article.ToString(), Value = recipe.Id.ToString() });
+            }
+            ViewBag.FilmRecipes = filmRecipesDropDownList;
             return View();
         }
         [AuthorizeRoles(Utils.User.Roles.Admin)]
@@ -51,7 +59,7 @@ namespace Optel2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,OrderNumber,Product,Width,SetupTime,ProductionTime,ProductionInterruptionTime,TotalTime,FinishedGoods,Granules,Waste,QuanityInRunningMeter,RollWeightNet,Rolls")] Order order)
+        public async Task<ActionResult> Create([Bind(Include = "Id,OrderNumber,Product,Width,SetupTime,ProductionTime,ProductionInterruptionTime,TotalTime,FinishedGoods,Granules,Waste,QuanityInRunningMeter,RollWeightNet,Rolls,FilmRecipeId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -71,11 +79,18 @@ namespace Optel2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.Orders.Include(e => e.FilmRecipe).FirstOrDefaultAsync(e => e.Id == id);
             if (order == null)
             {
                 return HttpNotFound();
             }
+            List<FilmRecipe> filmRecipes = await db.FilmRecipes.OrderBy(f => f.Article).ToListAsync();
+            List<SelectListItem> filmRecipesDropDownList = new List<SelectListItem>();
+            foreach (FilmRecipe recipe in filmRecipes)
+            {
+                filmRecipesDropDownList.Add(new SelectListItem() { Text = recipe.Article.ToString(), Value = recipe.Id.ToString() });
+            }
+            ViewBag.FilmRecipes = filmRecipesDropDownList;
             return View(order);
         }
         [AuthorizeRoles(Utils.User.Roles.Admin)]
@@ -84,7 +99,7 @@ namespace Optel2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,OrderNumber,Product,Width,SetupTime,ProductionTime,ProductionInterruptionTime,TotalTime,FinishedGoods,Granules,Waste,QuanityInRunningMeter,RollWeightNet,Rolls")] Order order)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,OrderNumber,Product,Width,SetupTime,ProductionTime,ProductionInterruptionTime,TotalTime,FinishedGoods,Granules,Waste,QuanityInRunningMeter,RollWeightNet,Rolls,FilmRecipeId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +117,7 @@ namespace Optel2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.Orders.Include(e => e.FilmRecipe).FirstOrDefaultAsync(e => e.Id == id);
             if (order == null)
             {
                 return HttpNotFound();

@@ -11,24 +11,24 @@
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Nozzle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Nozzle, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="col-auto">
                 @Html.EditorFor(model => model.Nozzle, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.Nozzle, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="col-auto">
                 @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
                 @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-			@Html.LabelFor(model => model.ExtruderId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+			@Html.LabelFor(model => model.ExtruderId, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="col-auto">
 				@Html.DropDownListFor(model => model.ExtruderId, ViewBag.Extruders as IEnumerable<SelectListItem>, new { @class = "form-control" })
 				@Html.ValidationMessageFor(model => model.ExtruderId, "", new { @class = "text-danger" })
             </div>

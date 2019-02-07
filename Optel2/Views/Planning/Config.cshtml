@@ -85,7 +85,7 @@
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].Product)
-						@Html.HiddenFor(Model => Model.Orders[i].Product)
+						@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Article)
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].Width)
@@ -99,6 +99,18 @@
 						@Html.DisplayFor(Model => Model.Orders[i].Rolls)
 						@Html.HiddenFor(Model => Model.Orders[i].Rolls)
 					</td>
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Article)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.CalibrationDiameter)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.CoolingLip)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Cost)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Id)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.ItemNumber)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.NozzleInsert)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.NozzleInsertAlternative)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Output)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.ProductionSpeed)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Recipe)
+					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Thickness)
 				</tr>
 			}
 		</table>

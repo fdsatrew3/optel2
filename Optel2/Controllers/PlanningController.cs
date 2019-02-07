@@ -24,7 +24,7 @@ namespace Optel2.Controllers
         public async Task<ActionResult> Config()
         {
             PlanningModel planningModel = new PlanningModel();
-            planningModel.Orders = await db.Orders.OrderBy(o => o.OrderNumber).ToListAsync();
+            planningModel.Orders = await db.Orders.OrderBy(o => o.OrderNumber).Include(o => o.FilmRecipe).ToListAsync();
             planningModel.Extruders = await db.Extruders.Include(e => e.ExtruderCalibrationChange)
                 .Include(e => e.ExtruderCoolingLipChange)
                 .Include(e => e.ExtruderNozzleChange)

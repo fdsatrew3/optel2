@@ -9,56 +9,64 @@
 	@Html.AntiForgeryToken()
 	<div class="form-horizontal">
 		<div class="form-group">
-			@Html.LabelFor(model => model.Article, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
+			@Html.LabelFor(model => model.Article, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
 				@Html.EditorFor(model => model.Article, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 				@Html.ValidationMessageFor(model => model.Article, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.Thickness, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
+			@Html.LabelFor(model => model.Thickness, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
 				@Html.EditorFor(model => model.Thickness, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 				@Html.ValidationMessageFor(model => model.Thickness, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.NozzleInsert, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
+			@Html.LabelFor(model => model.NozzleInsert, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
 				@Html.EditorFor(model => model.NozzleInsert, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 				@Html.ValidationMessageFor(model => model.NozzleInsert, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.CoolingLip, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
+			@Html.LabelFor(model => model.CoolingLip, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
 				@Html.EditorFor(model => model.CoolingLip, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 				@Html.ValidationMessageFor(model => model.CoolingLip, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.ProductionSpeed, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
+			@Html.LabelFor(model => model.ProductionSpeed, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
 				@Html.EditorFor(model => model.ProductionSpeed, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 				@Html.ValidationMessageFor(model => model.ProductionSpeed, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.CalibrationDiameter, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
+			@Html.LabelFor(model => model.CalibrationDiameter, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
 				@Html.EditorFor(model => model.CalibrationDiameter, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 				@Html.ValidationMessageFor(model => model.CalibrationDiameter, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.ExtruderId, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
+			@Html.LabelFor(model => model.Cost, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
+				@Html.EditorFor(model => model.Cost, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.ValidationMessageFor(model => model.Cost, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ExtruderId, htmlAttributes: new { @class = "control-label col-auto" })
+			<div class="col-auto">
 				@Html.DropDownListFor(model => model.ExtruderId, ViewBag.Extruders as IEnumerable<SelectListItem>, new { @class = "form-control" })
 				@Html.ValidationMessageFor(model => model.ExtruderId, "", new { @class = "text-danger" })
 			</div>

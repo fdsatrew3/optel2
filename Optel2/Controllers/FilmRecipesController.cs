@@ -61,7 +61,7 @@ namespace Optel2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ItemNumber,Article,Recipe,Thickness,NozzleInsert,NozzleInsertAlternative,CoolingLip,ProductionSpeed,Output,CalibrationDiameter,ExtruderId")] FilmRecipe filmRecipe)
+        public async Task<ActionResult> Create([Bind(Include = "Id,ItemNumber,Article,Recipe,Thickness,NozzleInsert,NozzleInsertAlternative,CoolingLip,ProductionSpeed,Output,CalibrationDiameter,ExtruderId,Cost")] FilmRecipe filmRecipe)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +107,7 @@ namespace Optel2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ItemNumber,Article,Recipe,Thickness,NozzleInsert,NozzleInsertAlternative,CoolingLip,ProductionSpeed,Output,CalibrationDiameter,ExtruderId")] FilmRecipe filmRecipe)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ItemNumber,Article,Recipe,Thickness,NozzleInsert,NozzleInsertAlternative,CoolingLip,ProductionSpeed,Output,CalibrationDiameter,ExtruderId,Cost")] FilmRecipe filmRecipe)
         {
             if (ModelState.IsValid)
             {

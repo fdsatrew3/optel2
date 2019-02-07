@@ -42,7 +42,6 @@ namespace Optel2.Models
         public DbSet<ExtruderNozzleChange> ExtruderNozzleChanges { get; set; }
         public DbSet<ExtruderRecipeChange> ExtruderRecipeChanges { get; set; }
         public DbSet<Extruder> Extruders { get; set; }
-        public DbSet<FilmRecipeCost> FilmRecipeCosts { get; set; }
         public DbSet<FilmRecipe> FilmRecipes { get; set; }
         public DbSet<Order> Orders { get; set; }
     }
