@@ -1,5 +1,6 @@
 ﻿using Algorithms;
 using Algorithms.ObjectiveFunctions;
+using Optel2.Algorithms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,9 +24,12 @@ namespace Optel2.Models
         public enum PlanningAlgorithm { Genetic, BruteForce };
         [Display(Name = "Planning algorithm")]
         public PlanningAlgorithm SelectedAlgorithm { get; set; }
+
+        #region DecisionTree
         [Display(Name = "Generate decision tree")]
         public bool TreeRequired { get; set; }
-
+        public List<Decision> TreeData { get; set; }
+        #endregion
         #region GeneticAlgorithmShit
         [Display(Name = "Count of iterations")]
         public int NumberOfGAiterations { get; set; }
@@ -40,7 +44,6 @@ namespace Optel2.Models
         [Display(Name = "Crossover probability")]
         public int crossoverPropability { get; set; }
         #endregion
-
         #region BruteForceAlgorithmShit
         // ???
         #endregion

@@ -142,7 +142,7 @@ namespace GenetycAlgorithm
                         crossoverOperator.MadeCrossover(ref _populations, populationIndex);
 
                         if (_isNeedTree)
-                            DecisionTree.Add(new Decision { Iteration = i + 1, Operation = Decision.OperationType.Crossover, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                            DecisionTree.Add(new Decision {Parent = _populations[populationIndex], Iteration = i + 1, Operation = Decision.OperationType.Crossover, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
                     }
 
                     if (rand.Next(0, _maximumPropability) < _mutationPropability)
@@ -150,7 +150,7 @@ namespace GenetycAlgorithm
                         mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);
 
                         if (_isNeedTree)
-                            DecisionTree.Add(new Decision {Iteration = i + 1, Operation  = Decision.OperationType.Mutation, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                            DecisionTree.Add(new Decision {Parent = _populations[populationIndex], Iteration = i + 1, Operation  = Decision.OperationType.Mutation, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
                     }
                 }
 
