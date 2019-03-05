@@ -1,6 +1,7 @@
 ﻿using Algorithms;
 using Algorithms.Genetic.Operators;
 using Algorithms.ObjectiveFunctions;
+using Optel2.Algorithms;
 using Optel2.Models;
 using System;
 using System.Collections.Generic;
@@ -60,10 +61,22 @@ namespace GenetycAlgorithm
         private OptimizationCriterion _optimizationCriterion;
         private AObjectiveFunction _objectiveFunction;
 
+        // Дерево решений
+       // public List<ProductionPlan> Tree { get; set; }
+        public List<Decision> DecisionTree { get; set; }
+        private bool _isNeedTree;
 
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
-                                    int maxPopulation, int numberOfGAiterations, int maxSelection, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
+                                    int maxPopulation, int numberOfGAiterations, int maxSelection, bool _needTree = false, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
         {
+            _isNeedTree = _needTree;
+
+            if (_isNeedTree)
+            {
+               // Tree = new List<ProductionPlan>();
+                DecisionTree = new List<Decision>();
+            }
+
             ProductionPlan optimalPlan = new ProductionPlan();
             CrossoverOperator crossoverOperator = new CrossoverOperator();
             MutationOperator mutationOperator = new MutationOperator();
@@ -127,11 +140,17 @@ namespace GenetycAlgorithm
                     if (rand.Next(0, _maximumPropability) < _crossoverPropability)
                     {
                         crossoverOperator.MadeCrossover(ref _populations, populationIndex);
+
+                        if (_isNeedTree)
+                            DecisionTree.Add(new Decision { Iteration = i + 1, Operation = Decision.OperationType.Crossover, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
                     }
 
                     if (rand.Next(0, _maximumPropability) < _mutationPropability)
                     {
                         mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);
+
+                        if (_isNeedTree)
+                            DecisionTree.Add(new Decision {Iteration = i + 1, Operation  = Decision.OperationType.Mutation, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
                     }
                 }
 
@@ -152,6 +171,10 @@ namespace GenetycAlgorithm
                 _SaveOnlyBestPopulations();
 
                 _StagnationDefense(optimalPlan);
+
+           /*     if (_needTree)
+                    Tree.Add(new ProductionPlan(optimalPlan)); // добавляем в дерево решений текущий план
+                    */
             }
 
             return optimalPlan;
@@ -246,9 +269,12 @@ namespace GenetycAlgorithm
                     // принять заказ.
                     ChooseOrderToLine(_populations[i], order); // _ChooseLineToOrder(_populations[i], order);
                 }
+
+                if (_isNeedTree)
+                    DecisionTree.Add(new Decision { Parent = null, Iteration = 0, Operation = Decision.OperationType.CreatePopulation, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
             }
         }
-        
+
         // ТЕСТОВАЯ ФУНКЦИЯ
         private void ChooseOrderToLine(ProductionPlan plan, Order order)
         {

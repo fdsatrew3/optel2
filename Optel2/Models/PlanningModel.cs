@@ -23,6 +23,8 @@ namespace Optel2.Models
         public enum PlanningAlgorithm { Genetic, BruteForce };
         [Display(Name = "Planning algorithm")]
         public PlanningAlgorithm SelectedAlgorithm { get; set; }
+        [Display(Name = "Generate decision tree")]
+        public bool TreeRequired { get; set; }
 
         #region GeneticAlgorithmShit
         [Display(Name = "Count of iterations")]

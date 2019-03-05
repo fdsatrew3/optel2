@@ -15,14 +15,14 @@
 			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 			<div class="form-group">
-				@Html.LabelFor(model => model.PlannedStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				@Html.LabelFor(model => model.PlannedStartDate, htmlAttributes: new { @class = "control-label col-auto" })
 				<div class="col-md-10">
 					@Html.EditorFor(model => model.PlannedStartDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 					@Html.ValidationMessageFor(model => model.PlannedStartDate, "", new { @class = "text-danger" })
 				</div>
 			</div>
 			<div class="form-group">
-				@Html.LabelFor(model => model.PlannedEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+				@Html.LabelFor(model => model.PlannedEndDate, htmlAttributes: new { @class = "control-label col-auto" })
 				<div class="col-md-10">
 					@Html.EditorFor(model => model.PlannedEndDate, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
 					@Html.ValidationMessageFor(model => model.PlannedEndDate, "", new { @class = "text-danger" })
@@ -30,7 +30,7 @@
 			</div>
 
 			<div class="form-group">
-				@Html.LabelFor(model => model.Criterion, htmlAttributes: new { @class = "control-label col-md-2" })
+				@Html.LabelFor(model => model.Criterion, htmlAttributes: new { @class = "control-label col-auto" })
 				<div class="col-md-10">
 					@Html.DropDownListFor(model => model.Criterion, ViewBag.Criterions as IEnumerable<SelectListItem>, htmlAttributes: new { @class = "form-control" })
 					@Html.ValidationMessageFor(model => model.Criterion, "", new { @class = "text-danger" })
@@ -213,7 +213,7 @@
 	</div>
 	<div id="Step4Container" style="display: none;">
 		<div class="form-group">
-			@Html.LabelFor(model => model.SelectedAlgorithm, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.SelectedAlgorithm, htmlAttributes: new { @class = "control-label col-auto" })
 			<div class="col-md-10">
 				@Html.DropDownListFor(model => model.SelectedAlgorithm, ViewBag.Algorithms as IEnumerable<SelectListItem>, htmlAttributes: new { @class = "form-control", id = "AlgorithmDropDown", onchange = "OnAlgorithmDropDownChange()" })
 				@Html.ValidationMessageFor(model => model.SelectedAlgorithm, "", new { @class = "text-danger" })
@@ -229,6 +229,18 @@
 			<div class="form-group">
 				Brute force algorithm will always give you best possible plan, but will take a lot of computation time, if you have a large planning task.
 				<br />Use it only when you have small planning task (10-15 orders, 1-2 extruders).
+			</div>
+		</div>
+		<div class="form-group" style="margin-bottom: 0px;">
+			<div class="col-auto">
+				@Html.CheckBoxFor(Model => Model.TreeRequired, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+				@Html.LabelFor(model => model.TreeRequired, htmlAttributes: new { @class = "control-label" })
+				@Html.ValidationMessageFor(model => model.TreeRequired, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div style="padding-left: 15px;">
+			<div class="form-group">
+				Decision tree may increase computation time, use it only on small planning task.
 			</div>
 		</div>
 		<div class="form-group" id="subminButton">

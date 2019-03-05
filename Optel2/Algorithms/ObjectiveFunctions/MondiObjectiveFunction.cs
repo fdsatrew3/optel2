@@ -11,9 +11,6 @@ namespace Algorithms.ObjectiveFunctions
 {
     public class MondiObjectiveFunction : AObjectiveFunction
     {
-        OptelContext db = new OptelContext();
-        List<FilmRecipe> filmRecipes;
-
         public override ExecutionTimeAndCost GetExecutionTimeAndCost(Costs costs, Extruder Line, List<Order> Orders)
         {
             double d = DateTimeToDouble(Line.ChangeOfThicknessTime);
@@ -25,8 +22,6 @@ namespace Algorithms.ObjectiveFunctions
                     retargetingTime = 0;
             decimal workCost = 0;
             FilmRecipe filmRecipe;
-
-            filmRecipes = db.FilmRecipes.ToList();
 
             // Есть заказы на линии.
             if (Orders.Count > 0)
@@ -100,21 +95,12 @@ namespace Algorithms.ObjectiveFunctions
 
         protected FilmRecipe GetFilmRecipe(Order order)
         {
-            for (int i = 0; i < filmRecipes.Count; i++)
-            {
-                if (filmRecipes[i].Article.Equals($"{order.Product}{order.Width}"))
-                {
-                    return filmRecipes[i];
-                }
-            }
-            return filmRecipes[0];
+            return order.FilmRecipe;
         }
 
         protected double RetargetingTimeCalculator(Extruder line, Order previousOrder, Order newOrder)
         {
             double retargetingTime = 0;
-
-            var Extruders = db.Extruders.Include(e => e.ExtruderCalibrationChange).Include(e => e.ExtruderCoolingLipChange).Include(e => e.ExtruderNozzleChange).Include(e => e.ExtruderRecipeChange).ToList();
 
             //var key = newOrder.FilmTypeVector.FPserieCode + previousOrder.FilmTypeVector.FPserieCode;
 
@@ -192,12 +178,5 @@ namespace Algorithms.ObjectiveFunctions
 
             return retargetingTime;
         }
-    }
-
-    public struct ParceRecipe
-    {
-        public string type;
-        public decimal thickness;
-        public decimal width;
     }
 }

@@ -2,12 +2,16 @@
 using Algorithms.BruteForce;
 using Algorithms.ObjectiveFunctions;
 using GenetycAlgorithm;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using Optel2.DestoyThisPls;
 using Optel2.Models;
 using Optel2.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -102,69 +106,136 @@ namespace Optel2.Controllers
 
         public string GenerateJSON(ProductionPlan plan)
         {
-            string json = "";
+            JArray lineContainer = new JArray();
             int id = 1;
             for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
             {
-                json += "[{\r\n";
-                json += "\"id\": \"" + id + "\",\r\n";
-                json += "\"name\": \"" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
-                json += "\"periods\": [\r\n";
+                JObject line = new JObject();
+                JProperty lineID = new JProperty("id", id);
+                JProperty lineName = new JProperty("name", plan.OrdersToLineConformity[i].Line.Name);
+                line.Add(lineID);
+                line.Add(lineName);
+                JArray periods = new JArray();
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
-                    json += "{\r\n\"id\": \"" + plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "\",\r\n";
-                    //json += "\"stroke\": \"3 black\",\r\n";
-                    json += "\"start\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + "),\r\n";
-                    json += "\"end\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + "),\r\n";
+                    JObject period = new JObject();
+                    JProperty periodID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j);
+                    JProperty startDate = new JProperty("start", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + ")");
+                    JProperty endDate = new JProperty("end", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + ")");
+                    period.Add(periodID);
+                    period.Add(startDate);
+                    period.Add(endDate);
+                    JProperty stroke, angle, color1, pos1, color2, pos2, color3, pos3, fill;
+                    JArray keys = new JArray();
+                    JObject key1 = new JObject(), key2 = new JObject(), key3 = new JObject(), fill1 = new JObject();
+                    fill = new JProperty("fill", fill1);
                     if (j % 2 == 0)
                     {
-                        json += "\"stroke\": \"#B8AA96\",\r\n";
-                        json += "\"fill\": {\r\n";
-                        json += "\"angle\": 90,\r\n";
-                        json += "\"keys\": [\r\n";
-                        json += "{\r\n";
-                        json += "\"color\": \"#CFC0A9\",\r\n";
-                        json += "\"position\": 0\r\n";
-                        json += "},\r\n";
-                        json += "{\r\n";
-                        json += "\"color\": \"#E6D5BC\",\r\n";
-                        json += "\"position\": 0.38\r\n";
-                        json += "},\r\n";
-                        json += "{\r\n";
-                        json += "\"color\": \"#E8D9C3\",\r\n";
-                        json += "\"position\": 1\r\n";
-                        json += "}\r\n";
-                        json += "]\r\n";
-                        json += "}\r\n},\r\n";
+                        stroke = new JProperty("stroke", "#B8AA96");
+                        angle = new JProperty("angle", "90");
+                        color1 = new JProperty("color", "#CFC0A9");
+                        pos1 = new JProperty("position", "0");
+                        color2 = new JProperty("color", "#E6D5BC");
+                        pos2 = new JProperty("position", "0.38");
+                        color3 = new JProperty("color", "#E8D9C3");
+                        pos3 = new JProperty("position", "1");
                     }
                     else
                     {
-                        json += "\"stroke\": \"#9B9292\",\r\n";
-                        json += "\"fill\": {\r\n";
-                        json += "\"angle\": 90,\r\n";
-                        json += "\"keys\": [\r\n";
-                        json += "{\r\n";
-                        json += "\"color\": \"#AFA4A4\",\r\n";
-                        json += "\"position\": 0\r\n";
-                        json += "},\r\n";
-                        json += "{\r\n";
-                        json += "\"color\": \"#C2B6B6\",\r\n";
-                        json += "\"position\": 0.38\r\n";
-                        json += "},\r\n";
-                        json += "{\r\n";
-                        json += "\"color\": \"#C8BDBD\",\r\n";
-                        json += "\"position\": 1\r\n";
-                        json += "}\r\n";
-                        json += "]\r\n";
-                        json += "}\r\n},\r\n";
+                        stroke = new JProperty("stroke", "#9B9292");
+                        angle = new JProperty("angle", "90");
+                        color1 = new JProperty("color", "#AFA4A4");
+                        pos1 = new JProperty("position", "0");
+                        color2 = new JProperty("color", "#C2B6B6");
+                        pos2 = new JProperty("position", "0.38");
+                        color3 = new JProperty("color", "#C8BDBD");
+                        pos3 = new JProperty("position", "1");
                     }
+                    fill1.Add(angle);
+                    key1.Add(color1);
+                    key1.Add(pos1);
+                    key2.Add(color2);
+                    key2.Add(pos2);
+                    key3.Add(color3);
+                    key3.Add(pos3);
+                    keys.Add(key1);
+                    keys.Add(key2);
+                    keys.Add(key3);
+                    fill1["keys"] = keys;
+                    period.Add(stroke);
+                    period.Add(fill);
+                    periods.Add(period);
                 }
-                json += "],\r\n},";
+                line["periods"] = periods;
+                lineContainer.Add(line);
                 id++;
             }
-            json = json.Substring(0, json.Length - 1);
-            json += "\r\n]";
-            return json;
+            Debug.Write(lineContainer.ToString());
+            // Костыль чтобы график заработал. GL HF.
+            string json = lineContainer.ToString().Replace("\"start\": \"Date.UTC", "\"start\": Date.UTC").Replace("\"end\": \"Date.UTC", "\"end\": Date.UTC").Replace(")\",", "),");
+            /*  string json = "";
+              int id = 1;
+              for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
+              {
+                  json += "[{\r\n";
+                  json += "\"id\": \"" + id + "\",\r\n";
+                  json += "\"name\": \"" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
+                  json += "\"periods\": [\r\n";
+                  for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
+                  {
+                      json += "{\r\n\"id\": \"" + plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "\",\r\n";
+                      //json += "\"stroke\": \"3 black\",\r\n";
+                      json += "\"start\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + "),\r\n";
+                      json += "\"end\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + "),\r\n";
+                      if (j % 2 == 0)
+                      {
+                          json += "\"stroke\": \"#B8AA96\",\r\n";
+                          json += "\"fill\": {\r\n";
+                          json += "\"angle\": 90,\r\n";
+                          json += "\"keys\": [\r\n";
+                          json += "{\r\n";
+                          json += "\"color\": \"#CFC0A9\",\r\n";
+                          json += "\"position\": 0\r\n";
+                          json += "},\r\n";
+                          json += "{\r\n";
+                          json += "\"color\": \"#E6D5BC\",\r\n";
+                          json += "\"position\": 0.38\r\n";
+                          json += "},\r\n";
+                          json += "{\r\n";
+                          json += "\"color\": \"#E8D9C3\",\r\n";
+                          json += "\"position\": 1\r\n";
+                          json += "}\r\n";
+                          json += "]\r\n";
+                          json += "}\r\n},\r\n";
+                      }
+                      else
+                      {
+                          json += "\"stroke\": \"#9B9292\",\r\n";
+                          json += "\"fill\": {\r\n";
+                          json += "\"angle\": 90,\r\n";
+                          json += "\"keys\": [\r\n";
+                          json += "{\r\n";
+                          json += "\"color\": \"#AFA4A4\",\r\n";
+                          json += "\"position\": 0\r\n";
+                          json += "},\r\n";
+                          json += "{\r\n";
+                          json += "\"color\": \"#C2B6B6\",\r\n";
+                          json += "\"position\": 0.38\r\n";
+                          json += "},\r\n";
+                          json += "{\r\n";
+                          json += "\"color\": \"#C8BDBD\",\r\n";
+                          json += "\"position\": 1\r\n";
+                          json += "}\r\n";
+                          json += "]\r\n";
+                          json += "}\r\n},\r\n";
+                      }
+                  }
+                  json += "],\r\n},";
+                  id++;
+              }
+              json = json.Substring(0, json.Length - 1);
+              json += "\r\n]"; */
+            return json.ToString();
         }
 
         public async Task<ActionResult> Result(PlanningModel planningConfig)
@@ -191,17 +262,20 @@ namespace Optel2.Controllers
             switch (planningConfig.SelectedAlgorithm)
             {
                 case PlanningModel.PlanningAlgorithm.BruteForce:
+                    var bruteForce = new BruteForceAlgorithm();
                     result = await Task.Run<ProductionPlan>(
-                        async () => await new BruteForceAlgorithm().Start(planningConfig.Extruders,
+                        async () => await bruteForce.Start(planningConfig.Extruders,
                         planningConfig.Orders,
                         new List<SliceLine>(),
                         new Costs(),
                         planningConfig.Criterion,
-                        new MondiObjectiveFunction()));
+                        new MondiObjectiveFunction(),
+                        planningConfig.TreeRequired));
                     break;
                 case PlanningModel.PlanningAlgorithm.Genetic:
+                    var genetic = new GeneticAlgorithm();
                     result = await Task.Run<ProductionPlan>(
-                        async () => await new GeneticAlgorithm().Start(planningConfig.Extruders,
+                        async () => await genetic.Start(planningConfig.Extruders,
                         planningConfig.Orders,
                         new List<SliceLine>(),
                         new Costs(),
@@ -209,7 +283,8 @@ namespace Optel2.Controllers
                         new MondiObjectiveFunction(),
                         planningConfig.maxPopulation,
                         planningConfig.NumberOfGAiterations,
-                        planningConfig.maxSelection));
+                        planningConfig.maxSelection,
+                        planningConfig.TreeRequired));
                     break;
             }
             ViewBag.JsonString = GenerateJSON(result);

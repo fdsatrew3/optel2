@@ -74,7 +74,7 @@ namespace Algorithms
                         executionEnd = _timeAndCost.ExecutionEnd;
                     }
                     executionCost += _timeAndCost.ExecutionCost;
-                    maxTime = (decimal)executionEnd.Subtract(executionStart).TotalHours;
+                    maxTime = (decimal)executionEnd.Subtract(executionStart).TotalSeconds;
                 }
             }
 

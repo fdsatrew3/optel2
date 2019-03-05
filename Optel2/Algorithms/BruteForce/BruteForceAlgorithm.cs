@@ -1,4 +1,5 @@
 ﻿using Algorithms.ObjectiveFunctions;
+using Optel2.Algorithms;
 using Optel2.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Algorithms.BruteForce
         private List<Extruder> _eklinesBundle;
         // Набор резательных машин.
         private List<SliceLine> _slinesBundle;
-        
+
         // Наборы заказов, которые невозможно выполнить (не помещаются на линию).
         private List<Order> _ordersWithoutLines;
 
@@ -31,10 +32,23 @@ namespace Algorithms.BruteForce
         // В ЭТУ ШТУКУ БУДУТ ЗАПИСЫВАТЬСЯ САМЫЕ ОПТИМАЛЬНЫЕ ПЛАНЫ, ТАК ЧТО В СВОЙСТВО ИЗМЕНЕНИЯ ЭТОГО ПОЛЯ МОЖНО ДОБАВИТЬ ФУНКЦИЮ, ВЫВОДЯЩУЮ ПРОМЕЖУТОЧНЫЙ ПЛАН НА ЭКРАН
         public ProductionPlan SelectedPlan { get; set; }
 
-        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function)
+        // Дерево решение
+        //public List<ProductionPlan> Tree { get; set; }
+        public List<Decision> DecisionTree { get; set; }
+        private bool _needTree;
+
+        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function, bool _needTree = false)
         {
+            this._needTree = _needTree;
+
+            if (this._needTree)
+            {
+               // Tree = new List<ProductionPlan>();
+                DecisionTree = new List<Decision>();
+            }
+
             SelectedPlan = new ProductionPlan();
-            
+
             _optimizationCriterion = criterion;
             _objectiveFunction = function;
 
@@ -90,8 +104,15 @@ namespace Algorithms.BruteForce
                     CreateListForce(++iteration, ref len);
                 else
                 {
-                    ProductionPlan newPlan = CreatePlanByArray(len);
+                    ProductionPlan newPlan = CreatePlanByArray(len); // по массиву перебора создаем план
+                    ProductionPlan oldPlan = SelectedPlan; // сохраняем старый план
                     SelectedPlan = ChooseBestPlan(new List<ProductionPlan>() { newPlan, SelectedPlan });
+
+                    if (_needTree)
+                    {
+                        //Tree.Add(new ProductionPlan(SelectedPlan));
+                        DecisionTree.Add(new Decision { Parent = oldPlan, Iteration = DecisionTree.Count == 0 ? 0 : DecisionTree.Last().Iteration + 1, Operation  = Decision.OperationType.ChangePlan, Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                    }
                 }
             }
         }
@@ -133,7 +154,7 @@ namespace Algorithms.BruteForce
             // берем все линии и находим самые менее загруженные
             var linesWithOrders = plan.OrdersToLineConformity.OrderBy(line => line.ExecutionTimeOnLine).ToList();
 
-            foreach(var line in linesWithOrders)
+            foreach (var line in linesWithOrders)
             {
                 // Заказ можно выполнить на линии.
                 if (order.CheckCompabilityWithLine(line.Line))
