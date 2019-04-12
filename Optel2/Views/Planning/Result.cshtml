@@ -270,15 +270,16 @@
 	</div>
 </div>
 <div id="decisionTree" style="display: none; ">
-	<div id="wrapper" style="width: 100%; position: absolute; overflow: scroll; margin-top: 0px;" class="dragscroll">
+	<div id="wrapper" style="width: 100%; position: absolute; overflow: scroll; margin-top: 0px;">
 		<div class="branch" style="margin-left:150px;">
-			@Html.Raw(ViewBag.DecisionTreeString);
+			@Html.Raw(ViewBag.DecisionTreeString)
 		</div>
 	</div>
 	<div style="position: absolute; margin-top: 500px;">
 		<a href="#" onclick="onSwitchButtonPress(true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show Gantt chart</div></a>
 	</div>
 </div>
+<!--
 <script>
 	function init() {
 		$(".toggleable").on("click", function () {
@@ -320,6 +321,16 @@
 		});
 	}
 
+</script> -->
+
+<script>
+	// Shit to make all shit fucking shit ...
+	// Показ диаграммы ганта при клике на блок
+	function init() {
+		$(".toggleable").on("click", function () {
+			alert('iter ' + $(this).attr("iter"));
+		});
+	}
 </script>
 
 <script type="text/javascript">

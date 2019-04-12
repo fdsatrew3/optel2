@@ -2,8 +2,6 @@
 using Algorithms.BruteForce;
 using Algorithms.ObjectiveFunctions;
 using GenetycAlgorithm;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Optel2.Algorithms;
 using Optel2.DestoyThisPls;
@@ -236,7 +234,7 @@ namespace Optel2.Controllers
               }
               json = json.Substring(0, json.Length - 1);
               json += "\r\n]"; */
-            return json.ToString();
+            return json;
         }
 
         public async Task<ActionResult> Result(PlanningModel planningConfig)
@@ -300,7 +298,7 @@ namespace Optel2.Controllers
                 Debug.WriteLine("Tree count = " + planningConfig.TreeData.Count);
                 Debug.WriteLine("Dec with mutation = " + planningConfig.TreeData.Count(x => x.Operation == Decision.OperationType.Mutation));
                 Debug.WriteLine("Dec with crossover = " + planningConfig.TreeData.Count(x => x.Operation == Decision.OperationType.Crossover));
-                ViewBag.DecisionTreeString = GenerateDecisionTreeHTML(planningConfig.TreeData);
+                ViewBag.DecisionTreeString = GenerateDecisionTreeHTML(planningConfig);
             }
             ViewBag.JsonString = GenerateJSON(result);
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
@@ -310,13 +308,14 @@ namespace Optel2.Controllers
             return View(planningConfig);
         }
 
-        public string GenerateDecisionTreeHTML(List<Decision> TreeData)
+        public string GenerateDecisionTreeHTML(PlanningModel planningConfig)
         {
+            List<Decision> treeData = planningConfig.TreeData;
             string result = "";
             int countOfStarts = 0;
-            for (int i = 0; i < TreeData.Count; i++)
+            for (int i = 0; i < treeData.Count; i++)
             {
-                if (TreeData[i].Iteration == 0)
+                if (treeData[i].Iteration == 0)
                 {
                     countOfStarts++;
                 }
@@ -327,32 +326,49 @@ namespace Optel2.Controllers
             {
                 startClass = "entry";
             }
-            for (int i = 0; i < TreeData.Count; i++)
+            for (int i = 0; i < treeData.Count; i++)
             {
-                if (TreeData[i].Iteration == 0)
+                if (treeData[i].Iteration == 0)
                 {
-                    result += "<div class=\"" + startClass + "\"><span class=\"label\">" + TreeData[i].Operation + "<br>Value of function: " + Math.Round(TreeData[i].FunctionValue, 2) + "</span>";
-                    result += GenerateDecisionTreeChildHTML(TreeData[i].Next);
+                    result += "<div class=\"" + startClass + " \"><span class=\"label toggleable\" iter=\"" + treeData[i].Iteration + "\">" + treeData[i].Operation + "<br>";
+                    if(planningConfig.Criterion == OptimizationCriterion.Cost)
+                    {
+                        result += Math.Round(treeData[i].FunctionValue, 2) + "$";
+                    } else
+                    {
+                        result += GetTotalTime(Convert.ToDouble(treeData[i].FunctionValue));
+                    }
+                    result += "</span>";
+                    result += GenerateDecisionTreeChildHTML(treeData[i].Next, planningConfig.Criterion);
                     result += "</div>";
                 }
             }
             return result;
         }
 
-        string GenerateDecisionTreeChildHTML(Decision child)
+        string GenerateDecisionTreeChildHTML(Decision child, OptimizationCriterion criterion)
         {
             string result = "";
             if (child != null && child.Iteration > -1)
             {
-                result += "<div class=\"branch\"><div class=\"entry sole\"><span class=\"label\">" + child.Operation + "<br>Value of function: " + Math.Round(child.FunctionValue, 2) + "</span>";
-                result += GenerateDecisionTreeChildHTML(child.Next);
+                result += "<div class=\"branch\"><div class=\"entry sole\" ><span class=\"label toggleable\" iter=\"" + child.Iteration + "\">" + child.Operation + "<br>";
+                if (criterion == OptimizationCriterion.Cost)
+                {
+                    result += Math.Round(child.FunctionValue, 2) + "$";
+                }
+                else
+                {
+                    result += GetTotalTime(Convert.ToDouble(child.FunctionValue));
+                }
+                result += "</span>";
+                result += GenerateDecisionTreeChildHTML(child.Next, criterion);
                 result += "</div></div>";
             }
             return result;
         }
         public string GetTotalTime(double seconds)
         {
-            DateTime dt = DateTime.MinValue.AddSeconds(Convert.ToDouble(seconds));
+            DateTime dt = DateTime.MinValue.AddSeconds(seconds);
             int months = dt.Month - 1;
             int days = dt.Day - 1;
             string result = (months > 0 ? months.ToString() + " month(s), " : "") + (days > 0 ? days.ToString() + " day(s), " : "") + dt.ToString("H:mm:ss");
