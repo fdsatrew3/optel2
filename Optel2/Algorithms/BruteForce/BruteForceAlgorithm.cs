@@ -111,7 +111,7 @@ namespace Algorithms.BruteForce
                     if (_needTree)
                     {
                         //Tree.Add(new ProductionPlan(SelectedPlan));
-                        DecisionTree.Add(new Decision { Parent = oldPlan, Iteration = DecisionTree.Count == 0 ? 0 : DecisionTree.Last().Iteration + 1, Operation  = Decision.OperationType.ChangePlan, Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                        DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
                     }
                 }
             }
@@ -138,11 +138,20 @@ namespace Algorithms.BruteForce
                 result.OrdersToLineConformity[j].Line = _eklinesBundle[j];
             }
 
+            int i = 0;
+
+            while (i < len.Length)
+            {
+                result.OrdersToLineConformity[i % _eklinesBundle.Count].Orders.Add(_ordersPackage[len[i]]);
+                i++;
+            }
+
+            /*
             for (int j = 0; j < len.Length; j++)
             {
                 ChooseOrderToLine(result, _ordersPackage[len[j]]);
             }
-
+            */
             return result;
         }
 

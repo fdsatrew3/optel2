@@ -290,14 +290,23 @@ namespace Optel2.Controllers
             }
             if (planningConfig.TreeRequired)
             {
+                string treeDataJSON = "var treeDataJSON = [];\n";
                 for (int i = 0; i < planningConfig.TreeData.Count; i++)
                 {
-                    planningConfig.TreeData[i].Next = planningConfig.TreeData[i].FindChild(planningConfig.TreeData);
+                    if ((i + 1) != planningConfig.TreeData.Count)
+                    {
+                        planningConfig.TreeData[i].Next = planningConfig.TreeData[i + 1];
+                    }
+                    planningConfig.TreeData[i].Iteration = i;
+                    treeDataJSON += "treeDataJSON.push(" + GenerateJSON(planningConfig.TreeData[i].Plan) + ");\n";
                     Debug.WriteLine("Tree progress: " + i + "/" + planningConfig.TreeData.Count.ToString());
                 }
+                /*
                 Debug.WriteLine("Tree count = " + planningConfig.TreeData.Count);
                 Debug.WriteLine("Dec with mutation = " + planningConfig.TreeData.Count(x => x.Operation == Decision.OperationType.Mutation));
                 Debug.WriteLine("Dec with crossover = " + planningConfig.TreeData.Count(x => x.Operation == Decision.OperationType.Crossover));
+                */
+                ViewBag.DecisionTreeElementsJSON = treeDataJSON;
                 ViewBag.DecisionTreeString = GenerateDecisionTreeHTML(planningConfig);
             }
             ViewBag.JsonString = GenerateJSON(result);
@@ -326,23 +335,18 @@ namespace Optel2.Controllers
             {
                 startClass = "entry";
             }
-            for (int i = 0; i < treeData.Count; i++)
+            result += "<div class=\"" + startClass + " \"><span class=\"label toggleable\" iter=\"" + treeData[0].Iteration + "\">";
+            if (planningConfig.Criterion == OptimizationCriterion.Cost)
             {
-                if (treeData[i].Iteration == 0)
-                {
-                    result += "<div class=\"" + startClass + " \"><span class=\"label toggleable\" iter=\"" + treeData[i].Iteration + "\">" + treeData[i].Operation + "<br>";
-                    if(planningConfig.Criterion == OptimizationCriterion.Cost)
-                    {
-                        result += Math.Round(treeData[i].FunctionValue, 2) + "$";
-                    } else
-                    {
-                        result += GetTotalTime(Convert.ToDouble(treeData[i].FunctionValue));
-                    }
-                    result += "</span>";
-                    result += GenerateDecisionTreeChildHTML(treeData[i].Next, planningConfig.Criterion);
-                    result += "</div>";
-                }
+                result += Math.Round(treeData[0].FunctionValue, 2) + "$";
             }
+            else
+            {
+                result += GetTotalTime(Convert.ToDouble(treeData[0].FunctionValue));
+            }
+            result += "</span>";
+            result += GenerateDecisionTreeChildHTML(treeData[0].Next, planningConfig.Criterion);
+            result += "</div>";
             return result;
         }
 
@@ -351,7 +355,7 @@ namespace Optel2.Controllers
             string result = "";
             if (child != null && child.Iteration > -1)
             {
-                result += "<div class=\"branch\"><div class=\"entry sole\" ><span class=\"label toggleable\" iter=\"" + child.Iteration + "\">" + child.Operation + "<br>";
+                result += "<div class=\"branch\"><div class=\"entry sole\" ><span class=\"label toggleable\" iter=\"" + child.Iteration + "\">";
                 if (criterion == OptimizationCriterion.Cost)
                 {
                     result += Math.Round(child.FunctionValue, 2) + "$";
