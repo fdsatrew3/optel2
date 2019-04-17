@@ -245,29 +245,42 @@
 	}
 </style>
 <div id="ganttChart">
-	<div id="container"></div>
-	<div class="form-group">
-		<div class="row">
-			<div class="col-auto" style="margin-top: 8px;">
-				@{
-					if (ViewBag.Criteria == "Cost")
-					{
-						<div>Required currency to execute plan: @ViewBag.Result$</div>
-					}
-					else
-					{
-						<div>Required time to execute plan: @ViewBag.Result1 </div>
-					}
-				}
+	@{
+		if (ViewBag.Error)
+		{
+			<div>This plan can't be completed in the given planning time interval.<br />Try increase planning time interval or decrease count of orders/extruders.</div>
+			<br />
+			<div class="float-left">
+				<a href="#" onclick="javascript:history.go(-1)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="24" height="24">&nbsp;Go back to planning settings</div></a>
 			</div>
-			@if (Model.TreeRequired)
-			{
-				<div class="col-auto float-right">
-					<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
-				</div>
-			}
-		</div>
-	</div>
+		}
+		else
+		{
+			<div id="container"></div>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-auto" style="margin-top: 8px;">
+									@{
+										if (ViewBag.Criteria == "Cost")
+										{
+											<div>Required currency to execute plan: @ViewBag.Result$</div>
+}
+										else
+										{
+											<div>Required time to execute plan: @ViewBag.Result1 </div>
+}
+									}
+								</div>
+								@if (Model.TreeRequired)
+								{
+									<div class="col-auto float-right">
+										<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
+									</div>
+								}
+							</div>
+						</div>
+										}
+	}
 </div>
 <div id="decisionTree" style="display: none; ">
 	<div id="wrapper" style="width: 100%; position: absolute; overflow: scroll; margin-top: 0px;" class="dragscroll">
@@ -377,7 +390,8 @@
 				// Getting period object's field.
 				var endDate = new Date(hoveredPeriod['end']).toUTCString();
 
-				return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate;
+
+				return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate + '\n' + ((new Date(hoveredPeriod['end']) - new Date(hoveredPeriod['start'])) / 1000);
 			} else {
 				return 'No data under cursor.';
 			}

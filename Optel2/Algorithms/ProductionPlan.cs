@@ -117,18 +117,18 @@ namespace Algorithms
 101639,
 101631,
 101640,
-101656,
+//101656,
 101657,
 101664,
 101655,
 101641,
-101658,
+//101658,
 101644,
 101659,
 101642,
 101660,
 101643,
-101661,
+//101661,
 101645 };
 
             ProductionPlan productionPlan = new ProductionPlan();
@@ -137,7 +137,7 @@ namespace Algorithms
 
             for (int i = 0; i < ordersNum.Length; i++)
             {
-                productionPlan.OrdersToLineConformity[0].Orders.Add(orders.Where(order => order.OrderNumber == ordersNum[i].ToString()).First());
+                productionPlan.OrdersToLineConformity[0].Orders.Add(orders.Where(order => order.OrderNumber.Equals(ordersNum[i].ToString())).First());
             }
 
             return productionPlan;
