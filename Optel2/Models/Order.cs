@@ -32,7 +32,8 @@ namespace Optel2.Models
         public FilmRecipe FilmRecipe { get; set; }
         public int PredefinedTime { get; set; }
         public int PredefinedRetargetTime { get; set; }
-
+        [NotMapped]
+        public string RetargetLog { get; set; }
         [NotMapped]
         public bool Selected { get; set; }
         [NotMapped]

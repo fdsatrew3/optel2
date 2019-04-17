@@ -39,6 +39,7 @@ namespace Optel2.Controllers
             List<SelectListItem> algorithmDropDownList = new List<SelectListItem>();
             algorithmDropDownList.Add(new SelectListItem() { Text = "Genetic", Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
             algorithmDropDownList.Add(new SelectListItem() { Text = "Brute force", Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
+            algorithmDropDownList.Add(new SelectListItem() { Text = "Old plan", Value = PlanningModel.PlanningAlgorithm.OldPlan.ToString() });
             ViewBag.Algorithms = algorithmDropDownList;
             planningModel.NumberOfGAiterations = 7;
             planningModel.maxPopulation = 10;
@@ -53,9 +54,17 @@ namespace Optel2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Config(PlanningModel planningConfig)
         {
-            List<Order> sortedOrders = planningConfig.Orders.Where(order => order.Selected == true).ToList();
-            List<Extruder> sortedExtruders = planningConfig.Extruders.Where(extruder => extruder.Selected == true).ToList();
-
+            List<Order> sortedOrders;
+            List<Extruder> sortedExtruders;
+            if (planningConfig.SelectedAlgorithm == PlanningModel.PlanningAlgorithm.OldPlan)
+            {
+                sortedOrders = planningConfig.Orders.ToList();
+                sortedExtruders = planningConfig.Extruders.Where(extruder => extruder.Name == "MEX 08").ToList();
+            } else
+            {
+                sortedOrders = planningConfig.Orders.Where(order => order.Selected == true).ToList();
+                sortedExtruders = planningConfig.Extruders.Where(extruder => extruder.Selected == true).ToList();
+            }
             if (sortedOrders.Count < 2)
             {
                 ModelState.AddModelError("", "You must select at least two orders.");
@@ -118,7 +127,7 @@ namespace Optel2.Controllers
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
                     JObject period = new JObject();
-                    JProperty periodID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j);
+                    JProperty periodID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "┼" + plan.OrdersToLineConformity[i].Orders[j].RetargetLog + "┼" + plan.OrdersToLineConformity[i].Orders[j].PredefinedTime + "_" + plan.OrdersToLineConformity[i].Orders[j].PredefinedRetargetTime);
                     JProperty startDate = new JProperty("start", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + ")");
                     JProperty endDate = new JProperty("end", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + ")");
                     period.Add(periodID);
@@ -169,71 +178,8 @@ namespace Optel2.Controllers
                 lineContainer.Add(line);
                 id++;
             }
-            //Debug.Write(lineContainer.ToString());
             // Костыль чтобы график заработал. GL HF.
             string json = lineContainer.ToString().Replace("\"start\": \"Date.UTC", "\"start\": Date.UTC").Replace("\"end\": \"Date.UTC", "\"end\": Date.UTC").Replace(")\",", "),");
-            /*  string json = "";
-              int id = 1;
-              for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
-              {
-                  json += "[{\r\n";
-                  json += "\"id\": \"" + id + "\",\r\n";
-                  json += "\"name\": \"" + plan.OrdersToLineConformity[i].Line.Name + "\",\r\n";
-                  json += "\"periods\": [\r\n";
-                  for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
-                  {
-                      json += "{\r\n\"id\": \"" + plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "\",\r\n";
-                      //json += "\"stroke\": \"3 black\",\r\n";
-                      json += "\"start\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + "),\r\n";
-                      json += "\"end\": Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + "),\r\n";
-                      if (j % 2 == 0)
-                      {
-                          json += "\"stroke\": \"#B8AA96\",\r\n";
-                          json += "\"fill\": {\r\n";
-                          json += "\"angle\": 90,\r\n";
-                          json += "\"keys\": [\r\n";
-                          json += "{\r\n";
-                          json += "\"color\": \"#CFC0A9\",\r\n";
-                          json += "\"position\": 0\r\n";
-                          json += "},\r\n";
-                          json += "{\r\n";
-                          json += "\"color\": \"#E6D5BC\",\r\n";
-                          json += "\"position\": 0.38\r\n";
-                          json += "},\r\n";
-                          json += "{\r\n";
-                          json += "\"color\": \"#E8D9C3\",\r\n";
-                          json += "\"position\": 1\r\n";
-                          json += "}\r\n";
-                          json += "]\r\n";
-                          json += "}\r\n},\r\n";
-                      }
-                      else
-                      {
-                          json += "\"stroke\": \"#9B9292\",\r\n";
-                          json += "\"fill\": {\r\n";
-                          json += "\"angle\": 90,\r\n";
-                          json += "\"keys\": [\r\n";
-                          json += "{\r\n";
-                          json += "\"color\": \"#AFA4A4\",\r\n";
-                          json += "\"position\": 0\r\n";
-                          json += "},\r\n";
-                          json += "{\r\n";
-                          json += "\"color\": \"#C2B6B6\",\r\n";
-                          json += "\"position\": 0.38\r\n";
-                          json += "},\r\n";
-                          json += "{\r\n";
-                          json += "\"color\": \"#C8BDBD\",\r\n";
-                          json += "\"position\": 1\r\n";
-                          json += "}\r\n";
-                          json += "]\r\n";
-                          json += "}\r\n},\r\n";
-                      }
-                  }
-                  json += "],\r\n},";
-                  id++;
-              }
-              json = json.Substring(0, json.Length - 1);
-              json += "\r\n]"; */
             return json;
         }
 
@@ -258,6 +204,9 @@ namespace Optel2.Controllers
             result.OrdersToLineConformity[0].Orders[1].PlanedStartDate = result.OrdersToLineConformity[0].Orders[0].PlanedEndDate.AddDays(1);
             result.OrdersToLineConformity[0].Orders[1].PlanedEndDate = result.OrdersToLineConformity[0].Orders[1].PlanedStartDate.AddHours(4);
             */
+            planningConfig.maxPopulation = planningConfig.Orders.Count;
+            planningConfig.maxSelection = planningConfig.Orders.Count;
+            planningConfig.NumberOfGAiterations = planningConfig.Orders.Count / 2;
             switch (planningConfig.SelectedAlgorithm)
              {
                  case PlanningModel.PlanningAlgorithm.BruteForce:
@@ -287,8 +236,12 @@ namespace Optel2.Controllers
                          planningConfig.TreeRequired));
                      planningConfig.TreeData = genetic.DecisionTree;
                      break;
-             }
-            //result = ProductionPlan.GetProductionPlan(planningConfig.Orders, planningConfig.Extruders, planningConfig.PlannedStartDate);
+                case PlanningModel.PlanningAlgorithm.OldPlan:
+                    result = GetProductionPlan(planningConfig.Orders, planningConfig.Extruders, planningConfig.PlannedStartDate);
+                    planningConfig.TreeRequired = false;
+                    break;
+            }
+
             if (planningConfig.TreeRequired)
             {
                 string treeDataJSON = "var treeDataJSON = [];\n";

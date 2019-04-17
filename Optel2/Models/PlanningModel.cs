@@ -21,7 +21,7 @@ namespace Optel2.Models
         [Display(Name = "Objective function")]
         public OptimizationCriterion Criterion { get; set; }
         public AObjectiveFunction Function { get; set; }
-        public enum PlanningAlgorithm { Genetic, BruteForce };
+        public enum PlanningAlgorithm { Genetic, BruteForce, OldPlan};
         [Display(Name = "Planning algorithm")]
         public PlanningAlgorithm SelectedAlgorithm { get; set; }
 

@@ -29,6 +29,7 @@ namespace Algorithms.ObjectiveFunctions
                 Orders[0].PlanedEndDate = executionStart.AddSeconds(workTime);
                 Orders[0].PredefinedTime = Convert.ToInt32(Math.Round(workTime, 0));
                 Orders[0].PredefinedRetargetTime = 0;
+                Orders[0].RetargetLog = "0";
                 //Extruder.StartupDelay + Extruder.ChangeofThickness(Order1, Order2) + Extruder.WidthAdj(Order1, Order2) + CalcRetargettingTIme(Order1, Order2) + (Order2.Rolls * Order2.width) / FilmRecipe.GetProductionSpeedByOrderCode(Order2)) 
 
                 //Orders[0].PlanedEndDate = Orders[0].PlanedStartDate.AddSeconds(DateTimeToDouble(Line.ChangeOfThicknessTime) + DateTimeToDouble(Line.WidthAdjustmentTime) + Convert.ToDecimal(Orders[0].Rolls * Orders[0].Width / filmRecipe.ProductionSpeed) * 60);
@@ -103,89 +104,100 @@ namespace Algorithms.ObjectiveFunctions
             double retargetingTime = 0;
 
             //var key = newOrder.FilmTypeVector.FPserieCode + previousOrder.FilmTypeVector.FPserieCode;
-            ExtruderRecipeChange extruderRecipeChange = null;
-            ExtruderCoolingLipChange extruderCoolingLipChange = null;
-            ExtruderCalibrationChange extruderCalibrationChange = null;
-            ExtruderNozzleChange extruderNozzleChange = null;
             // recipe
-            if (!previousOrder.FilmRecipe.Article.Equals(newOrder.FilmRecipe.Article))
+            if (!previousOrder.FilmRecipeId.Equals(newOrder.FilmRecipeId))
             {
-                for (int i = 0; i < line.ExtruderRecipeChange.Count; i++)
+                newOrder.RetargetLog = "FilmRecipeChange_";
+                ExtruderRecipeChange extruderRecipeChange = null;
+                ExtruderCoolingLipChange extruderCoolingLipChange = null;
+                ExtruderCalibrationChange extruderCalibrationChange = null;
+                ExtruderNozzleChange extruderNozzleChange = null;
+                if (!previousOrder.FilmRecipe.Recipe.Equals(newOrder.FilmRecipe.Recipe))
                 {
-                    if (line.ExtruderRecipeChange[i].From.Equals($"{previousOrder.FilmRecipe.Article}") && line.ExtruderRecipeChange[i].On.Equals($"{newOrder.FilmRecipe.Article}"))
+                    for (int i = 0; i < line.ExtruderRecipeChange.Count; i++)
                     {
-                        extruderRecipeChange = line.ExtruderRecipeChange[i];
-                        break;
+                        if (line.ExtruderRecipeChange[i].From.Equals(previousOrder.FilmRecipe.Recipe) && line.ExtruderRecipeChange[i].On.Equals(newOrder.FilmRecipe.Recipe))
+                        {
+                            extruderRecipeChange = line.ExtruderRecipeChange[i];
+                            break;
+                        }
                     }
-                }
-                if (extruderRecipeChange == null)
-                {
-                    extruderRecipeChange = line.ExtruderRecipeChange[0];
-                }
-                retargetingTime += DateTimeToDouble(extruderRecipeChange.Duration);
-            }
-            // cooling lip
-            if (!previousOrder.FilmRecipe.CoolingLip.Equals(newOrder.FilmRecipe.CoolingLip))
-            {
-                for (int i = 0; i < line.ExtruderCoolingLipChange.Count; i++)
-                {
-                    if (line.ExtruderCoolingLipChange[i].CoolingLip.Equals(newOrder.FilmRecipe.CoolingLip))
+                    if (extruderRecipeChange == null)
                     {
-                        extruderCoolingLipChange = line.ExtruderCoolingLipChange[i];
-                        break;
+                        extruderRecipeChange = line.ExtruderRecipeChange[0];
                     }
+                    newOrder.RetargetLog += "Recipe_" + DateTimeToDouble(extruderRecipeChange.Duration) + "_";
+                    retargetingTime += DateTimeToDouble(extruderRecipeChange.Duration);
                 }
-                if (extruderCoolingLipChange == null)
+                // cooling lip
+                if (!previousOrder.FilmRecipe.CoolingLip.Equals(newOrder.FilmRecipe.CoolingLip))
                 {
-                    extruderCoolingLipChange = line.ExtruderCoolingLipChange[0];
-                }
-                retargetingTime += DateTimeToDouble(extruderCoolingLipChange.Duration);
-            }
-            // calibration
-            if (!previousOrder.FilmRecipe.CalibrationDiameter.Equals(newOrder.FilmRecipe.CalibrationDiameter))
-            {
-                for (int i = 0; i < line.ExtruderCalibrationChange.Count; i++)
-                {
-                    if (line.ExtruderCalibrationChange[i].Calibration.Equals(newOrder.FilmRecipe.CalibrationDiameter))
+                    for (int i = 0; i < line.ExtruderCoolingLipChange.Count; i++)
                     {
-                        extruderCalibrationChange = line.ExtruderCalibrationChange[i];
-                        break;
+                        if (line.ExtruderCoolingLipChange[i].CoolingLip.Equals(newOrder.FilmRecipe.CoolingLip))
+                        {
+                            extruderCoolingLipChange = line.ExtruderCoolingLipChange[i];
+                            break;
+                        }
                     }
-                }
-                if (extruderCalibrationChange == null)
-                {
-                    extruderCalibrationChange = line.ExtruderCalibrationChange[0];
-                }
-                retargetingTime += DateTimeToDouble(extruderCalibrationChange.Duration);
-            }
-            // nozzle
-            if (!previousOrder.FilmRecipe.NozzleInsert.Equals(newOrder.FilmRecipe.NozzleInsert))
-            {
-                for (int i = 0; i < line.ExtruderNozzleChange.Count; i++)
-                {
-                    if (line.ExtruderNozzleChange[i].Nozzle.Equals(newOrder.FilmRecipe.NozzleInsert))
+                    if (extruderCoolingLipChange == null)
                     {
-                        extruderNozzleChange = line.ExtruderNozzleChange[i];
-                        break;
+                        extruderCoolingLipChange = line.ExtruderCoolingLipChange[0];
                     }
+                    newOrder.RetargetLog += "CoolingLip_" + DateTimeToDouble(extruderCoolingLipChange.Duration) + "_";
+                    retargetingTime += DateTimeToDouble(extruderCoolingLipChange.Duration);
                 }
-                if (extruderNozzleChange == null)
+                // calibration
+                if (!previousOrder.FilmRecipe.CalibrationDiameter.Equals(newOrder.FilmRecipe.CalibrationDiameter))
                 {
-                    extruderNozzleChange = line.ExtruderNozzleChange[0];
+                    for (int i = 0; i < line.ExtruderCalibrationChange.Count; i++)
+                    {
+                        if (line.ExtruderCalibrationChange[i].Calibration.Equals(newOrder.FilmRecipe.CalibrationDiameter))
+                        {
+                            extruderCalibrationChange = line.ExtruderCalibrationChange[i];
+                            break;
+                        }
+                    }
+                    if (extruderCalibrationChange == null)
+                    {
+                        extruderCalibrationChange = line.ExtruderCalibrationChange[0];
+                    }
+                    newOrder.RetargetLog += "Calibration_" + DateTimeToDouble(extruderCalibrationChange.Duration) + "_";
+                    retargetingTime += DateTimeToDouble(extruderCalibrationChange.Duration);
                 }
-                retargetingTime += DateTimeToDouble(extruderNozzleChange.Duration);
+                // nozzle
+                if (!previousOrder.FilmRecipe.NozzleInsert.Equals(newOrder.FilmRecipe.NozzleInsert))
+                {
+                    for (int i = 0; i < line.ExtruderNozzleChange.Count; i++)
+                    {
+                        if (line.ExtruderNozzleChange[i].Nozzle.Equals(newOrder.FilmRecipe.NozzleInsert))
+                        {
+                            extruderNozzleChange = line.ExtruderNozzleChange[i];
+                            break;
+                        }
+                    }
+                    if (extruderNozzleChange == null)
+                    {
+                        extruderNozzleChange = line.ExtruderNozzleChange[0];
+                    }
+                    newOrder.RetargetLog += "Nozzle_" + DateTimeToDouble(extruderNozzleChange.Duration) + "_";
+                    retargetingTime += DateTimeToDouble(extruderNozzleChange.Duration);
+                }
+                // Изменение ширины плёнки.
+                if (previousOrder.Width != newOrder.Width)
+                {
+                    retargetingTime += DateTimeToDouble(line.WidthAdjustmentTime);
+                    newOrder.RetargetLog += "Width_" + DateTimeToDouble(line.WidthAdjustmentTime) + "_";
+                }
+                if (previousOrder.FilmRecipe.Thickness != newOrder.FilmRecipe.Thickness)
+                {
+                    retargetingTime += DateTimeToDouble(line.ChangeOfThicknessTime);
+                    newOrder.RetargetLog += "Thickness" + DateTimeToDouble(line.ChangeOfThicknessTime) + "_";
+                }
             }
-
-            // Изменение ширины плёнки.
-            if (previousOrder.Width != newOrder.Width)
-            {
-                retargetingTime += DateTimeToDouble(line.WidthAdjustmentTime);
-            }
-            if (previousOrder.FilmRecipe.Thickness != newOrder.FilmRecipe.Thickness)
-            {
-                retargetingTime += DateTimeToDouble(line.ChangeOfThicknessTime);
-            }
+            newOrder.RetargetLog += retargetingTime;
             return retargetingTime;
         }
     }
 }
+
