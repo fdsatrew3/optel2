@@ -43,15 +43,19 @@ namespace Algorithms
         public decimal GetWorkSpending(Costs costs, OptimizationCriterion criterion, AObjectiveFunction objectiveFunction)
         {
             decimal spending = 0, maxTime = 0, executionCost = 0;
-            ExecutionTimeAndCost[] executionTimesAndCosts = new ExecutionTimeAndCost[OrdersToLineConformity.Count];
+            decimal curTime = 0;
             for (int i = 0; i < OrdersToLineConformity.Count; i++)
             {
-                executionTimesAndCosts[i] = OrdersToLineConformity[i].CalculateExecutionTimeAndCost(null, objectiveFunction);
-                executionCost += executionTimesAndCosts[i].ExecutionCost;
-                if (executionTimesAndCosts[i].ExecutionTime > maxTime)
+                for (int j = 0; j < OrdersToLineConformity[i].Orders.Count; j++)
                 {
-                    maxTime = executionTimesAndCosts[i].ExecutionTime;
+                    curTime += OrdersToLineConformity[i].Orders[j].PredefinedTime + OrdersToLineConformity[i].Orders[j].PredefinedRetargetTime;
                 }
+                if(curTime > maxTime)
+                {
+                    maxTime = curTime;
+                }
+                curTime = 0;
+                executionCost += OrdersToLineConformity[i].CalculateExecutionTimeAndCost(costs, objectiveFunction).ExecutionCost;
             }
             switch (criterion)
             {

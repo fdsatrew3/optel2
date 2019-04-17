@@ -258,7 +258,7 @@ namespace Optel2.Controllers
             result.OrdersToLineConformity[0].Orders[1].PlanedStartDate = result.OrdersToLineConformity[0].Orders[0].PlanedEndDate.AddDays(1);
             result.OrdersToLineConformity[0].Orders[1].PlanedEndDate = result.OrdersToLineConformity[0].Orders[1].PlanedStartDate.AddHours(4);
             */
-            /*switch (planningConfig.SelectedAlgorithm)
+            switch (planningConfig.SelectedAlgorithm)
              {
                  case PlanningModel.PlanningAlgorithm.BruteForce:
                      var bruteForce = new BruteForceAlgorithm();
@@ -287,8 +287,8 @@ namespace Optel2.Controllers
                          planningConfig.TreeRequired));
                      planningConfig.TreeData = genetic.DecisionTree;
                      break;
-             } */
-            result = ProductionPlan.GetProductionPlan(planningConfig.Orders, planningConfig.Extruders, planningConfig.PlannedStartDate);
+             }
+            //result = ProductionPlan.GetProductionPlan(planningConfig.Orders, planningConfig.Extruders, planningConfig.PlannedStartDate);
             if (planningConfig.TreeRequired)
             {
                 string treeDataJSON = "var treeDataJSON = [];\n";
@@ -312,8 +312,8 @@ namespace Optel2.Controllers
             }
             ViewBag.JsonString = GenerateJSON(result);
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
-            ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2);
             double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
+            ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2).ToString() + " | " + requiredTime;
             ViewBag.Result1 = GetTotalTime(requiredTime) + " | " + requiredTime;
             if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
             {
