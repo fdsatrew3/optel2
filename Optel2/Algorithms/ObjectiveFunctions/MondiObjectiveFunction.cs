@@ -100,10 +100,6 @@ namespace Algorithms.ObjectiveFunctions
 
         protected double RetargetingTimeCalculator(Extruder line, Order previousOrder, Order newOrder)
         {
-            if (newOrder.PredefinedRetargetTime != 0)
-            {
-                return newOrder.PredefinedRetargetTime;
-            }
             double retargetingTime = 0;
 
             //var key = newOrder.FilmTypeVector.FPserieCode + previousOrder.FilmTypeVector.FPserieCode;

@@ -77,7 +77,7 @@
 			{
 				<tr>
 					<td>
-						@Html.CheckBoxFor(Model => Model.Orders[i].Selected, new { htmlAttributes = new { @class = "form-control", data_val = "false" }, id = "order_" + i + "_checkbox" })
+						@Html.CheckBoxFor(Model => Model.Orders[i].Selected, new { htmlAttributes = new { @class = "form-control", data_val = "false" }, id = "order_" + i + "_checkbox", order = Model.Orders[i].OrderNumber })
 					</td>
 					<td>
 						@Html.DisplayFor(Model => Model.Orders[i].OrderNumber)
@@ -124,6 +124,9 @@
 				</div>
 				<div class="col-auto">
 					<a href="#" class="btn btn-dark left-menu-btn" onclick="OnStepButtonPress(true, 3)" id="nextStepButton2"><div class="float-left">Next step&nbsp;<img src="~/Images/Menu/forward.png" width="24" height="24"></div></a>
+				</div>
+				<div class="col-auto">
+					<a href="#" class="btn btn-dark left-menu-btn" id="oldPlan"><div class="float-left">Old plan&nbsp;<img src="~/Images/favicon.png" width="24" height="24"></div></a>
 				</div>
 			</div>
 		</div>
@@ -320,6 +323,72 @@
 				var checked = document.getElementById("selectAllExtruders").checked;
 				for (var i = 0; i < @(Model.Extruders.Count); i++) {
 					document.getElementById("extruder_" + i + "_checkbox").checked = checked;
+				}
+			});
+			$("#oldPlan").click(function () {
+				var oldPlanOrders = ['101586',
+					'101585',
+					'101596',
+					'101597',
+					'101587',
+					'101589',
+					'101649',
+					'101559',
+					'101543',
+					'101650',
+					'400134',
+					'101590',
+					'101651',
+					'101648',
+					'101647',
+					'101646',
+					'101652',
+					'101663',
+					'101653',
+					'101613',
+					'101614',
+					'101620',
+					'101632',
+					'101621',
+					'101615',
+					'101633',
+					'101662',
+					'101616',
+					'101627',
+					'101634',
+					'101654',
+					'101617',
+					'101635',
+					'101628',
+					'101626',
+					'101618',
+					'101636',
+					'101637',
+					'101619',
+					'101629',
+					'101638',
+					'101630',
+					'101639',
+					'101631',
+					'101640',
+					'101656',
+					'101657',
+					'101664',
+					'101655',
+					'101641',
+					'101658',
+					'101644',
+					'101659',
+					'101642',
+					'101660',
+					'101643',
+					'101661',
+					'101645'];
+				for (var i = 0; i < @(Model.Orders.Count); i++) {
+					var checkBox = document.getElementById("order_" + i + "_checkbox");
+					if (oldPlanOrders.indexOf(checkBox.getAttribute("order")) > -1) {
+						document.getElementById("order_" + i + "_checkbox").checked = true;
+					}
 				}
 			});
 		});

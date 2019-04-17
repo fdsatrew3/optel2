@@ -130,7 +130,7 @@ namespace Algorithms
 101660,
 101643,
 101661,
-101645 };
+101645 }; 
             ProductionPlan productionPlan = new ProductionPlan();
             productionPlan.OrdersToLineConformity = new List<OrdersOnExtruderLine>();
             productionPlan.OrdersToLineConformity.Add(new OrdersOnExtruderLine() { Line = extruder[0] });
