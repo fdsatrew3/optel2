@@ -43,18 +43,16 @@ namespace Algorithms
         public decimal GetWorkSpending(Costs costs, OptimizationCriterion criterion, AObjectiveFunction objectiveFunction)
         {
             decimal spending = 0, maxTime = 0, executionCost = 0;
-            DateTime executionEnd = DateTime.MinValue;
             ExecutionTimeAndCost[] executionTimesAndCosts = new ExecutionTimeAndCost[OrdersToLineConformity.Count];
-            for(int i = 0; i < OrdersToLineConformity.Count; i++)
+            for (int i = 0; i < OrdersToLineConformity.Count; i++)
             {
                 executionTimesAndCosts[i] = OrdersToLineConformity[i].CalculateExecutionTimeAndCost(null, objectiveFunction);
                 executionCost += executionTimesAndCosts[i].ExecutionCost;
-                if(executionTimesAndCosts[i].ExecutionEnd > executionEnd)
+                if (executionTimesAndCosts[i].ExecutionTime > maxTime)
                 {
-                    executionEnd = executionTimesAndCosts[i].ExecutionEnd;
+                    maxTime = executionTimesAndCosts[i].ExecutionTime;
                 }
             }
-            maxTime = Convert.ToDecimal((executionEnd - executionTimesAndCosts[0].ExecutionStart).TotalSeconds);
             switch (criterion)
             {
                 case OptimizationCriterion.Time:
@@ -66,11 +64,10 @@ namespace Algorithms
                 default:
                     throw new System.Exception("Unknown goal: " + criterion);
             }
-
             return spending;
         }
 
-        static public ProductionPlan GetProductionPlan(Optel2.Models.Order[] orders, Optel2.Models.Extruder extruder)
+        static public ProductionPlan GetProductionPlan(List<Optel2.Models.Order> orders, List<Optel2.Models.Extruder> extruder, DateTime plannedStartDate)
         {
             int[] ordersNum = new int[] { 101586,
 101585,
@@ -117,27 +114,36 @@ namespace Algorithms
 101639,
 101631,
 101640,
-//101656,
+101656,
 101657,
 101664,
 101655,
 101641,
-//101658,
+101658,
 101644,
 101659,
 101642,
 101660,
 101643,
-//101661,
+101661,
 101645 };
-
             ProductionPlan productionPlan = new ProductionPlan();
-
-            productionPlan.OrdersToLineConformity.Add(new OrdersOnExtruderLine() { Line = extruder });
+            productionPlan.OrdersToLineConformity = new List<OrdersOnExtruderLine>();
+            productionPlan.OrdersToLineConformity.Add(new OrdersOnExtruderLine() { Line = extruder[0] });
 
             for (int i = 0; i < ordersNum.Length; i++)
             {
                 productionPlan.OrdersToLineConformity[0].Orders.Add(orders.Where(order => order.OrderNumber.Equals(ordersNum[i].ToString())).First());
+                if (i == 0)
+                {
+                    productionPlan.OrdersToLineConformity[0].Orders[i].PlanedStartDate = plannedStartDate;
+                    productionPlan.OrdersToLineConformity[0].Orders[i].PlanedEndDate = plannedStartDate.AddSeconds(productionPlan.OrdersToLineConformity[0].Orders[i].PredefinedTime);
+                }
+                else
+                {
+                    productionPlan.OrdersToLineConformity[0].Orders[i].PlanedStartDate = productionPlan.OrdersToLineConformity[0].Orders[i - 1].PlanedEndDate;
+                    productionPlan.OrdersToLineConformity[0].Orders[i].PlanedEndDate = productionPlan.OrdersToLineConformity[0].Orders[i].PlanedStartDate.AddSeconds(productionPlan.OrdersToLineConformity[0].Orders[i].PredefinedTime).AddSeconds(productionPlan.OrdersToLineConformity[0].Orders[i].PredefinedRetargetTime);
+                }
             }
 
             return productionPlan;

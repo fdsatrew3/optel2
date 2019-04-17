@@ -27,6 +27,8 @@ namespace Algorithms.ObjectiveFunctions
                 workTime = CalcOrderExecutionTime(Orders[0]);
                 Orders[0].PlanedStartDate = executionStart;
                 Orders[0].PlanedEndDate = executionStart.AddSeconds(workTime);
+                Orders[0].PredefinedTime = Convert.ToInt32(workTime);
+                Orders[0].PredefinedRetargetTime = 0;
                 //Extruder.StartupDelay + Extruder.ChangeofThickness(Order1, Order2) + Extruder.WidthAdj(Order1, Order2) + CalcRetargettingTIme(Order1, Order2) + (Order2.Rolls * Order2.width) / FilmRecipe.GetProductionSpeedByOrderCode(Order2)) 
 
                 //Orders[0].PlanedEndDate = Orders[0].PlanedStartDate.AddSeconds(DateTimeToDouble(Line.ChangeOfThicknessTime) + DateTimeToDouble(Line.WidthAdjustmentTime) + Convert.ToDecimal(Orders[0].Rolls * Orders[0].Width / filmRecipe.ProductionSpeed) * 60);
@@ -48,7 +50,8 @@ namespace Algorithms.ObjectiveFunctions
                         //workTime += Convert.ToDouble(Orders[i].Rolls * Orders[i].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
                         // Отсчёт завершения работы i-того заказа - от времени начала его завершения.
                         Orders[i].PlanedEndDate = Orders[i].PlanedStartDate.AddSeconds(retargetingTime + workTime);
-
+                        Orders[i].PredefinedTime = Convert.ToInt32(workTime);
+                        Orders[i].PredefinedRetargetTime = Convert.ToInt32(retargetingTime);
                         // Аккумулируем общее время перенастроек.
                         totalRetargetingTime += retargetingTime;
 

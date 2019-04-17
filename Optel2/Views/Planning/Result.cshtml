@@ -257,29 +257,29 @@
 		else
 		{
 			<div id="container"></div>
-						<div class="form-group">
-							<div class="row">
-								<div class="col-auto" style="margin-top: 8px;">
-									@{
-										if (ViewBag.Criteria == "Cost")
-										{
-											<div>Required currency to execute plan: @ViewBag.Result$</div>
-}
-										else
-										{
-											<div>Required time to execute plan: @ViewBag.Result1 </div>
-}
-									}
-								</div>
-								@if (Model.TreeRequired)
-								{
-									<div class="col-auto float-right">
-										<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
-									</div>
-								}
-							</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-auto" style="margin-top: 8px;">
+						@{
+							if (ViewBag.Criteria == "Cost")
+							{
+								<div>Required currency to execute plan: @ViewBag.Result$</div>
+							}
+							else
+							{
+								<div>Required time to execute plan: @ViewBag.Result1 </div>
+							}
+						}
+					</div>
+					@if (Model.TreeRequired)
+					{
+						<div class="col-auto float-right">
+							<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
 						</div>
-										}
+					}
+				</div>
+			</div>
+							}
 	}
 </div>
 <div id="decisionTree" style="display: none; ">
@@ -421,54 +421,58 @@
 </script>
 
 <script>
+	@{
+	if (Model.TreeRequired) {
 	@Html.Raw(ViewBag.DecisionTreeElementsJSON)
-	console.log(treeDataJSON);
-	// Shit to make all shit fucking shit ...
-	// Показ диаграммы ганта при клике на блок
-	function init() {
+	@Html.Raw("console.log(treeDataJSON)")
+	}
+	}
+			// Shit to make all shit fucking shit ...
+			// Показ диаграммы ганта при клике на блок
+			function init() {
 		$(".toggleable").on("click", function () {
-			document.getElementById('wrapper').style.display = "none";
-			document.getElementById('krappa-chart').style.display = "block";
-		document.getElementById('krappa-chart').innerHTML = '';
-		var treeData12 = anychart.data.tree(treeDataJSON[$(this).attr('iter')], 'as-table');
-		// create resource gantt chart
-		var chart = anychart.ganttResource();
-		// set data for the chart
-		chart.data(treeData12);
-		chart.dataGrid().rowOddFill('#fff');
-		chart.dataGrid().rowEvenFill('#fff');
-		chart.getTimeline().rowOddFill('#fff');
-		chart.getTimeline().rowEvenFill('#fff');
-		chart.splitterPosition(150);
-		var scale = chart.xScale();
-		scale.minimum(Date.UTC(@(Model.PlannedStartDate.Year), @(Model.PlannedStartDate.Month-1), @(Model.PlannedStartDate.Day)));
-		scale.maximum(Date.UTC(@(Model.PlannedEndDate.Year), @(Model.PlannedEndDate.Month-1), @(Model.PlannedEndDate.Day)));
-		var timeline = chart.getTimeline();
+					document.getElementById('wrapper').style.display = "none";
+					document.getElementById('krappa-chart').style.display = "block";
+					document.getElementById('krappa-chart').innerHTML = '';
+					var treeData12 = anychart.data.tree(treeDataJSON[$(this).attr('iter')], 'as-table');
+					// create resource gantt chart
+					var chart = anychart.ganttResource();
+					// set data for the chart
+					chart.data(treeData12);
+					chart.dataGrid().rowOddFill('#fff');
+					chart.dataGrid().rowEvenFill('#fff');
+					chart.getTimeline().rowOddFill('#fff');
+					chart.getTimeline().rowEvenFill('#fff');
+					chart.splitterPosition(150);
+					var scale = chart.xScale();
+					scale.minimum(Date.UTC(@(Model.PlannedStartDate.Year), @(Model.PlannedStartDate.Month-1), @(Model.PlannedStartDate.Day)));
+					scale.maximum(Date.UTC(@(Model.PlannedEndDate.Year), @(Model.PlannedEndDate.Month-1), @(Model.PlannedEndDate.Day)));
+					var timeline = chart.getTimeline();
 
-		// getting timeline's tooltip
-		var tlTooltip = timeline.tooltip();
+					// getting timeline's tooltip
+					var tlTooltip = timeline.tooltip();
 
-		tlTooltip.titleFormat(function () {
-			return this['name'];
-		});
+					tlTooltip.titleFormat(function () {
+						return this['name'];
+					});
 
-		tlTooltip.format(function () {
-			var hoveredPeriod = this['period'];
+			tlTooltip.format(function () {
+				var hoveredPeriod = this['period'];
 
-			if (hoveredPeriod) {
-				var hoveredPeriodIndex = this['periodIndex'] + 1;
+				if (hoveredPeriod) {
+					var hoveredPeriodIndex = this['periodIndex'] + 1;
 
-				// Getting period object's fields.
-				var startDate = new Date(hoveredPeriod['start']).toUTCString();
+					// Getting period object's fields.
+					var startDate = new Date(hoveredPeriod['start']).toUTCString();
 
-				// Getting period object's field.
-				var endDate = new Date(hoveredPeriod['end']).toUTCString();
+					// Getting period object's field.
+					var endDate = new Date(hoveredPeriod['end']).toUTCString();
 
-				return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate;
-			} else {
-				return 'No data under cursor.';
-			}
-		});
+					return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate;
+				} else {
+					return 'No data under cursor.';
+				}
+			});
 
 
 			// get chart data grid link to set column settings
@@ -476,14 +480,14 @@
 
 			// set first column settings
 			dataGrid.column(0)
-                .title('#')
-                .width(30)
-                .labels({hAlign: 'center'});
+				.title('#')
+				.width(30)
+				.labels({hAlign: 'center'});
 
-        // set second column settings
-        dataGrid.column(1)
-                .title('Extruder')
-                .width(120);
+			// set second column settings
+			dataGrid.column(1)
+					.title('Extruder')
+					.width(120);
 
 			// set container id for the chart
 			chart.container('krappa-chart');

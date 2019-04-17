@@ -258,36 +258,37 @@ namespace Optel2.Controllers
             result.OrdersToLineConformity[0].Orders[1].PlanedStartDate = result.OrdersToLineConformity[0].Orders[0].PlanedEndDate.AddDays(1);
             result.OrdersToLineConformity[0].Orders[1].PlanedEndDate = result.OrdersToLineConformity[0].Orders[1].PlanedStartDate.AddHours(4);
             */
-            switch (planningConfig.SelectedAlgorithm)
-            {
-                case PlanningModel.PlanningAlgorithm.BruteForce:
-                    var bruteForce = new BruteForceAlgorithm();
-                    result = await Task.Run<ProductionPlan>(
-                        async () => await bruteForce.Start(planningConfig.Extruders,
-                        planningConfig.Orders,
-                        new List<SliceLine>(),
-                        new Costs(),
-                        planningConfig.Criterion,
-                        new MondiObjectiveFunction(),
-                        planningConfig.TreeRequired));
-                    planningConfig.TreeData = bruteForce.DecisionTree;
-                    break;
-                case PlanningModel.PlanningAlgorithm.Genetic:
-                    var genetic = new GeneticAlgorithm();
-                    result = await Task.Run<ProductionPlan>(
-                        async () => await genetic.Start(planningConfig.Extruders,
-                        planningConfig.Orders,
-                        new List<SliceLine>(),
-                        new Costs(),
-                        planningConfig.Criterion,
-                        new MondiObjectiveFunction(),
-                        planningConfig.maxPopulation,
-                        planningConfig.NumberOfGAiterations,
-                        planningConfig.maxSelection,
-                        planningConfig.TreeRequired));
-                    planningConfig.TreeData = genetic.DecisionTree;
-                    break;
-            }
+            /*switch (planningConfig.SelectedAlgorithm)
+             {
+                 case PlanningModel.PlanningAlgorithm.BruteForce:
+                     var bruteForce = new BruteForceAlgorithm();
+                     result = await Task.Run<ProductionPlan>(
+                         async () => await bruteForce.Start(planningConfig.Extruders,
+                         planningConfig.Orders,
+                         new List<SliceLine>(),
+                         new Costs(),
+                         planningConfig.Criterion,
+                         new MondiObjectiveFunction(),
+                         planningConfig.TreeRequired));
+                     planningConfig.TreeData = bruteForce.DecisionTree;
+                     break;
+                 case PlanningModel.PlanningAlgorithm.Genetic:
+                     var genetic = new GeneticAlgorithm();
+                     result = await Task.Run<ProductionPlan>(
+                         async () => await genetic.Start(planningConfig.Extruders,
+                         planningConfig.Orders,
+                         new List<SliceLine>(),
+                         new Costs(),
+                         planningConfig.Criterion,
+                         new MondiObjectiveFunction(),
+                         planningConfig.maxPopulation,
+                         planningConfig.NumberOfGAiterations,
+                         planningConfig.maxSelection,
+                         planningConfig.TreeRequired));
+                     planningConfig.TreeData = genetic.DecisionTree;
+                     break;
+             } */
+            result = ProductionPlan.GetProductionPlan(planningConfig.Orders, planningConfig.Extruders, planningConfig.PlannedStartDate);
             if (planningConfig.TreeRequired)
             {
                 string treeDataJSON = "var treeDataJSON = [];\n";
@@ -313,7 +314,7 @@ namespace Optel2.Controllers
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
             ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2);
             double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
-            ViewBag.Result1 = GetTotalTime(requiredTime);
+            ViewBag.Result1 = GetTotalTime(requiredTime) + " | " + requiredTime;
             if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
             {
                 ViewBag.Error = true;
@@ -380,10 +381,10 @@ namespace Optel2.Controllers
         }
         public string GetTotalTime(double seconds)
         {
-            DateTime dt = DateTime.MinValue.AddSeconds(seconds);
-            int months = dt.Month - 1;
-            int days = dt.Day - 1;
-            string result = (months > 0 ? months.ToString() + " month(s), " : "") + (days > 0 ? days.ToString() + " day(s), " : "") + dt.ToString("H:mm:ss");
+            TimeSpan ts = TimeSpan.FromSeconds(seconds);
+            int months = 0;
+            int days = ts.Days;
+            string result = (months > 0 ? months.ToString() + " month(s), " : "") + (days > 0 ? days.ToString() + " day(s), " : "") + ts.ToString(@"hh\:mm\:ss");
             return result;
         }
 
