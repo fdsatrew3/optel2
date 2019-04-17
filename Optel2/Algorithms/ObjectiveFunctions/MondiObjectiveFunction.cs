@@ -13,7 +13,6 @@ namespace Algorithms.ObjectiveFunctions
     {
         public override ExecutionTimeAndCost GetExecutionTimeAndCost(Costs costs, Extruder Line, List<Order> Orders)
         {
-            double d = DateTimeToDouble(Line.ChangeOfThicknessTime);
             ExecutionTimeAndCost executionTimeAndCost = new ExecutionTimeAndCost();
             DateTime executionStart = MyLittleKostyl.startDate, executionEnd = MyLittleKostyl.endDate;
             double workTime = 0,
@@ -21,40 +20,32 @@ namespace Algorithms.ObjectiveFunctions
                     totalRetargetingTime = 0,
                     retargetingTime = 0;
             decimal workCost = 0;
-            FilmRecipe filmRecipe;
-
             // Есть заказы на линии.
             if (Orders.Count > 0)
             {
                 // Самый первый заказ.
-                totalWorkTime += DateTimeToDouble(Line.ChangeOfThicknessTime);
-                totalWorkTime += DateTimeToDouble(Line.WidthAdjustmentTime);
-                totalWorkTime += DateTimeToDouble(Line.StartupDelay);
-                filmRecipe = GetFilmRecipe(Orders[0]);
-                // Начнёт выполняться не раньше, чем линия перенастроится.
+                workTime = CalcOrderExecutionTime(Orders[0]);
                 Orders[0].PlanedStartDate = executionStart;
-                Orders[0].PlanedEndDate = executionStart.AddSeconds(totalWorkTime);
-                workTime = Convert.ToDouble(Orders[0].Rolls * Orders[0].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
-                Orders[0].PlanedEndDate.AddSeconds(workTime);
-                workCost += 3.23m;
+                Orders[0].PlanedEndDate = executionStart.AddSeconds(workTime);
                 //Extruder.StartupDelay + Extruder.ChangeofThickness(Order1, Order2) + Extruder.WidthAdj(Order1, Order2) + CalcRetargettingTIme(Order1, Order2) + (Order2.Rolls * Order2.width) / FilmRecipe.GetProductionSpeedByOrderCode(Order2)) 
 
                 //Orders[0].PlanedEndDate = Orders[0].PlanedStartDate.AddSeconds(DateTimeToDouble(Line.ChangeOfThicknessTime) + DateTimeToDouble(Line.WidthAdjustmentTime) + Convert.ToDecimal(Orders[0].Rolls * Orders[0].Width / filmRecipe.ProductionSpeed) * 60);
-
+                totalWorkTime += workTime;
                 // Прочие заказы.
                 if (Orders.Count > 1)
                 {
                     for (int i = 1; i < Orders.Count; i++)
                     {
-                        workTime = 0;
-
                         // Время перенастройки с предыдущего заказа на текущий.
                         retargetingTime = RetargetingTimeCalculator(Line, Orders[i - 1], Orders[i]);
 
                         // i-тый заказ начнёт выполняться не раньше, чем перенастроится линия (отсчёт с первого 
                         // заказа: totalWorkTime хранит как полезную работу, так и предыдущие перенастройки).
                         Orders[i].PlanedStartDate = Orders[i - 1].PlanedEndDate;
-                        workTime += Convert.ToDouble(Orders[i].Rolls * Orders[i].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
+                        // новый алгоритм 
+                        workTime = CalcOrderExecutionTime(Orders[i]);
+                        //старый алгоритм 
+                        //workTime += Convert.ToDouble(Orders[i].Rolls * Orders[i].Width / (filmRecipe.ProductionSpeed / 60)) + DateTimeToDouble(Line.WidthAdjustmentTime);
                         // Отсчёт завершения работы i-того заказа - от времени начала его завершения.
                         Orders[i].PlanedEndDate = Orders[i].PlanedStartDate.AddSeconds(retargetingTime + workTime);
 
@@ -63,7 +54,6 @@ namespace Algorithms.ObjectiveFunctions
 
                         // Аккумулируем общее время работы.
                         totalWorkTime += workTime + retargetingTime;
-                        workCost += 3.23m;
                     }
                 }
 
@@ -82,10 +72,15 @@ namespace Algorithms.ObjectiveFunctions
             return executionTimeAndCost;
         }
 
-        protected override float pRetargetingTimeCalculator(Extruder line, Order previousOrder, Order newOrder)
+        private double CalcOrderExecutionTime(Order order)
         {
-            float retargetingTime = 0;
-            return retargetingTime;
+            if(order.PredefinedTime != 0)
+            {
+                return order.PredefinedTime;
+            } else
+            {
+                return Convert.ToDouble(order.QuanityInRunningMeter / (order.FilmRecipe.ProductionSpeed / 60));
+            }
         }
 
         protected double DateTimeToDouble(DateTime date)
@@ -93,9 +88,10 @@ namespace Algorithms.ObjectiveFunctions
             return Convert.ToDouble(date.Hour * 3600 + date.Minute * 60 + date.Second);
         }
 
-        protected FilmRecipe GetFilmRecipe(Order order)
+        protected override float pRetargetingTimeCalculator(Extruder line, Order previousOrder, Order newOrder)
         {
-            return order.FilmRecipe;
+            // ?
+            return 0f;
         }
 
         protected double RetargetingTimeCalculator(Extruder line, Order previousOrder, Order newOrder)
@@ -106,7 +102,7 @@ namespace Algorithms.ObjectiveFunctions
 
             if (!$"{newOrder.Product}{newOrder.Width}".Equals($"{previousOrder.Product}{previousOrder.Width}"))
             {
-                FilmRecipe newRecipe = GetFilmRecipe(newOrder);
+                FilmRecipe newRecipe = newOrder.FilmRecipe;
 
                 ExtruderRecipeChange extruderRecipeChange = null;
                 ExtruderCoolingLipChange extruderCoolingLipChange = null;
@@ -114,7 +110,7 @@ namespace Algorithms.ObjectiveFunctions
                 ExtruderNozzleChange extruderNozzleChange = null;
                 for (int i = 0; i < line.ExtruderRecipeChange.Count; i++)
                 {
-                    if (line.ExtruderRecipeChange[i].From.Equals($"{GetFilmRecipe(previousOrder).Article}") && line.ExtruderRecipeChange[i].On.Equals($"{GetFilmRecipe(newOrder).Article}"))
+                    if (line.ExtruderRecipeChange[i].From.Equals($"{previousOrder.FilmRecipe.Article}") && line.ExtruderRecipeChange[i].On.Equals($"{newOrder.FilmRecipe.Article}"))
                     {
                         extruderRecipeChange = line.ExtruderRecipeChange[i];
                         break;
@@ -169,13 +165,12 @@ namespace Algorithms.ObjectiveFunctions
             // Изменение ширины плёнки.
             if (previousOrder.Width != newOrder.Width)
             {
+                retargetingTime += DateTimeToDouble(line.WidthAdjustmentTime);
+            }
+            if(previousOrder.FilmRecipe.Thickness != newOrder.FilmRecipe.Thickness)
+            {
                 retargetingTime += DateTimeToDouble(line.ChangeOfThicknessTime);
             }
-            else
-            {
-                retargetingTime += 0.33f;
-            }
-
             return retargetingTime;
         }
     }

@@ -311,9 +311,8 @@ namespace Optel2.Controllers
             }
             ViewBag.JsonString = GenerateJSON(result);
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
-            decimal temp = result.GetWorkSpending(new Costs(), planningConfig.Criterion, new MondiObjectiveFunction());
-            ViewBag.Result = Math.Round(temp, 2);
-            ViewBag.Result1 = GetTotalTime(Convert.ToDouble(temp));
+            ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2);
+            ViewBag.Result1 = GetTotalTime(Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction())));
             return View(planningConfig);
         }
 

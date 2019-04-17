@@ -99,6 +99,8 @@
 						@Html.DisplayFor(Model => Model.Orders[i].Rolls)
 						@Html.HiddenFor(Model => Model.Orders[i].Rolls)
 					</td>
+					@Html.HiddenFor(Model => Model.Orders[i].PredefinedTime)
+					@Html.HiddenFor(Model => Model.Orders[i].QuanityInRunningMeter)
 					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.Article)
 					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.CalibrationDiameter)
 					@Html.HiddenFor(Model => Model.Orders[i].FilmRecipe.CoolingLip)

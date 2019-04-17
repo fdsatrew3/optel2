@@ -30,7 +30,7 @@ namespace Optel2.Models
         [Display(Name = "Film recipe")]
         public Guid FilmRecipeId { get; set; }
         public FilmRecipe FilmRecipe { get; set; }
-        public DateTime? PredefinedTime { get; set; }
+        public int PredefinedTime { get; set; }
         [NotMapped]
         public bool Selected { get; set; }
         [NotMapped]
