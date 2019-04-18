@@ -294,7 +294,7 @@
 	<div id="gantt-switch-btn" style="position: absolute; margin-top: 10px;">
 		<a href="#" onclick="onSwitchButtonPress(true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show Gantt chart</div></a>
 	</div>
-	<div style="position: absolute; margin-top: -495px; margin-left: 94%;">
+	<div style="position: absolute; margin-top: -495px; margin-left: 94%; display: none;" id="krappaChartBtn">
 		<a href="#" onclick="onKrappaChartBrnPress()" class="btn btn-dark left-menu-btn"><div class="float-left">X</div></a>
 	</div>
 </div>
@@ -434,6 +434,7 @@
 					document.getElementById('wrapper').style.display = "none";
 					document.getElementById('krappa-chart').style.display = "block";
 					document.getElementById('krappa-chart').innerHTML = '';
+					document.getElementById('krappaChartBtn').style.display = "block";
 					var treeData12 = anychart.data.tree(treeDataJSON[$(this).attr('iter')], 'as-table');
 					// create resource gantt chart
 					var chart = anychart.ganttResource();
@@ -501,6 +502,7 @@
 		document.getElementById('wrapper').style.display = "block";
 		document.getElementById('krappa-chart').style.display = "none";
 		document.getElementById('gantt-switch-btn').style.marginTop = "510px";
+		document.getElementById('krappaChartBtn').style.display = "none";
 	}
 </script>
 
