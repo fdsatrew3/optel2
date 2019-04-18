@@ -43,7 +43,7 @@ namespace Algorithms.BruteForce
 
             if (this._needTree)
             {
-               // Tree = new List<ProductionPlan>();
+                // Tree = new List<ProductionPlan>();
                 DecisionTree = new List<Decision>();
             }
 
@@ -66,6 +66,21 @@ namespace Algorithms.BruteForce
             int[] _variations = new int[ordersToExecute.Count()];
 
             CreateListForce(0, ref _variations);
+
+            if (_needTree)
+            {
+                DecisionTree = DecisionTree.OrderByDescending(tree => tree.FunctionValue).ToList();
+                //optimalPlan = DecisionTree.OrderBy(tree => tree.FunctionValue).First().Plan;
+            }
+
+            if (extruderLines.Count == 1)
+            {
+                BestAlgoritm bestAlgoritm = new BestAlgoritm();
+                SelectedPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
+
+                if (_needTree)
+                    DecisionTree.Add(new Decision() { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+            }
 
             return SelectedPlan;
         }

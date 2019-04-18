@@ -184,6 +184,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\BestAlgoritm.cs" />
     <Compile Include="Algorithms\BruteForce\BruteForceAlgorithm.cs" />
     <Compile Include="Algorithms\Costs.cs" />
     <Compile Include="Algorithms\Decision.cs" />

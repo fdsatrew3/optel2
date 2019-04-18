@@ -250,10 +250,12 @@ namespace Optel2.Controllers
                     if ((i + 1) != planningConfig.TreeData.Count)
                     {
                         planningConfig.TreeData[i].Next = planningConfig.TreeData[i + 1];
+                        planningConfig.TreeData[i].Next.Iteration = i + 1;
                     }
                     planningConfig.TreeData[i].Iteration = i;
+                    Debug.WriteLine("Iter 1 = " + planningConfig.TreeData[i].Plan.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
                     treeDataJSON += "treeDataJSON.push(" + GenerateJSON(planningConfig.TreeData[i].Plan) + ");\n";
-                    Debug.WriteLine("Tree progress: " + i + "/" + planningConfig.TreeData.Count.ToString());
+                    //Debug.WriteLine("Tree progress: " + i + "/" + planningConfig.TreeData.Count.ToString());
                 }
                 /*
                 Debug.WriteLine("Tree count = " + planningConfig.TreeData.Count);
@@ -267,7 +269,7 @@ namespace Optel2.Controllers
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
             double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
             ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2).ToString() + " | " + requiredTime;
-            ViewBag.Result1 = GetTotalTime(requiredTime) + " | " + requiredTime;
+            ViewBag.Result1 = GetTotalTime(requiredTime);
             if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
             {
                 ViewBag.Error = true;

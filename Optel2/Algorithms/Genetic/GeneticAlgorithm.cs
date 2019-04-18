@@ -139,20 +139,12 @@ namespace GenetycAlgorithm
 
                     if (rand.Next(0, _maximumPropability) < _crossoverPropability)
                     {
-                        crossoverOperator.MadeCrossover(ref _populations, populationIndex);
-                        /*
-                        if (_isNeedTree)
-                            DecisionTree.Add(new Decision {Parent = _populations[populationIndex], Iteration = i + 1, Operation = Decision.OperationType.Crossover, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-                    */
+                        crossoverOperator.MadeCrossover(ref _populations, populationIndex);                        
                     }
 
                     if (rand.Next(0, _maximumPropability) < _mutationPropability)
                     {
-                        mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);
-                        /*
-                        if (_isNeedTree)
-                            DecisionTree.Add(new Decision {Parent = _populations[populationIndex], Iteration = i + 1, Operation  = Decision.OperationType.Mutation, Plan = _populations.Last(), FunctionValue = _populations.Last().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-                    */
+                        mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);                        
                     }
                 }
 
@@ -168,19 +160,36 @@ namespace GenetycAlgorithm
                         optimalPlan = _GetBestGens();
                     }
                 }
-                if (_isNeedTree)
-                {
-                    DecisionTree.Add(new Decision { Plan = optimalPlan, FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-                }
                 // Сохраняем только _maxPopulationsAmount популяций с текущей итерации.
                 _SaveOnlyBestPopulations();
 
                 _StagnationDefense(optimalPlan);
 
-                /*     if (_needTree)
-                         Tree.Add(new ProductionPlan(optimalPlan)); // добавляем в дерево решений текущий план
-                         */
+                if (_isNeedTree)
+                {
+                    if (DecisionTree.Count == 0)
+                        DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                    else if (!DecisionTree.Last().Plan.Equals(optimalPlan))
+                        DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                }
             }
+
+            ///
+            if (_isNeedTree)
+            {
+                DecisionTree = DecisionTree.OrderByDescending(tree => tree.FunctionValue).ToList();
+                //optimalPlan = DecisionTree.OrderBy(tree => tree.FunctionValue).First().Plan;
+            }
+
+            if (extruderLines.Count == 1)
+            {
+                BestAlgoritm bestAlgoritm = new BestAlgoritm();
+                optimalPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
+
+                if (_isNeedTree)
+                    DecisionTree.Add(new Decision() { Plan = optimalPlan, FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+            }
+            ///
 
             return optimalPlan;
         }
@@ -361,11 +370,6 @@ namespace GenetycAlgorithm
             {
                 _populations = _populations.OrderBy(spending => spending.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction)).ToList();
                 _populations = _populations.GetRange(0, _maxPopulationsAmount);
-
-      //          if (_isNeedTree)
-      //          {
-      //              DecisionTree.Add(new Decision { Plan = _populations.First(), FunctionValue = _populations.First().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-      //          }
             }
         }
 

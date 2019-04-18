@@ -391,7 +391,7 @@
 				var endDate = new Date(hoveredPeriod['end']).toUTCString();
 
 
-				return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate + '\n' + ((new Date(hoveredPeriod['end']) - new Date(hoveredPeriod['start'])) / 1000 + '\n' + hoveredPeriod['id'].split("┼", 3)[1] + '\n' + hoveredPeriod['id'].split("┼", 3)[2]);
+				return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate;
 			} else {
 				return 'No data under cursor.';
 			}

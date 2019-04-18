@@ -36,6 +36,29 @@ namespace Algorithms
         public enum OptimizationCriterion { Time, Cost }
         private ExecutionTimeAndCost _timeAndCost;
 
+        public ProductionPlan()
+        {
+            // ?
+        }
+
+        public ProductionPlan(ProductionPlan plan)
+        {
+            OrdersToLineConformity = new List<OrdersOnExtruderLine>();
+
+            for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
+            {
+                OrdersToLineConformity.Add(new OrdersOnExtruderLine());
+
+                OrdersToLineConformity.Last().Line = plan.OrdersToLineConformity[i].Line;
+                OrdersToLineConformity.Last().Orders = new List<Optel2.Models.Order>();
+
+                for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
+                {
+                    OrdersToLineConformity.Last().Orders.Add(plan.OrdersToLineConformity[i].Orders[j]);
+                }
+            }
+        }
+
         /// <summary>
         /// Возвращает объект типа float, хранящего данные о затратах согласно требуемому критерию.
         /// Также сохраняет полученные результаты в float MaxWorkTime, float RetargetingTime и float WorkCosts
