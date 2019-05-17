@@ -33,8 +33,6 @@ namespace Optel2.Models
         public int PredefinedTime { get; set; }
         public int PredefinedRetargetTime { get; set; }
         [NotMapped]
-        public string RetargetLog { get; set; }
-        [NotMapped]
         public bool Selected { get; set; }
         [NotMapped]
         internal DateTime PlanedStartDate { get; set; }

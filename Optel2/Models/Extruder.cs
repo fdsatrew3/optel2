@@ -30,12 +30,12 @@ namespace Optel2.Models
         public decimal WeightMax { get; set; }
         public decimal LengthMin { get; set; }
         public decimal LengthMax { get; set; }
-        [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true), Display(Name = "Time to adjust width")]
-        public DateTime WidthAdjustmentTime { get; set; }
-        [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true), Display(Name = "Time to change thickness")]
-        public DateTime ChangeOfThicknessTime { get; set; }
-        [DisplayFormat(DataFormatString = "{0:HH:mm:ss}", ApplyFormatInEditMode = true), Display(Name = "Startup delay")]
-        public DateTime StartupDelay { get; set; }
+        [Display(Name = "Time to adjust width")]
+        public int WidthAdjustmentTime { get; set; }
+        [Display(Name = "Time to change thickness")]
+        public int ChangeOfThicknessTime { get; set; }
+        [Display(Name = "Startup delay")]
+        public int StartupDelay { get; set; }
         [Display(Name = "Machine hour cost")]
         public decimal MachineHourCost { get; set; }
         public decimal WidthAdjustmentConsumption { get; set; }

@@ -127,7 +127,7 @@ namespace Optel2.Controllers
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
                     JObject period = new JObject();
-                    JProperty periodID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "┼" + plan.OrdersToLineConformity[i].Orders[j].RetargetLog + "┼" + plan.OrdersToLineConformity[i].Orders[j].PredefinedTime + "_" + plan.OrdersToLineConformity[i].Orders[j].PredefinedRetargetTime);
+                    JProperty periodID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "┼" + plan.OrdersToLineConformity[i].Orders[j].PredefinedTime + "_" + plan.OrdersToLineConformity[i].Orders[j].PredefinedRetargetTime);
                     JProperty startDate = new JProperty("start", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + ")");
                     JProperty endDate = new JProperty("end", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + ")");
                     period.Add(periodID);

@@ -2,6 +2,7 @@
 using Algorithms.ObjectiveFunctions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace Algorithms
         public decimal RetargetingTime { private set; get; }
         public decimal WorkCosts { private set; get; }
         public enum OptimizationCriterion { Time, Cost }
-        private ExecutionTimeAndCost _timeAndCost;
+        //private ExecutionTimeAndCost _timeAndCost;
 
         public ProductionPlan()
         {
