@@ -1,250 +1,7 @@
 ﻿@model Optel2.Models.PlanningModel
-
 @{
 	ViewBag.Title = "Planning results";
 }
-
-<style>
-	.anychart-credits-text {
-		display: none;
-	}
-
-	.anychart-credits-logo {
-		display: none;
-	}
-
-	#wrapper {
-		position: inherit;
-		height: 500px;
-	}
-
-	.branch-blank {
-		position: relative;
-		margin-left: 400px;
-	}
-
-	.branch {
-		position: relative;
-		margin-left: 400px;
-	}
-
-		.branch:before {
-			content: "";
-			width: 100px;
-			border-top: 2px solid black;
-			position: absolute;
-			left: -150px;
-			top: 50%;
-			margin-top: 0px;
-		}
-
-	.blank {
-		position: relative;
-		min-height: 60px;
-		border-left: 2px solid white;
-		left: -50px;
-	}
-
-	.entry {
-		position: relative;
-		/* position: absolute; */
-		min-height: 60px;
-	}
-
-		.entry:before {
-			content: "";
-			height: 100%;
-			border-left: 2px solid black;
-			position: absolute;
-			left: -50px;
-		}
-
-		.entry:after {
-			content: "";
-			width: 50px;
-			border-top: 2px solid black;
-			position: absolute;
-			left: -50px;
-			top: 50%;
-			margin-top: 1px;
-			/*border: 2px solid black;*/
-		}
-
-		.entry:first-child:before {
-			width: 10px;
-			height: 50%;
-			top: 50%;
-			margin-top: 2px;
-			border-radius: 10px 0 0 0;
-		}
-
-		.entry:first-child:after {
-			height: 10px;
-			border-radius: 10px 0 0 0;
-			/* border: 5px solid red; */
-		}
-
-		.entry:first-child {
-		}
-
-	.special:after {
-		height: 10px;
-		border-radius: 10px 0 0 0;
-		border-left: 2px solid black;
-	}
-
-	.special:before {
-		/*border: none;*/
-		/*content: "";*/
-		height: 30%;
-		border-left: 2px solid black;
-		top: 70%;
-		/*position: absolute;
-	left: -50px;
-	border: 2px solid orange;*/
-	}
-
-	.entry:last-child:before {
-		width: 10px;
-		height: 50%;
-		border-radius: 0 0 0 10px;
-		/* border: 5px solid red; */
-	}
-
-	.entry:last-child:after {
-		height: 10px;
-		border-top: none;
-		border-bottom: 2px solid black;
-		border-radius: 0 0 0 10px;
-		margin-top: -9px;
-	}
-
-	.entry.sole:before {
-		display: none;
-	}
-
-	.entry.sole:after {
-		width: 50px;
-		height: 0;
-		margin-top: 0px;
-		border-radius: 0;
-	}
-
-	.label {
-		display: block;
-		min-width: 250px;
-		padding: 5px 10px;
-		line-height: 20px;
-		text-align: center;
-		border: 2px solid black;
-		border-radius: 5px;
-		position: absolute;
-		left: 0;
-		top: 50%;
-		margin-top: -15px;
-	}
-
-	.top-button {
-		display: block;
-		min-width: 150px;
-		padding: 5px 10px;
-		line-height: 30px;
-		border: 2px solid yellow;
-		border-radius: 5px;
-		position: absolute;
-		left: 0;
-		top: 50%;
-		margin-top: -27px;
-		margin-left: 35px;
-	}
-
-	.ip:before {
-		content: "";
-		width: 10px;
-		border-right: 2px solid #eee9dc;
-		position: absolute;
-		top: 30px;
-		margin-top: 1px;
-		height: 50px;
-	}
-
-	.ip {
-		margin-top: -110px;
-		position: absolute;
-		z-index: -1;
-	}
-
-	.bottom-button {
-		display: block;
-		min-width: 150px;
-		padding: 5px 10px;
-		line-height: 30px;
-		border: 2px solid green;
-		border-radius: 25px;
-		position: absolute;
-		left: 0;
-		top: 50%;
-		margin-top: 19px;
-		margin-left: 35px;
-	}
-
-	.mp {
-		margin-top: 60px;
-		position: absolute;
-		z-index: 2;
-		background: red;
-		/* line-height: 20px; */
-	}
-
-		.mp:before {
-			content: "";
-			width: 10px;
-			border-right: 2px solid #eee9dc;
-			position: absolute;
-			top: -32px;
-			margin-top: 1px;
-			height: 30px;
-		}
-
-	/*We will apply the hover effect the the lineage of the element also*/
-	/*, .tree li a:hover+ul li a*/
-	.entry span:hover, .entry span:hover + div span, .label:hover {
-		background: #c8e4f8;
-		color: #000;
-		border: 1px solid #94a0b4;
-	}
-		/*Connector styles on hover FIX THIS*/
-		/*.tree li a:hover+ul li::after, */
-		.entry span:hover + div span::after,
-		/*.tree li a:hover+ul li::before, */
-		.entry span:hover + div span::after,
-		/*.tree li a:hover+ul::before, */
-		.entry span:hover + div::before,
-		/*.tree li a:hover+ul ul::before*/
-		.entry span:hover + span::before {
-			border-color: #000;
-		}
-
-	/*FROM BRYAN*/
-	.hasMore {
-		border: 2px red solid !important;
-	}
-
-	.title {
-		padding-left: 50px;
-		white-space: nowrap;
-	}
-
-	#L100000, #L200000, #L300000 {
-		top: -20px;
-		position: absolute;
-	}
-
-	#root {
-		margin-top: -6px;
-	}
-</style>
-<div id="ganttChart">
 	@{
 		if (ViewBag.Error)
 		{
@@ -256,257 +13,63 @@
 		}
 		else
 		{
-			<div id="container"></div>
-			<div class="form-group">
-				<div class="row">
-					<div class="col-auto" style="margin-top: 8px;">
-						@{
-							if (ViewBag.Criteria == "Cost")
-							{
-								<div>Required currency to execute plan: @ViewBag.Result$</div>
-							}
-							else
-							{
-								<div>Required time to execute plan: @ViewBag.Result1 </div>
-							}
-						}
-					</div>
-					@if (Model.TreeRequired)
-					{
-						<div class="col-auto float-right">
-							<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
-						</div>
-					}
-				</div>
-			</div>
-							}
+			<div id="gantt-chart-container" style="width: 100%; height:100%;"></div>
+		}
 	}
-</div>
-<div id="decisionTree" style="display: none; ">
-	<div id="wrapper" style="width: 100%; position: absolute; overflow: scroll; margin-top: 0px;" class="dragscroll">
-		<div class="branch" style="margin-left:150px;">
-			@Html.Raw(ViewBag.DecisionTreeString)
-		</div>
-	</div>
-	<div id="krappa-chart" style="width: 98%; height: 500px;">
 
-	</div>
-	<div id="gantt-switch-btn" style="position: absolute; margin-top: 10px;">
-		<a href="#" onclick="onSwitchButtonPress(true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show Gantt chart</div></a>
-	</div>
-	<div style="position: absolute; margin-top: -495px; margin-left: 94%; display: none;" id="krappaChartBtn">
-		<a href="#" onclick="onKrappaChartBrnPress()" class="btn btn-dark left-menu-btn"><div class="float-left">X</div></a>
-	</div>
-</div>
-<!--
 <script>
-	function init() {
-		$(".toggleable").on("click", function () {
-			if (this.nextElementSibling) {
-				var next_branch = $(this).nextAll(".branch");
-				next_branch.toggle();
-				$(this).toggleClass("hasMore");
-				if ($(this).attr('id') == 'root') {
-					if ($(this).css("margin-top") == "25px") {
-						$(this).css("margin-top", "-7px");
-					} else {
-						$(this).css("margin-top", "25px");
-					};
-				};
-			}
-		});
-
-		$(".top-button").on("click", function () {
-			if (this.nextElementSibling) {
-				if ($(this.nextElementSibling).css('display') == "none") {
-					$("<div class='blank'><span></span></div>").insertBefore($(this).parent());
-					$('.top-button').parent().removeClass('special');
-				} else {
-					$(this).parent().siblings('.blank').slideUp(600);
-					$('.top-button').parent().addClass('special');
-				}
-				$(this.nextElementSibling).slideToggle(600);
-			};
-		});
-
-		$(".bottom-button").on("click", function () {
-			if ($(this.nextElementSibling).css('display') == "none") {
-				$("<div class='blank'><span></span></div>").insertAfter($(this).parent());
-			} else {
-				// remove inserted stuff
-				$('.blank').slideUp(500);
-			}
-			$(this.nextElementSibling).slideToggle(600);
-		});
-	}
-
-</script> -->
-
-<script type="text/javascript">
-	var ganntChart, decisionTree;
-
-	function onSwitchButtonPress(chart) {
-		ganntChart.style.display = chart ? "block" : "none";
-		decisionTree.style.display = chart ? "none" : "block";
-	}
-
-	anychart.onDocumentReady(function () {
-		init();
-		ganntChart = document.getElementById('ganttChart');
-		decisionTree = document.getElementById('decisionTree');
-		// create data tree
-		var treeData = anychart.data.tree(@Html.Raw(ViewBag.JsonString), 'as-table');
-		console.log(@Html.Raw(ViewBag.JsonString));
-		// create resource gantt chart
-		var chart = anychart.ganttResource();
-			// set data for the chart
-			chart.data(treeData);
-		chart.dataGrid().rowOddFill('#fff');
-		chart.dataGrid().rowEvenFill('#fff');
-		chart.getTimeline().rowOddFill('#fff');
-		chart.getTimeline().rowEvenFill('#fff');
-		chart.splitterPosition(150);
-		var scale = chart.xScale();
-		scale.minimum(Date.UTC(@(Model.PlannedStartDate.Year), @(Model.PlannedStartDate.Month-1), @(Model.PlannedStartDate.Day)));
-		scale.maximum(Date.UTC(@(Model.PlannedEndDate.Year), @(Model.PlannedEndDate.Month-1), @(Model.PlannedEndDate.Day)));
-		var timeline = chart.getTimeline();
-
-		// getting timeline's tooltip
-		var tlTooltip = timeline.tooltip();
-
-		tlTooltip.titleFormat(function () {
-			return this['name'];
-		});
-
-		tlTooltip.format(function () {
-			var hoveredPeriod = this['period'];
-
-			if (hoveredPeriod) {
-				var hoveredPeriodIndex = this['periodIndex'] + 1;
-
-				// Getting period object's fields.
-				var startDate = new Date(hoveredPeriod['start']).toUTCString();
-
-				// Getting period object's field.
-				var endDate = new Date(hoveredPeriod['end']).toUTCString();
-
-
-				return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate;
-			} else {
-				return 'No data under cursor.';
-			}
-		});
-
-
-			// get chart data grid link to set column settings
-			var dataGrid = chart.dataGrid();
-
-			// set first column settings
-			dataGrid.column(0)
-                .title('#')
-                .width(30)
-                .labels({hAlign: 'center'});
-
-        // set second column settings
-        dataGrid.column(1)
-                .title('Extruder')
-                .width(120);
-
-			// set container id for the chart
-			chart.container('container');
-        // initiate chart drawing
-        chart.draw();
-		document.getElementById('container').style.height = "500px";
+	var chart, mainPage, leftPage;
+	$(document).ready(function () {
+		chart = document.getElementById("gantt-chart-container");
+		mainPage = document.getElementById("main-page");
+		leftPage = document.getElementById("left-page");
+		fixGanntChart(null);
 	});
+
+	$(window).on('resize', fixGanntChart);
+
+	function fixGanntChart(event) {
+		var margin = 65;
+		var width = mainPage.clientWidth - leftPage.clientWidth - margin;
+		chart.style.width = width +"px";
+	}
 </script>
 
 <script>
-	@{
-	if (Model.TreeRequired) {
-	@Html.Raw(ViewBag.DecisionTreeElementsJSON)
-	@Html.Raw("console.log(treeDataJSON)")
-	}
-	}
-			// Shit to make all shit fucking shit ...
-			// Показ диаграммы ганта при клике на блок
-			function init() {
-		$(".toggleable").on("click", function () {
-					document.getElementById('wrapper').style.display = "none";
-					document.getElementById('krappa-chart').style.display = "block";
-					document.getElementById('krappa-chart').innerHTML = '';
-					document.getElementById('krappaChartBtn').style.display = "block";
-					var treeData12 = anychart.data.tree(treeDataJSON[$(this).attr('iter')], 'as-table');
-					// create resource gantt chart
-					var chart = anychart.ganttResource();
-					// set data for the chart
-					chart.data(treeData12);
-					chart.dataGrid().rowOddFill('#fff');
-					chart.dataGrid().rowEvenFill('#fff');
-					chart.getTimeline().rowOddFill('#fff');
-					chart.getTimeline().rowEvenFill('#fff');
-					chart.splitterPosition(150);
-					var scale = chart.xScale();
-					scale.minimum(Date.UTC(@(Model.PlannedStartDate.Year), @(Model.PlannedStartDate.Month-1), @(Model.PlannedStartDate.Day)));
-					scale.maximum(Date.UTC(@(Model.PlannedEndDate.Year), @(Model.PlannedEndDate.Month-1), @(Model.PlannedEndDate.Day)));
-					var timeline = chart.getTimeline();
-
-					// getting timeline's tooltip
-					var tlTooltip = timeline.tooltip();
-
-					tlTooltip.titleFormat(function () {
-						return this['name'];
-					});
-
-			tlTooltip.format(function () {
-				var hoveredPeriod = this['period'];
-
-				if (hoveredPeriod) {
-					var hoveredPeriodIndex = this['periodIndex'] + 1;
-
-					// Getting period object's fields.
-					var startDate = new Date(hoveredPeriod['start']).toUTCString();
-
-					// Getting period object's field.
-					var endDate = new Date(hoveredPeriod['end']).toUTCString();
-
-					return 'Order: ' + hoveredPeriod['id'].split("_", 2)[0] + '\nStart date: ' + startDate + '\nEnd date: ' + endDate;
-				} else {
-					return 'No data under cursor.';
+	gantt.config.fit_tasks = true;
+	gantt.config.date_grid = "%d.%m.%Y %H:%i:%s";
+	gantt.config.xml_date = "%d.%m.%Y %H:%i:%s";
+	gantt.init("gantt-chart-container");
+	gantt.parse(
+		{
+			"data": [
+				{
+					"id": "1", "text": "Project #2", "start_date": "01-04-2013", "duration": 18,
+					"progress": 0.4, "open": true
+				},
+				{
+					"id": "2", "text": "Task #1", "start_date": "02-04-2013", "duration": 8,
+					"progress": 0.6, "parent": "1"
+				},
+				{
+					"id": "3", "text": "Task #2", "start_date": "11-04-2013", "duration": 8,
+					"progress": 0.6, "parent": "1"
 				}
-			});
-
-
-			// get chart data grid link to set column settings
-			var dataGrid = chart.dataGrid();
-
-			// set first column settings
-			dataGrid.column(0)
-				.title('#')
-				.width(30)
-				.labels({hAlign: 'center'});
-
-			// set second column settings
-			dataGrid.column(1)
-					.title('Extruder')
-					.width(120);
-
-			// set container id for the chart
-			chart.container('krappa-chart');
-			// initiate chart drawing
-			chart.draw();
-			chart.d
+			],
+			"links": [
+				{ "id": "1", "source": "1", "target": "2", "type": "1" },
+				{ "id": "2", "source": "2", "target": "3", "type": "0" },
+				{ "id": "3", "source": "3", "target": "4", "type": "0" },
+				{ "id": "4", "source": "2", "target": "5", "type": "2" }
+			]
 		});
-	}
-
-	function onKrappaChartBrnPress() {
-		document.getElementById('wrapper').style.display = "block";
-		document.getElementById('krappa-chart').style.display = "none";
-		document.getElementById('gantt-switch-btn').style.marginTop = "510px";
-		document.getElementById('krappaChartBtn').style.display = "none";
-	}
 </script>
 
 @section Scripts {
-	@Scripts.Render("~/bundles/anychart")
+	@Scripts.Render("~/bundles/ganttchart")
 	@Scripts.Render("~/bundles/dragscroll")
+}
+
+@section Styles {
+	@Styles.Render("~/bundles/ganttchart/css")
 }

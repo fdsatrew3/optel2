@@ -76,7 +76,7 @@ namespace Algorithms
                 }
                 if(curTime > maxTime)
                 {
-                    maxTime = curTime;
+                    maxTime = OrdersToLineConformity[i].CalculateExecutionTimeAndCost(costs, objectiveFunction).ExecutionTime; //curTime;
                 }
                 curTime = 0;
                 executionCost += OrdersToLineConformity[i].CalculateExecutionTimeAndCost(costs, objectiveFunction).ExecutionCost;
@@ -161,7 +161,7 @@ namespace Algorithms
 
             for (int i = 0; i < ordersNum.Length; i++)
             {
-                productionPlan.OrdersToLineConformity[0].Orders.Add(orders.Where(order => order.OrderNumber.Equals(ordersNum[i].ToString())).First());
+                productionPlan.OrdersToLineConformity[0].Orders.Add(orders.Where(order => order.OrderNumber.Equals(ordersNum[i].ToString())).First());/*
                 if (i == 0)
                 {
                     productionPlan.OrdersToLineConformity[0].Orders[i].PlanedStartDate = plannedStartDate;
@@ -171,7 +171,7 @@ namespace Algorithms
                 {
                     productionPlan.OrdersToLineConformity[0].Orders[i].PlanedStartDate = productionPlan.OrdersToLineConformity[0].Orders[i - 1].PlanedEndDate;
                     productionPlan.OrdersToLineConformity[0].Orders[i].PlanedEndDate = productionPlan.OrdersToLineConformity[0].Orders[i].PlanedStartDate.AddSeconds(productionPlan.OrdersToLineConformity[0].Orders[i].PredefinedTime).AddSeconds(productionPlan.OrdersToLineConformity[0].Orders[i].PredefinedRetargetTime);
-                }
+                }*/
             }
 
             return productionPlan;

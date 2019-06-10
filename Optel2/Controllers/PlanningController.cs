@@ -107,80 +107,44 @@ namespace Optel2.Controllers
             return View(planningModel);
         }
 
-        public string DateTimeToDateUTC(DateTime dt)
-        {
-            return dt.Year + ", " + (dt.Month - 1) + ", " + dt.Day + ", " + dt.Hour + ", " + dt.Minute + ", " + dt.Second;
-        }
-
         public string GenerateJSON(ProductionPlan plan)
         {
-            JArray lineContainer = new JArray();
+            JObject jsonContainer = new JObject();
+            JArray dataContainer = new JArray();
             int id = 1;
             for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
             {
                 JObject line = new JObject();
                 JProperty lineID = new JProperty("id", id);
-                JProperty lineName = new JProperty("name", plan.OrdersToLineConformity[i].Line.Name);
+                JProperty lineName = new JProperty("text", plan.OrdersToLineConformity[i].Line.Name);
+                JProperty lineOpen = new JProperty("open", true);
+                JProperty lineStartDate = new JProperty("start_date", plan.OrdersToLineConformity[i].Orders[0].PlanedStartDate.ToString("dd.MM.yyyy HH:mm:ss"));
+                JProperty lineEndDate = new JProperty("end_date", plan.OrdersToLineConformity[i].Orders[plan.OrdersToLineConformity[i].Orders.Count-1].PlanedEndDate.ToString("dd.MM.yyyy HH:mm:ss"));
                 line.Add(lineID);
                 line.Add(lineName);
-                JArray periods = new JArray();
+                line.Add(lineOpen);
+                line.Add(lineStartDate);
+                line.Add(lineEndDate);
+                dataContainer.Add(line);
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
-                    JObject period = new JObject();
-                    JProperty periodID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + j + "┼" + plan.OrdersToLineConformity[i].Orders[j].PredefinedTime + "_" + plan.OrdersToLineConformity[i].Orders[j].PredefinedRetargetTime);
-                    JProperty startDate = new JProperty("start", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate) + ")");
-                    JProperty endDate = new JProperty("end", "Date.UTC(" + DateTimeToDateUTC(plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate) + ")");
-                    period.Add(periodID);
-                    period.Add(startDate);
-                    period.Add(endDate);
-                    JProperty stroke, angle, color1, pos1, color2, pos2, color3, pos3, fill;
-                    JArray keys = new JArray();
-                    JObject key1 = new JObject(), key2 = new JObject(), key3 = new JObject(), fill1 = new JObject();
-                    fill = new JProperty("fill", fill1);
-                    if (j % 2 == 0)
-                    {
-                        stroke = new JProperty("stroke", "#B8AA96");
-                        angle = new JProperty("angle", "90");
-                        color1 = new JProperty("color", "#CFC0A9");
-                        pos1 = new JProperty("position", "0");
-                        color2 = new JProperty("color", "#E6D5BC");
-                        pos2 = new JProperty("position", "0.38");
-                        color3 = new JProperty("color", "#E8D9C3");
-                        pos3 = new JProperty("position", "1");
-                    }
-                    else
-                    {
-                        stroke = new JProperty("stroke", "#9B9292");
-                        angle = new JProperty("angle", "90");
-                        color1 = new JProperty("color", "#AFA4A4");
-                        pos1 = new JProperty("position", "0");
-                        color2 = new JProperty("color", "#C2B6B6");
-                        pos2 = new JProperty("position", "0.38");
-                        color3 = new JProperty("color", "#C8BDBD");
-                        pos3 = new JProperty("position", "1");
-                    }
-                    fill1.Add(angle);
-                    key1.Add(color1);
-                    key1.Add(pos1);
-                    key2.Add(color2);
-                    key2.Add(pos2);
-                    key3.Add(color3);
-                    key3.Add(pos3);
-                    keys.Add(key1);
-                    keys.Add(key2);
-                    keys.Add(key3);
-                    fill1["keys"] = keys;
-                    period.Add(stroke);
-                    period.Add(fill);
-                    periods.Add(period);
+                    JObject order = new JObject();
+                    JProperty orderID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + "_" + j);
+                    JProperty orderName = new JProperty("text", plan.OrdersToLineConformity[i].Orders[j].OrderNumber);
+                    JProperty orderStartDate = new JProperty("start_date", plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate.ToString("dd.MM.yyyy HH:mm:ss"));
+                    JProperty orderEndDate = new JProperty("end_date", plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate.ToString("dd.MM.yyyy HH:mm:ss"));
+                    JProperty orderParent = new JProperty("parent", id);
+                    order.Add(orderID);
+                    order.Add(orderName);
+                    order.Add(orderStartDate);
+                    order.Add(orderEndDate);
+                    order.Add(orderParent);
+                    dataContainer.Add(order);
                 }
-                line["periods"] = periods;
-                lineContainer.Add(line);
                 id++;
             }
-            // Костыль чтобы график заработал. GL HF.
-            string json = lineContainer.ToString().Replace("\"start\": \"Date.UTC", "\"start\": Date.UTC").Replace("\"end\": \"Date.UTC", "\"end\": Date.UTC").Replace(")\",", "),");
-            return json;
+            jsonContainer["data"] = dataContainer;
+            return jsonContainer.ToString();
         }
 
         public async Task<ActionResult> Result(PlanningModel planningConfig)
@@ -196,14 +160,6 @@ namespace Optel2.Controllers
             MyLittleKostyl.startDate = planningConfig.PlannedStartDate;
             MyLittleKostyl.endDate = planningConfig.PlannedEndDate;
             ProductionPlan result = new ProductionPlan();
-            /*result.OrdersToLineConformity = new List<OrdersOnExtruderLine>() { new OrdersOnExtruderLine() };
-            result.OrdersToLineConformity[0].Line = planningConfig.Extruders[0];
-            result.OrdersToLineConformity[0].Orders = new List<Order> { planningConfig.Orders[0], planningConfig.Orders[1] };
-            result.OrdersToLineConformity[0].Orders[0].PlanedStartDate = DateTime.Now;
-            result.OrdersToLineConformity[0].Orders[0].PlanedEndDate = DateTime.Now.AddDays(4);
-            result.OrdersToLineConformity[0].Orders[1].PlanedStartDate = result.OrdersToLineConformity[0].Orders[0].PlanedEndDate.AddDays(1);
-            result.OrdersToLineConformity[0].Orders[1].PlanedEndDate = result.OrdersToLineConformity[0].Orders[1].PlanedStartDate.AddHours(4);
-            */
             planningConfig.maxPopulation = planningConfig.Orders.Count;
             planningConfig.maxSelection = planningConfig.Orders.Count;
             planningConfig.NumberOfGAiterations = planningConfig.Orders.Count / 2;
@@ -255,21 +211,14 @@ namespace Optel2.Controllers
                     planningConfig.TreeData[i].Iteration = i;
                     Debug.WriteLine("Iter 1 = " + planningConfig.TreeData[i].Plan.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
                     treeDataJSON += "treeDataJSON.push(" + GenerateJSON(planningConfig.TreeData[i].Plan) + ");\n";
-                    //Debug.WriteLine("Tree progress: " + i + "/" + planningConfig.TreeData.Count.ToString());
                 }
-                /*
-                Debug.WriteLine("Tree count = " + planningConfig.TreeData.Count);
-                Debug.WriteLine("Dec with mutation = " + planningConfig.TreeData.Count(x => x.Operation == Decision.OperationType.Mutation));
-                Debug.WriteLine("Dec with crossover = " + planningConfig.TreeData.Count(x => x.Operation == Decision.OperationType.Crossover));
-                */
                 ViewBag.DecisionTreeElementsJSON = treeDataJSON;
                 ViewBag.DecisionTreeString = GenerateDecisionTreeHTML(planningConfig);
             }
             ViewBag.JsonString = GenerateJSON(result);
+            Debug.Print(GenerateJSON(result));
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
             double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
-            ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2).ToString() + " | " + requiredTime;
-            ViewBag.Result1 = GetTotalTime(requiredTime);
             if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
             {
                 ViewBag.Error = true;
@@ -277,6 +226,14 @@ namespace Optel2.Controllers
             else
             {
                 ViewBag.Error = false;
+                if (planningConfig.Criterion == OptimizationCriterion.Cost)
+                {
+                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2);
+                }
+                else
+                {
+                    ViewBag.Result = GetTotalTime(requiredTime);
+                }
             }
             return View(planningConfig);
         }

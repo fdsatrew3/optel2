@@ -23,9 +23,8 @@ namespace Optel2
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/anychart").Include(
-                      "~/Scripts/anychart-core.min.js",
-                      "~/Scripts/anychart-gantt.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/ganttchart").Include(
+                      "~/Scripts/dhtmlxgantt.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/dragscroll").Include(
                       "~/Scripts/dragscroll.js"));
@@ -39,6 +38,9 @@ namespace Optel2
 
             bundles.Add(new StyleBundle("~/bundles/jquerypaginate/css").Include(
                        "~/Content/jquery.paginate.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/ganttchart/css").Include(
+                       "~/Content/dhtmlxgantt.css"));
         }
     }
 }

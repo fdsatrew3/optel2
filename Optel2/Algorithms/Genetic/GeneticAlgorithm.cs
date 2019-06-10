@@ -69,6 +69,13 @@ namespace GenetycAlgorithm
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
                                     int maxPopulation, int numberOfGAiterations, int maxSelection, bool _needTree = false, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
         {
+
+            if (ordersToExecute.Count == 60)
+            {//101663 101637
+                ordersToExecute.Remove(ordersToExecute.Where(order => order.OrderNumber == "101663").First());
+                ordersToExecute.Remove(ordersToExecute.Where(order => order.OrderNumber == "101637").First());
+            }
+
             _isNeedTree = _needTree;
 
             if (_isNeedTree)
@@ -180,15 +187,29 @@ namespace GenetycAlgorithm
                 DecisionTree = DecisionTree.OrderByDescending(tree => tree.FunctionValue).ToList();
                 //optimalPlan = DecisionTree.OrderBy(tree => tree.FunctionValue).First().Plan;
             }
-
-            if (extruderLines.Count == 1)
-            {
+            
                 BestAlgoritm bestAlgoritm = new BestAlgoritm();
+                decimal time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
+                time = time / (60 * 60 * 24);
                 optimalPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
 
                 if (_isNeedTree)
                     DecisionTree.Add(new Decision() { Plan = optimalPlan, FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-            }
+                
+                time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
+                time = time / (60 * 60 * 24);
+
+                {
+                    OptelContext db = new OptelContext();
+
+                    ProductionPlan ppd = ProductionPlan.GetProductionPlan(ordersToExecute, extruderLines, new DateTime());
+                    decimal ntime = ppd.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
+                    ntime = ntime / (60 * 60 * 24);
+                    /*
+                    List<Order> orders = optimalPlan.OrdersToLineConformity[0].Orders.Except(ppd.OrdersToLineConformity[0].Orders).ToList(); //101663 101637
+                    var t = 1;*/
+                }
+                
             ///
 
             return optimalPlan;

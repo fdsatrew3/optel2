@@ -73,14 +73,11 @@ namespace Algorithms.BruteForce
                 //optimalPlan = DecisionTree.OrderBy(tree => tree.FunctionValue).First().Plan;
             }
 
-            if (extruderLines.Count == 1)
-            {
-                BestAlgoritm bestAlgoritm = new BestAlgoritm();
-                SelectedPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
+            BestAlgoritm bestAlgoritm = new BestAlgoritm();
+            SelectedPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
 
-                if (_needTree)
-                    DecisionTree.Add(new Decision() { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-            }
+            if (_needTree)
+                DecisionTree.Add(new Decision() { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
 
             return SelectedPlan;
         }

@@ -64,8 +64,8 @@
 			@Html.Partial("_LoginPartial")
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-auto left-page">
+	<div class="row" id="main-page">
+		<div class="col-auto left-page" id="left-page">
 			@if (Request.IsAuthenticated)
 			{
 				<a href="/ExtruderCalibrationChanges/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/calibration-data.png" width="32" height="32">&nbsp;Extruder calibration data</div></a>
@@ -89,7 +89,7 @@
 				<a href="/Planning/Config" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/favicon.png" width="32" height="32">&nbsp;Planning</div></a>
 			}
 		</div>
-		<div class="col right-page">
+		<div class="col right-page" id="right-page">
 			@RenderBody()
 		</div>
 	</div>
