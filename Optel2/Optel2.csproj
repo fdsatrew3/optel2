@@ -198,7 +198,6 @@
     <Compile Include="Algorithms\OrdersOnExtruderLine.cs" />
     <Compile Include="Algorithms\ProductionPlan.cs" />
     <Compile Include="Controllers\PlanningController.cs" />
-    <Compile Include="DestoyThisPls\MyLittleKostyl.cs" />
     <Compile Include="Models\PlanningModel.cs" />
     <Compile Include="Models\SliceLine.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -304,7 +303,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\dhtmlxgantt.js" />
-    <Content Include="Scripts\dragscroll.js" />
+    <Content Include="Scripts\dhtmlxgantt_tooltip.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery.paginate.js" />
     <Content Include="Scripts\jquery.timepicker.js" />

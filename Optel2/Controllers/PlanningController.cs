@@ -3,8 +3,6 @@ using Algorithms.BruteForce;
 using Algorithms.ObjectiveFunctions;
 using GenetycAlgorithm;
 using Newtonsoft.Json.Linq;
-using Optel2.Algorithms;
-using Optel2.DestoyThisPls;
 using Optel2.Models;
 using Optel2.Utils;
 using System;
@@ -60,7 +58,8 @@ namespace Optel2.Controllers
             {
                 sortedOrders = planningConfig.Orders.ToList();
                 sortedExtruders = planningConfig.Extruders.Where(extruder => extruder.Name == "MEX 08").ToList();
-            } else
+            }
+            else
             {
                 sortedOrders = planningConfig.Orders.Where(order => order.Selected == true).ToList();
                 sortedExtruders = planningConfig.Extruders.Where(extruder => extruder.Selected == true).ToList();
@@ -101,9 +100,9 @@ namespace Optel2.Controllers
             algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.Genetic.ToString(), Value = PlanningModel.PlanningAlgorithm.Genetic.ToString() });
             algorithmDropDownList.Add(new SelectListItem() { Text = PlanningModel.PlanningAlgorithm.BruteForce.ToString(), Value = PlanningModel.PlanningAlgorithm.BruteForce.ToString() });
             ViewBag.Algorithms = algorithmDropDownList;
-            planningModel.NumberOfGAiterations = 7;
-            planningModel.maxPopulation = 10;
-            planningModel.maxSelection = 10;
+           // planningModel.NumberOfGAiterations = 7;
+          //  planningModel.maxPopulation = 10;
+          //  planningModel.maxSelection = 10;
             return View(planningModel);
         }
 
@@ -111,39 +110,105 @@ namespace Optel2.Controllers
         {
             JObject jsonContainer = new JObject();
             JArray dataContainer = new JArray();
+            JArray linksContainer = new JArray();
             int id = 1;
             for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
             {
                 JObject line = new JObject();
-                JProperty lineID = new JProperty("id", id);
-                JProperty lineName = new JProperty("text", plan.OrdersToLineConformity[i].Line.Name);
+                JProperty lineID = new JProperty("id", "line_" + id);
+                JProperty lineName = new JProperty("text", "Line " + plan.OrdersToLineConformity[i].Line.Name);
                 JProperty lineOpen = new JProperty("open", true);
                 JProperty lineStartDate = new JProperty("start_date", plan.OrdersToLineConformity[i].Orders[0].PlanedStartDate.ToString("dd.MM.yyyy HH:mm:ss"));
-                JProperty lineEndDate = new JProperty("end_date", plan.OrdersToLineConformity[i].Orders[plan.OrdersToLineConformity[i].Orders.Count-1].PlanedEndDate.ToString("dd.MM.yyyy HH:mm:ss"));
+                JProperty lineEndDate = new JProperty("end_date", plan.OrdersToLineConformity[i].Orders[plan.OrdersToLineConformity[i].Orders.Count - 1].PlanedEndDate.ToString("dd.MM.yyyy HH:mm:ss"));
+                JProperty lineEditable = new JProperty("editable", false);
+                JProperty lineReadonly = new JProperty("readonly", true);
                 line.Add(lineID);
                 line.Add(lineName);
                 line.Add(lineOpen);
                 line.Add(lineStartDate);
                 line.Add(lineEndDate);
+                line.Add(lineEditable);
+                line.Add(lineReadonly);
                 dataContainer.Add(line);
                 for (int j = 0; j < plan.OrdersToLineConformity[i].Orders.Count; j++)
                 {
                     JObject order = new JObject();
-                    JProperty orderID = new JProperty("id", plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + "_" + j);
-                    JProperty orderName = new JProperty("text", plan.OrdersToLineConformity[i].Orders[j].OrderNumber);
+                    JProperty orderID = new JProperty("id", "order_" + plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + "_" + j);
+                    JProperty orderName = new JProperty("text", "Order " + plan.OrdersToLineConformity[i].Orders[j].OrderNumber);
                     JProperty orderStartDate = new JProperty("start_date", plan.OrdersToLineConformity[i].Orders[j].PlanedStartDate.ToString("dd.MM.yyyy HH:mm:ss"));
                     JProperty orderEndDate = new JProperty("end_date", plan.OrdersToLineConformity[i].Orders[j].PlanedEndDate.ToString("dd.MM.yyyy HH:mm:ss"));
-                    JProperty orderParent = new JProperty("parent", id);
+                    JProperty orderParent = new JProperty("parent", "line_" + id);
+                    JProperty orderEditable = new JProperty("editable", false);
+                    JProperty orderReadonly = new JProperty("readonly", true);
                     order.Add(orderID);
                     order.Add(orderName);
                     order.Add(orderStartDate);
                     order.Add(orderEndDate);
                     order.Add(orderParent);
+                    order.Add(orderEditable);
+                    order.Add(orderReadonly);
                     dataContainer.Add(order);
                 }
                 id++;
             }
             jsonContainer["data"] = dataContainer;
+            for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
+            {
+                if (plan.OrdersToLineConformity[i].Orders.Count > 0)
+                {
+                    JObject link = new JObject();
+                    JProperty linkID = new JProperty("id", "link_" + i + "_line");
+                    JProperty linkSource = new JProperty("source", "line_" + i);
+                    JProperty linkTarget = new JProperty("target", "order_" + plan.OrdersToLineConformity[i].Orders[0].OrderNumber + "_" + i + "_0");
+                    int start_to_start = 1;
+                    JProperty linkType = new JProperty("type", start_to_start);
+                    JProperty linkEditable = new JProperty("editable", false);
+                    JProperty linkReadonly = new JProperty("readonly", true);
+                    link.Add(linkID);
+                    link.Add(linkSource);
+                    link.Add(linkTarget);
+                    link.Add(linkType);
+                    link.Add(linkEditable);
+                    link.Add(linkReadonly);
+                    linksContainer.Add(link);
+                    if (plan.OrdersToLineConformity[i].Orders.Count > 1)
+                    {
+                        link = new JObject();
+                        linkID = new JProperty("id", "link_" + i + "_0");
+                        linkSource = new JProperty("source", "order_" + plan.OrdersToLineConformity[i].Orders[0].OrderNumber + "_" + i + "_0");
+                        linkTarget = new JProperty("target", "order_" + plan.OrdersToLineConformity[i].Orders[1].OrderNumber + "_" + i + "_1");
+                        int finish_to_start = 0;
+                        linkType = new JProperty("type", finish_to_start);
+                        linkEditable = new JProperty("editable", false);
+                        linkReadonly = new JProperty("readonly", true);
+                        link.Add(linkID);
+                        link.Add(linkSource);
+                        link.Add(linkTarget);
+                        link.Add(linkType);
+                        link.Add(linkEditable);
+                        link.Add(linkReadonly);
+                        linksContainer.Add(link);
+                        for (int j = 1; j < plan.OrdersToLineConformity[i].Orders.Count - 1; j++)
+                        {
+                            link = new JObject();
+                            linkID = new JProperty("id", "link_" + i + "_" + j);
+                            linkSource = new JProperty("source", "order_" + plan.OrdersToLineConformity[i].Orders[j].OrderNumber + "_" + i + "_" + j);
+                            linkTarget = new JProperty("target", "order_" + plan.OrdersToLineConformity[i].Orders[j + 1].OrderNumber + "_" + i + "_" + (j + 1));
+                            linkType = new JProperty("type", finish_to_start);
+                            linkEditable = new JProperty("editable", false);
+                            linkReadonly = new JProperty("readonly", true);
+                            link.Add(linkID);
+                            link.Add(linkSource);
+                            link.Add(linkTarget);
+                            link.Add(linkType);
+                            link.Add(linkEditable);
+                            link.Add(linkReadonly);
+                            linksContainer.Add(link);
+                        }
+                    }
+                }
+            }
+            jsonContainer["links"] = linksContainer;
             return jsonContainer.ToString();
         }
 
@@ -157,41 +222,39 @@ namespace Optel2.Controllers
             }
             TempData["Extruders"] = planningConfig.Extruders;
             TempData["Orders"] = planningConfig.Orders;
-            MyLittleKostyl.startDate = planningConfig.PlannedStartDate;
-            MyLittleKostyl.endDate = planningConfig.PlannedEndDate;
             ProductionPlan result = new ProductionPlan();
             planningConfig.maxPopulation = planningConfig.Orders.Count;
             planningConfig.maxSelection = planningConfig.Orders.Count;
             planningConfig.NumberOfGAiterations = planningConfig.Orders.Count / 2;
             switch (planningConfig.SelectedAlgorithm)
-             {
-                 case PlanningModel.PlanningAlgorithm.BruteForce:
-                     var bruteForce = new BruteForceAlgorithm();
-                     result = await Task.Run<ProductionPlan>(
-                         async () => await bruteForce.Start(planningConfig.Extruders,
-                         planningConfig.Orders,
-                         new List<SliceLine>(),
-                         new Costs(),
-                         planningConfig.Criterion,
-                         new MondiObjectiveFunction(),
-                         planningConfig.TreeRequired));
-                     planningConfig.TreeData = bruteForce.DecisionTree;
-                     break;
-                 case PlanningModel.PlanningAlgorithm.Genetic:
-                     var genetic = new GeneticAlgorithm();
-                     result = await Task.Run<ProductionPlan>(
-                         async () => await genetic.Start(planningConfig.Extruders,
-                         planningConfig.Orders,
-                         new List<SliceLine>(),
-                         new Costs(),
-                         planningConfig.Criterion,
-                         new MondiObjectiveFunction(),
-                         planningConfig.maxPopulation,
-                         planningConfig.NumberOfGAiterations,
-                         planningConfig.maxSelection,
-                         planningConfig.TreeRequired));
-                     planningConfig.TreeData = genetic.DecisionTree;
-                     break;
+            {
+                case PlanningModel.PlanningAlgorithm.BruteForce:
+                    var bruteForce = new BruteForceAlgorithm();
+                    result = await Task.Run<ProductionPlan>(
+                        async () => await bruteForce.Start(planningConfig.Extruders,
+                        planningConfig.Orders,
+                        new List<SliceLine>(),
+                        new Costs(),
+                        planningConfig.Criterion,
+                        new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate),
+                        planningConfig.TreeRequired));
+                    planningConfig.TreeData = bruteForce.DecisionTree;
+                    break;
+                case PlanningModel.PlanningAlgorithm.Genetic:
+                    var genetic = new GeneticAlgorithm();
+                    result = await Task.Run<ProductionPlan>(
+                        async () => await genetic.Start(planningConfig.Extruders,
+                        planningConfig.Orders,
+                        new List<SliceLine>(),
+                        new Costs(),
+                        planningConfig.Criterion,
+                        new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate),
+                        planningConfig.maxPopulation,
+                        planningConfig.NumberOfGAiterations,
+                        planningConfig.maxSelection,
+                        planningConfig.TreeRequired));
+                    planningConfig.TreeData = genetic.DecisionTree;
+                    break;
                 case PlanningModel.PlanningAlgorithm.OldPlan:
                     result = GetProductionPlan(planningConfig.Orders, planningConfig.Extruders, planningConfig.PlannedStartDate);
                     planningConfig.TreeRequired = false;
@@ -209,16 +272,16 @@ namespace Optel2.Controllers
                         planningConfig.TreeData[i].Next.Iteration = i + 1;
                     }
                     planningConfig.TreeData[i].Iteration = i;
-                    Debug.WriteLine("Iter 1 = " + planningConfig.TreeData[i].Plan.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
+                    Debug.WriteLine("Iter 1 = " + planningConfig.TreeData[i].Plan.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)));
                     treeDataJSON += "treeDataJSON.push(" + GenerateJSON(planningConfig.TreeData[i].Plan) + ");\n";
                 }
                 ViewBag.DecisionTreeElementsJSON = treeDataJSON;
-                ViewBag.DecisionTreeString = GenerateDecisionTreeHTML(planningConfig);
+                //ViewBag.DecisionTreeString = GenerateDecisionTreeHTML(planningConfig);
             }
             ViewBag.JsonString = GenerateJSON(result);
             Debug.Print(GenerateJSON(result));
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
-            double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction()));
+            double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)));
             if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
             {
                 ViewBag.Error = true;
@@ -228,7 +291,7 @@ namespace Optel2.Controllers
                 ViewBag.Error = false;
                 if (planningConfig.Criterion == OptimizationCriterion.Cost)
                 {
-                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction()), 2);
+                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)), 2);
                 }
                 else
                 {
@@ -237,60 +300,7 @@ namespace Optel2.Controllers
             }
             return View(planningConfig);
         }
-
-        public string GenerateDecisionTreeHTML(PlanningModel planningConfig)
-        {
-            List<Decision> treeData = planningConfig.TreeData;
-            string result = "";
-            int countOfStarts = 0;
-            for (int i = 0; i < treeData.Count; i++)
-            {
-                if (treeData[i].Iteration == 0)
-                {
-                    countOfStarts++;
-                }
-            }
-            Debug.WriteIf(countOfStarts == 0, "DecisionTree, starts count = 0. Wtf?");
-            string startClass = "entry sole";
-            if (countOfStarts > 1)
-            {
-                startClass = "entry";
-            }
-            result += "<div class=\"" + startClass + " \"><span class=\"label toggleable\" iter=\"" + treeData[0].Iteration + "\">";
-            if (planningConfig.Criterion == OptimizationCriterion.Cost)
-            {
-                result += Math.Round(treeData[0].FunctionValue, 2) + "$";
-            }
-            else
-            {
-                result += GetTotalTime(Convert.ToDouble(treeData[0].FunctionValue));
-            }
-            result += "</span>";
-            result += GenerateDecisionTreeChildHTML(treeData[0].Next, planningConfig.Criterion);
-            result += "</div>";
-            return result;
-        }
-
-        string GenerateDecisionTreeChildHTML(Decision child, OptimizationCriterion criterion)
-        {
-            string result = "";
-            if (child != null && child.Iteration > -1)
-            {
-                result += "<div class=\"branch\"><div class=\"entry sole\" ><span class=\"label toggleable\" iter=\"" + child.Iteration + "\">";
-                if (criterion == OptimizationCriterion.Cost)
-                {
-                    result += Math.Round(child.FunctionValue, 2) + "$";
-                }
-                else
-                {
-                    result += GetTotalTime(Convert.ToDouble(child.FunctionValue));
-                }
-                result += "</span>";
-                result += GenerateDecisionTreeChildHTML(child.Next, criterion);
-                result += "</div></div>";
-            }
-            return result;
-        }
+        
         public string GetTotalTime(double seconds)
         {
             TimeSpan ts = TimeSpan.FromSeconds(seconds);

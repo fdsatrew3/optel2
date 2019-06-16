@@ -24,10 +24,8 @@ namespace Optel2
                       "~/Scripts/bootstrap.bundle.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ganttchart").Include(
-                      "~/Scripts/dhtmlxgantt.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/dragscroll").Include(
-                      "~/Scripts/dragscroll.js"));
+                      "~/Scripts/dhtmlxgantt.js",
+                      "~/Scripts/dhtmlxgantt_tooltip.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

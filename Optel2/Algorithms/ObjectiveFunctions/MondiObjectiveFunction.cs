@@ -1,5 +1,4 @@
-﻿using Optel2.DestoyThisPls;
-using Optel2.Models;
+﻿using Optel2.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,10 +10,16 @@ namespace Algorithms.ObjectiveFunctions
 {
     public class MondiObjectiveFunction : AObjectiveFunction
     {
+        private DateTime _executionStart, _executionEnd;
+
+        public MondiObjectiveFunction(DateTime executionStart, DateTime executionEnd)
+        {
+
+        }
+
         public override ExecutionTimeAndCost GetExecutionTimeAndCost(Costs costs, Extruder Line, List<Order> Orders)
         {
             ExecutionTimeAndCost executionTimeAndCost = new ExecutionTimeAndCost();
-            DateTime executionStart = MyLittleKostyl.startDate, executionEnd = MyLittleKostyl.endDate;
             double workTime = 0,
                     totalWorkTime = 0,
                     totalRetargetingTime = 0,
@@ -25,8 +30,8 @@ namespace Algorithms.ObjectiveFunctions
             {
                 // Самый первый заказ.
                 workTime = CalcOrderExecutionTime(Orders[0]);
-                Orders[0].PlanedStartDate = executionStart;
-                Orders[0].PlanedEndDate = executionStart.AddSeconds(workTime);
+                Orders[0].PlanedStartDate = _executionStart;
+                Orders[0].PlanedEndDate = _executionStart.AddSeconds(workTime);
                 Orders[0].PredefinedTime = Convert.ToInt32(Math.Round(workTime, 0));
                 Orders[0].PredefinedRetargetTime = 0;
                 //Orders[0].RetargetLog = "0";
@@ -61,7 +66,7 @@ namespace Algorithms.ObjectiveFunctions
                     }
                 }
 
-                executionEnd = Orders[Orders.Count - 1].PlanedEndDate;
+                _executionEnd = Orders[Orders.Count - 1].PlanedEndDate;
             }
             workCost = Convert.ToDecimal((totalWorkTime / 3600)) * Line.MachineHourCost;
             executionTimeAndCost = new ExecutionTimeAndCost()
@@ -69,8 +74,8 @@ namespace Algorithms.ObjectiveFunctions
                 ExecutionTime = Convert.ToDecimal(totalWorkTime),
                 RetargetingTime = Convert.ToDecimal(totalRetargetingTime),
                 ExecutionCost = workCost,
-                ExecutionStart = executionStart,
-                ExecutionEnd = executionEnd
+                ExecutionStart = _executionStart,
+                ExecutionEnd = _executionEnd
             };
 
             return executionTimeAndCost;
