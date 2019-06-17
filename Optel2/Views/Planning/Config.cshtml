@@ -238,18 +238,18 @@
 				<br />Use it only when you have small planning task (10-15 orders, 1-2 extruders).
 			</div>
 		</div>
-		<div class="form-group" style="margin-bottom: 0px;">
+		<div class="form-group" style="margin-bottom: 0px; display: none;">
 			<div class="col-auto">
 				@Html.CheckBoxFor(Model => Model.TreeRequired, new { htmlAttributes = new { @class = "form-control", data_val = "false" }, id = "treeCheckbox"})
 				@Html.LabelFor(model => model.TreeRequired, htmlAttributes: new { @class = "control-label" })
 				@Html.ValidationMessageFor(model => model.TreeRequired, "", new { @class = "text-danger" })
 			</div>
 		</div>
-		<div style="padding-left: 15px;">
+		<!--<div style="padding-left: 15px;">
 			<div class="form-group">
 				Decision tree may increase computation time, use it only on small planning task.
 			</div>
-		</div>
+		</div> -->
 		<div class="form-group" id="subminButton">
 			<div class="row" style="padding-left: 15px;">
 				<div class="col-auto">
@@ -294,7 +294,6 @@
 				case "Old plan":
 					Step4Container1.style.display = "none";
 					Step4Container2.style.display = "none";
-
 					treeCheckbox.disabled = true;
 					break;
 			}

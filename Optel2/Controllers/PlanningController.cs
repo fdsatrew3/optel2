@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static Algorithms.ProductionPlan;
@@ -107,12 +108,13 @@ namespace Optel2.Controllers
             return View(planningModel);
         }
 
-        public string GenerateProductionPlanJSON(ProductionPlan plan)
+        public string GenerateProductionPlanJSON(ProductionPlan plan, OptimizationCriterion criterion, AObjectiveFunction objectiveFunction)
         {
             JObject jsonContainer = new JObject();
             JArray dataContainer = new JArray();
             JArray linksContainer = new JArray();
             int id = 1;
+            plan.GetWorkSpending(new Costs(), criterion, objectiveFunction);
             for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
             {
                 JObject line = new JObject();
@@ -215,7 +217,7 @@ namespace Optel2.Controllers
 
         public string GenerateDecisionTreeJSON(List<Decision> treeData)
         {
-            JObject jsonContainer = new JObject();
+            /*JObject jsonContainer = new JObject();
             JObject chartContainer = new JObject();
             JProperty container = new JProperty("container", "#decisionTreeContainer");
             JProperty rootOrientation = new JProperty("rootOrientation", "WEST");
@@ -253,11 +255,118 @@ namespace Optel2.Controllers
                         nodeStructureChildrenOfChildren["children"] = nodeStructureChildrenContainer;
                         nodeStructureChildrenContainer = new JObject();
                     }
-                } */
+                } 
             }
             jsonContainer["chart"] = chartContainer;
-            jsonContainer["nodeStructure"] = nodeStructureContainer;
-            return jsonContainer.ToString();
+            jsonContainer["nodeStructure"] = nodeStructureContainer; */
+            /*StringBuilder builder = new StringBuilder(String.Empty);
+            builder.Append("var decisionTreeConfig1 = {\ncontainer: '#decisionTreeContainer',\n");
+            builder.Append("rootOrientation: 'WEST',\n");
+            builder.Append("node : {\nHTMLclass: 'nodeExample1'\n}\n},");
+            builder.Append("children0 = {\ntext : {\ntitle: 'Iteration #1'\n}}");
+            StringBuilder childs = new StringBuilder(String.Empty);
+            if (treeData.Count > 1)
+            {
+                for(int i = 1; i < treeData.Count; i++)
+                {
+                    builder.Append(",\nchildren" + i + " = {\nparent: children" + (i - 1) + ",\ntext : {\ntitle: '" + ("Iteration #" + (i + 1)) + "'\n}}");
+                    childs.Append(", children" + i);
+                }
+            }
+            builder.Append(",\ndecision_tree_chart_config = [\ndecisionTreeConfig1, children0");
+            builder.Append(childs.ToString());
+            builder.Append("\n];");
+            return builder.ToString(); */
+            return @"var config = {
+        container: '#decisionTreeContainer',
+        
+        connectors:
+            {
+                type: 'step'
+        },
+        node:
+            {
+                HTMLclass: 'nodeExample1'
+        }
+        },
+    ceo = {
+        text: {
+            title: 'Chief executive officer'
+        }
+    },
+
+    cto = {
+        parent: ceo,
+        text:{
+            title: 'Chief Technology Officer'
+        }
+    },
+    cbo = {
+        parent: cto,
+        text:{
+            title: 'Chief Business Officer'
+        }
+    },
+    cdo = {
+        parent: cbo,
+        text:{
+            title: 'Chief accounting officer'
+        }
+    },
+    cio = {
+        parent: cio,
+        text:{
+            title: 'Chief Information Security Officer'
+        }
+    },
+    ciso = {
+        parent: ciso,
+        text:{
+            title: 'Chief Innovation Officer'
+        }
+    },
+    cio2 = {
+        parent: cio2,
+        text:{
+            name: 'Erica Reel',
+            title: 'Chief Customer Officer'
+        }
+    },
+    ciso2 = {
+        parent: ciso2,
+        text:{
+            name: 'Alice Lopez',
+            title: 'Chief Communications Officer'
+        }
+    },
+    ciso3 = {
+        parent: ciso3,
+        text:{
+            name: 'Mary Johnson',
+            title: 'Chief Brand Officer'
+        }
+    },
+    ciso4 = {
+        parent: ciso4,
+        text:{
+            name: 'Kirk Douglas',
+            title: 'Chief Business Development Officer'
+        }
+    }
+
+    decision_tree_chart_config = [
+        config,
+        ceo,
+        cto,
+        cbo,
+        cdo,
+        cio,
+        ciso,
+        cio2,
+        ciso2,
+        ciso3,
+        ciso4
+    ];";
         }
 
         public async Task<ActionResult> Result(PlanningModel planningConfig)
@@ -274,7 +383,6 @@ namespace Optel2.Controllers
             planningConfig.maxPopulation = planningConfig.Orders.Count;
             planningConfig.maxSelection = planningConfig.Orders.Count;
             planningConfig.NumberOfGAiterations = planningConfig.Orders.Count / 2;
-            MondiObjectiveFunction objectiveFunction = new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate);
             switch (planningConfig.SelectedAlgorithm)
             {
                 case PlanningModel.PlanningAlgorithm.BruteForce:
@@ -285,7 +393,7 @@ namespace Optel2.Controllers
                         new List<SliceLine>(),
                         new Costs(),
                         planningConfig.Criterion,
-                        objectiveFunction,
+                        new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate),
                         planningConfig.TreeRequired));
                     planningConfig.TreeData = bruteForce.DecisionTree;
                     break;
@@ -297,7 +405,7 @@ namespace Optel2.Controllers
                         new List<SliceLine>(),
                         new Costs(),
                         planningConfig.Criterion,
-                        objectiveFunction,
+                        new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate),
                         planningConfig.maxPopulation,
                         planningConfig.NumberOfGAiterations,
                         planningConfig.maxSelection,
@@ -309,23 +417,24 @@ namespace Optel2.Controllers
                     planningConfig.TreeRequired = false;
                     break;
             }
-            ViewBag.TreeRequired = planningConfig.TreeRequired;
+            // Remove this pls
+            planningConfig.TreeRequired = false;
             if (planningConfig.TreeRequired)
             {
                 string treeDataJSON = "var treeDataJSON = [];\n";
                 for (int i = 0; i < planningConfig.TreeData.Count; i++)
                 {
-                    treeDataJSON += "treeDataJSON.push(" + GenerateProductionPlanJSON(planningConfig.TreeData[i].Plan) + ");\n";
+                    treeDataJSON += "treeDataJSON.push(" + GenerateProductionPlanJSON(planningConfig.TreeData[i].Plan, planningConfig.Criterion, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)) + ");\n";
                 }
                 ViewBag.DecisionTreeElementsJSON = treeDataJSON;
                 ViewBag.DecisionTreeJSON = GenerateDecisionTreeJSON(planningConfig.TreeData);
                 int treeKekCount = planningConfig.TreeData.Count;
                 Debug.Print(GenerateDecisionTreeJSON(planningConfig.TreeData));
             }
-            ViewBag.JsonString = GenerateProductionPlanJSON(result);
+            ViewBag.JsonString = GenerateProductionPlanJSON(result, planningConfig.Criterion, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate));
             //Debug.Print(GenerateProductionPlanJSON(result));
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
-            double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, objectiveFunction));
+            double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)));
             if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
             {
                 ViewBag.Error = true;
@@ -335,7 +444,7 @@ namespace Optel2.Controllers
                 ViewBag.Error = false;
                 if (planningConfig.Criterion == OptimizationCriterion.Cost)
                 {
-                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, objectiveFunction), 2);
+                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)), 2);
                 }
                 else
                 {

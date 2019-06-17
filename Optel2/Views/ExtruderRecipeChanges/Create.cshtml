@@ -35,14 +35,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Consumption, htmlAttributes: new { @class = "control-label col-auto" })
-            <div class="col-auto">
-                @Html.EditorFor(model => model.Consumption, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
-                @Html.ValidationMessageFor(model => model.Consumption, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
 			@Html.LabelFor(model => model.ExtruderId, htmlAttributes: new { @class = "control-label col-auto" })
 			<div class="col-auto">
 				@Html.DropDownListFor(model => model.ExtruderId, ViewBag.Extruders as IEnumerable<SelectListItem>, new { @class = "form-control" })
@@ -63,15 +55,6 @@
     </div>
 }
 
-<script>
-	$('#@(nameof(Model.Duration))').timepicker({ 'timeFormat': 'H:i:s' }).val("00:00:00");
-</script>
-
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/jquerytimepicker")
-}
-
-@section Styles {
-	@Styles.Render("~/bundles/jquerytimepicker/css")
 }

@@ -23,6 +23,7 @@ namespace Optel2.Models
         public decimal FinishedGoods { get; set; }
         public decimal Granules { get; set; }
         public decimal Waste { get; set; }
+        [Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal QuanityInRunningMeter { get; set; }
         [Display(Name = "Weight")]
         public decimal RollWeightNet { get; set; }
@@ -30,7 +31,9 @@ namespace Optel2.Models
         [Display(Name = "Film recipe")]
         public Guid FilmRecipeId { get; set; }
         public FilmRecipe FilmRecipe { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int PredefinedTime { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int PredefinedRetargetTime { get; set; }
         [NotMapped]
         public bool Selected { get; set; }

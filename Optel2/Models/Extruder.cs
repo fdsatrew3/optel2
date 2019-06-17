@@ -12,17 +12,17 @@ namespace Optel2.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        [Display(Name = "Allowed min width")]
+        [Display(Name = "Allowed min width"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal WidthMin { get; set; }
-        [Display(Name = "Allowed max width")]
+        [Display(Name = "Allowed max width"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal WidthMax { get; set; }
-        [Display(Name = "Allowed min thickness")]
+        [Display(Name = "Allowed min thickness"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal ThicknessMin { get; set; }
-        [Display(Name = "Allowed max thickness")]
+        [Display(Name = "Allowed max thickness"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal ThicknessMax { get; set; }
-        [Display(Name = "Allowed min production speed")]
+        [Display(Name = "Allowed min production speed"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal ProductionSpeedMin { get; set; }
-        [Display(Name = "Allowed max production speed")]
+        [Display(Name = "Allowed max production speed"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal ProductionSpeedMax { get; set; }
         public decimal DiameterMin { get; set; }
         public decimal DiameterMax { get; set; }
@@ -30,13 +30,13 @@ namespace Optel2.Models
         public decimal WeightMax { get; set; }
         public decimal LengthMin { get; set; }
         public decimal LengthMax { get; set; }
-        [Display(Name = "Time to adjust width")]
+        [Display(Name = "Time to adjust width"), Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int WidthAdjustmentTime { get; set; }
-        [Display(Name = "Time to change thickness")]
+        [Display(Name = "Time to change thickness"), Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int ChangeOfThicknessTime { get; set; }
-        [Display(Name = "Startup delay")]
+        [Display(Name = "Startup delay"), Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int StartupDelay { get; set; }
-        [Display(Name = "Machine hour cost")]
+        [Display(Name = "Machine hour cost"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal MachineHourCost { get; set; }
         public decimal WidthAdjustmentConsumption { get; set; }
         public decimal ChangeOfThicknessConsumption { get; set; }
