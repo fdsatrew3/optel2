@@ -114,6 +114,7 @@ namespace Optel2.Controllers
             JArray dataContainer = new JArray();
             JArray linksContainer = new JArray();
             int id = 1;
+            // Фикс порядка заказов в коллекции, без понятия как это работает.
             plan.GetWorkSpending(new Costs(), criterion, objectiveFunction);
             for (int i = 0; i < plan.OrdersToLineConformity.Count; i++)
             {
