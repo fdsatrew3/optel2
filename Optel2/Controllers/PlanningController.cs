@@ -260,7 +260,7 @@ namespace Optel2.Controllers
                     planningConfig.TreeRequired = false;
                     break;
             }
-
+            MondiObjectiveFunction objectiveFunction = new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate);
             if (planningConfig.TreeRequired)
             {
                 string treeDataJSON = "var treeDataJSON = [];\n";
@@ -272,7 +272,7 @@ namespace Optel2.Controllers
                         planningConfig.TreeData[i].Next.Iteration = i + 1;
                     }
                     planningConfig.TreeData[i].Iteration = i;
-                    Debug.WriteLine("Iter 1 = " + planningConfig.TreeData[i].Plan.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)));
+                    Debug.WriteLine("Iter 1 = " + planningConfig.TreeData[i].Plan.GetWorkSpending(null, OptimizationCriterion.Time, objectiveFunction));
                     treeDataJSON += "treeDataJSON.push(" + GenerateJSON(planningConfig.TreeData[i].Plan) + ");\n";
                 }
                 ViewBag.DecisionTreeElementsJSON = treeDataJSON;
@@ -281,7 +281,7 @@ namespace Optel2.Controllers
             ViewBag.JsonString = GenerateJSON(result);
             Debug.Print(GenerateJSON(result));
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
-            double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)));
+            double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, objectiveFunction));
             if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
             {
                 ViewBag.Error = true;
@@ -291,17 +291,17 @@ namespace Optel2.Controllers
                 ViewBag.Error = false;
                 if (planningConfig.Criterion == OptimizationCriterion.Cost)
                 {
-                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate)), 2);
+                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, objectiveFunction), 2);
                 }
                 else
                 {
-                    ViewBag.Result = GetTotalTime(requiredTime);
+                    ViewBag.Result = FormatTimeInSeconds(requiredTime);
                 }
             }
             return View(planningConfig);
         }
         
-        public string GetTotalTime(double seconds)
+        public string FormatTimeInSeconds(double seconds)
         {
             TimeSpan ts = TimeSpan.FromSeconds(seconds);
             int months = 0;

@@ -14,7 +14,8 @@ namespace Algorithms.ObjectiveFunctions
 
         public MondiObjectiveFunction(DateTime executionStart, DateTime executionEnd)
         {
-
+            _executionStart = executionStart;
+            _executionEnd = executionEnd;
         }
 
         public override ExecutionTimeAndCost GetExecutionTimeAndCost(Costs costs, Extruder Line, List<Order> Orders)
