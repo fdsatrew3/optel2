@@ -2,69 +2,105 @@
 @{
 	ViewBag.Title = "Planning results";
 }
+
 @{
 	if (ViewBag.Error)
 	{
 		<div>This plan can't be completed in the given planning time interval.<br />Try increase planning time interval or decrease count of orders/extruders.</div>
-			<br />
-			<div class="float-left">
-				<a href="#" onclick="javascript:history.go(-1)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="24" height="24">&nbsp;Go back to planning settings</div></a>
-			</div>
+		<br />
+		<div class="float-left">
+			<a href="#" onclick="javascript:history.go(-1)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/favicon.png" width="24" height="24">&nbsp;Go back to planning settings</div></a>
+		</div>
 	}
 	else
 	{
-		<div id="gantt-chart-container" style="width: 100%; height: 500px;"></div>
-		if (ViewBag.Criteria.Equals("Cost"))
-		{
-			<div>Required currency to execute production plan: @ViewBag.Result$</div>
-		}
-		else
-		{
-			<div>Required time to execute production plan: @ViewBag.Result</div>
-		}
-	}
+		<div id="ganttChart">
+			<div id="gantt-chart-container" style="width: 100%; height: 500px;"></div>
+			@{
+				if (ViewBag.Criteria.Equals("Cost"))
+				{
+					<div>Required currency to execute production plan: @ViewBag.Result$</div>
+				}
+				else
+				{
+					<div>Required time to execute production plan: @ViewBag.Result</div>
+				}
+				if (Model.TreeRequired)
+				{
+					<div class="float-left">
+						<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
+					</div>
+				}
+			}
+		</div>
+				if (Model.TreeRequired)
+				{
+					<div id="decisionTree" style="display: none;">
+						<div id="decisionTreeWrapper" style="width: 98%; height: 500px; position: absolute; overflow: scroll; margin-top: 0px;">
+							<div id="decisionTreeContainer" style="width: 100%; height: 100%"></div>
+						</div>
+						<div id="gantt-switch-btn" style="position: absolute; margin-top: 520px;">
+							<a href="#" onclick="onSwitchButtonPress(true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show Gantt chart</div></a>
+						</div>
+					</div>
+					}
+				}
 }
 
 <script>
-	var chart, mainPage, leftPage;
+	@Html.Raw(ViewBag.DecisionTreeElementsJSON);
+	var chart, mainPage, leftPage, ganttChartPage, decisionTreePage;
 	$(document).ready(function () {
-		chart = document.getElementById("gantt-chart-container");
-		mainPage = document.getElementById("main-page");
-		leftPage = document.getElementById("left-page");
-		fixGanttChart(null);
-		initGanttChart();
-	});
+			chart = document.getElementById("gantt-chart-container");
+			mainPage = document.getElementById("main-page");
+			leftPage = document.getElementById("left-page");
+			ganttChartPage = document.getElementById("ganttChart");
+			decisionTreePage = document.getElementById("decisionTree");
+			fixGanttChart(null);
+			initGanttChart("gantt-chart-container", @Html.Raw(ViewBag.JsonString));
+			new Treant(@Html.Raw(ViewBag.DecisionTreeJSON), null, $);
+			console.log(@Html.Raw(ViewBag.DecisionTreeJSON));
+		});
 
 	$(window).on('resize', fixGanttChart);
 
-	function initGanttChart() {
-		gantt.config.date_grid = "%d.%m.%Y %H:%i:%s";
-		gantt.config.xml_date = "%d.%m.%Y %H:%i:%s";
-		gantt.init("gantt-chart-container");
-		gantt.config.columns = [{ name: "text", label: "Task name", width: "*", tree: true }];
-		gantt.templates.tooltip_text = function (start, end, task) {
-			return "<b>Task:</b> " + task.text + "<br/><b>Start date:</b> " + task.start_date + "<br/><b>End date:</b> " + task.end_date;
-		};
-		gantt.config.scale_unit = "month";
-		gantt.config.date_scale = "%F, %Y";
-		gantt.config.scale_height = 50;
-		gantt.config.subscales = [
-			{ unit: "day", step: 1, date: "%j, %D" }
+		function initGanttChart(containerName, jsonData) {
+			gantt.config.date_grid = "%d.%m.%Y %H:%i:%s";
+			gantt.config.xml_date = "%d.%m.%Y %H:%i:%s";
+			gantt.init(containerName);
+			gantt.config.columns = [{ name: "text", label: "Task name", width: "*", tree: true }];
+			gantt.templates.tooltip_text = function (start, end, task) {
+				return "<b>Task:</b> " + task.text + "<br/><b>Start date:</b> " + task.start_date + "<br/><b>End date:</b> " + task.end_date;
+			};
+			gantt.config.scale_unit = "month";
+			gantt.config.date_scale = "%F, %Y";
+			gantt.config.scale_height = 50;
+			gantt.config.subscales = [
+				{ unit: "day", step: 1, date: "%j, %D" }
 		];
-		gantt.parse(@Html.Raw(ViewBag.JsonString));
-	}
+			gantt.clearAll();
+			gantt.parse(jsonData);
+		}
 
-	function fixGanttChart(event) {
-		var margin = 65;
-		var width = mainPage.clientWidth - leftPage.clientWidth - margin;
-		chart.style.width = width +"px";
-	}
+		function fixGanttChart(event) {
+			var margin = 65;
+			var width = mainPage.clientWidth - leftPage.clientWidth - margin;
+			chart.style.width = width + "px";
+		}
+
+		function onSwitchButtonPress(showGantt) {
+			gantt.ext.tooltips.tooltip.hide();
+			ganttChartPage.style.display = showGantt ? "block" : "none";
+			decisionTreePage.style.display = showGantt ? "none" : "block";
+		}
 </script>
 
 @section Scripts {
 	@Scripts.Render("~/bundles/ganttchart")
+	@Scripts.Render("~/bundles/decisiontree")
 }
 
 @section Styles {
 	@Styles.Render("~/bundles/ganttchart/css")
+	@Styles.Render("~/bundles/decisiontree/css")
 }

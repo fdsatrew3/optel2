@@ -27,6 +27,10 @@ namespace Optel2
                       "~/Scripts/dhtmlxgantt.js",
                       "~/Scripts/dhtmlxgantt_tooltip.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/decisiontree").Include(
+                      "~/Scripts/raphael.js",
+                      "~/Scripts/Treant.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                        "~/Content/site.css"));
@@ -39,6 +43,9 @@ namespace Optel2
 
             bundles.Add(new StyleBundle("~/bundles/ganttchart/css").Include(
                        "~/Content/dhtmlxgantt.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/decisiontree/css").Include(
+           "~/Content/Treant.css"));
         }
     }
 }

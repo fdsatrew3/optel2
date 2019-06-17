@@ -7,7 +7,5 @@ namespace Optel2.Algorithms
     {
         public ProductionPlan Plan; // сам план в этой точке
         public decimal FunctionValue; // значение целевой фукции
-        public int Iteration;
-        public Decision Next;
     }
 }

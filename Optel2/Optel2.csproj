@@ -240,6 +240,7 @@
     <Content Include="Content\dhtmlxgantt.css" />
     <Content Include="Content\jquery.paginate.css" />
     <Content Include="Content\jquery.timepicker.css" />
+    <Content Include="Content\Treant.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -309,6 +310,8 @@
     <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\raphael.js" />
+    <Content Include="Scripts\Treant.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
