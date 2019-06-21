@@ -14,21 +14,16 @@
 	}
 	else
 	{
-		<div id="ganttChart">
-			<div id="gantt-chart-container" style="width: 100%; height: 500px;"></div>
+		<div id="ganttChart" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
+			<div id="wrapper" style="width: 95%; height: 500px; position: absolute; overflow: scroll;">
+				<div id="gantt-chart-container" style="width: 100%; height: 100%; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;"></div>
+			</div>
+			<div id="gantt-chart-value" style="position: absolute; margin-top: 497px;"></div>
 			@{
-				if (ViewBag.Criteria.Equals("Cost"))
-				{
-					<div>Required currency to execute production plan: @ViewBag.Result$</div>
-				}
-				else
-				{
-					<div>Required time to execute production plan: @ViewBag.Result</div>
-				}
 				if (Model.TreeRequired)
 				{
-					<div class="float-left">
-						<a href="#" onclick="onSwitchButtonPress(false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
+					<div style="position: absolute; margin-top: 520px;">
+						<a href="#" onclick="onSwitchButtonPress(false, false)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/tree.png" width="24" height="24">&nbsp;Show decision tree</div></a>
 					</div>
 				}
 			}
@@ -36,11 +31,11 @@
 				if (Model.TreeRequired)
 				{
 					<div id="decisionTree" style="display: none;">
-						<div id="decisionTreeContainer" style="width: 98%; height: 500px; position: absolute; overflow: scroll;">
-
+						<div id="wrapper" style="width: 98%; height: 500px; position: absolute; overflow: scroll;">
+							<div id="decisionTreeContainer"></div>
 						</div>
 						<div id="gantt-switch-btn" style="position: absolute; margin-top: 520px;">
-							<a href="#" onclick="onSwitchButtonPress(true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show Gantt chart</div></a>
+							<a href="#" onclick="onSwitchButtonPress(true, true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show optimal Gantt chart</div></a>
 						</div>
 					</div>
 					}
@@ -48,65 +43,94 @@
 }
 
 <script>
-	var chart, mainPage, leftPage, ganttChartPage, decisionTreePage;
+	var chart, mainPage, leftPage, ganttChartPage, decisionTreePage, functionValue, originalFunctionValue;
+	var treeDataJSON = [];
+
 	$(document).ready(function () {
+		originalFunctionValue = '@(ViewBag.Result)';
 		chart = document.getElementById("gantt-chart-container");
 		mainPage = document.getElementById("main-page");
 		leftPage = document.getElementById("left-page");
 		ganttChartPage = document.getElementById("ganttChart");
 		decisionTreePage = document.getElementById("decisionTree");
-		fixGanttChart(null);
-		initGanttChart("gantt-chart-container", @Html.Raw(ViewBag.JsonString));
+		functionValue = document.getElementById("gantt-chart-value");
+		//fixGanttChart(null);
+		initGanttChart("gantt-chart-container");
+		updateGanttChart(@Html.Raw(ViewBag.JsonString));
 		var diagram = new dhx.Diagram("decisionTreeContainer", {
 			select: true
 		});
 		diagram.data.parse(@Html.Raw(ViewBag.DecisionTreeJSON));
 		diagram.events.on("ShapeMouseDown", function (id) {
-			alert(id);
+			ShowDecisionTreePlan(id, diagram.data.getItem(id).text.split("\n")[1]);
 		});
+		setFunctionValue(originalFunctionValue, '@(ViewBag.Criteria)');
+		@Html.Raw(ViewBag.DecisionTreeElementsData);
 	});
 
-	$(window).on('resize', fixGanttChart);
+	//$(window).on('resize', fixGanttChart);
 
-		function initGanttChart(containerName, jsonData) {
-			gantt.config.date_grid = "%d.%m.%Y %H:%i:%s";
-			gantt.config.xml_date = "%d.%m.%Y %H:%i:%s";
-			gantt.init(containerName);
-			gantt.config.columns = [{ name: "text", label: "Task name", width: "*", tree: true }];
-			gantt.templates.tooltip_text = function (start, end, task) {
-				return "<b>Task:</b> " + task.text + "<br/><b>Start date:</b> " + task.start_date + "<br/><b>End date:</b> " + task.end_date;
-			};
-			gantt.config.scale_unit = "month";
-			gantt.config.date_scale = "%F, %Y";
-			gantt.config.scale_height = 50;
-			gantt.config.subscales = [{ unit: "day", step: 1, date: "%j, %D" }];
-			gantt.clearAll();
-			gantt.parse(jsonData);
+	function setFunctionValue(value, criteria) {
+		if (criteria === "Cost") {
+			functionValue.innerHTML = "Required currency to execute production plan: " + value + "$";
+		} else {
+			functionValue.innerHTML = "Required time to execute production plan: " + value;
 		}
+	}
 
-		function fixGanttChart(event) {
-			var width = (mainPage.clientWidth - leftPage.clientWidth) * 0.90;
-			chart.style.width = width + "px";
-			chart.style.margin = "0px 0px 0px 0px";
-			chart.style.padding = "0px 0px 0px 0px";
-			ganttChartPage.style.width = width + "px";
-			ganttChartPage.style.margin = "0px 0px 0px 0px";
-			ganttChartPage.style.padding = "0px 0px 0px 0px";
-		}
+	function initGanttChart(containerName) {
+		gantt.config.autosize = "xy";
+		gantt.config.date_grid = "%d.%m.%Y %H:%i:%s";
+		gantt.config.xml_date = "%d.%m.%Y %H:%i:%s";
+		gantt.config.columns = [{ name: "text", label: "Task name", width: "*", tree: true }];
+		gantt.templates.tooltip_text = function (start, end, task) {
+			return "<b>Task:</b> " + task.text + "<br/><b>Start date:</b> " + task.start_date + "<br/><b>End date:</b> " + task.end_date;
+		};
+		gantt.config.scale_unit = "month";
+		gantt.config.date_scale = "%F, %Y";
+		gantt.config.scale_height = 50;
+		gantt.config.subscales = [{ unit: "day", step: 1, date: "%j, %D" }];
+		gantt.init(containerName);
+	}
 
-		function onSwitchButtonPress(showGantt) {
-			gantt.ext.tooltips.tooltip.hide();
-			ganttChartPage.style.display = showGantt ? "block" : "none";
-			decisionTreePage.style.display = showGantt ? "none" : "block";
+	function updateGanttChart(jsonData) {
+		gantt.clearAll();
+		gantt.parse(jsonData);
+		gantt.render();
+	}
+
+	function fixGanttChart(event) {
+		var width = (mainPage.clientWidth - leftPage.clientWidth) * 0.90;
+		chart.style.width = width + "px";
+		ganttChartPage.style.width = width + "px";
+	}
+
+	function onSwitchButtonPress(showGantt, restoreData) {
+		gantt.ext.tooltips.tooltip.hide();
+		ganttChartPage.style.display = showGantt ? "block" : "none";
+		decisionTreePage.style.display = showGantt ? "none" : "block";
+		if (restoreData) {
+			updateGanttChart(@Html.Raw(ViewBag.JsonString));
+			setFunctionValue(originalFunctionValue, '@(ViewBag.Criteria)');
 		}
+	}
+
+	function ShowDecisionTreePlan(id, value) {
+		var dataId = parseInt(id.replace("data", ""));
+		updateGanttChart(treeDataJSON[dataId]);
+		setFunctionValue(value, '@(ViewBag.Criteria)');
+		onSwitchButtonPress(true, false);
+		gantt.render();
+		gantt.render();
+	}
 </script>
 
 @section Scripts {
 	@Scripts.Render("~/bundles/ganttchart")
-	@Scripts.Render("~/bundles/decisiontree");
+	@Scripts.Render("~/bundles/decisiontree")
 }
 
 @section Styles {
 	@Styles.Render("~/bundles/ganttchart/css")
-	@Styles.Render("~/bundles/decisiontree/css");
+	@Styles.Render("~/bundles/decisiontree/css")
 }

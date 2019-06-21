@@ -218,15 +218,7 @@ namespace Optel2.Controllers
                 JProperty dataId = new JProperty("id", "data" + i);
                 JProperty dataX = new JProperty("x", x);
                 JProperty dataY = new JProperty("y", 90);
-                string dataName = "Iteration #" + (i + 1) + "\n";
-                if (criterion == OptimizationCriterion.Time)
-                {
-                    dataName += FormatTimeInSeconds(Convert.ToDouble(treeData[i].FunctionValue));
-                }
-                else
-                {
-                    dataName += Math.Round(treeData[i].Plan.GetWorkSpending(null, OptimizationCriterion.Cost, objectiveFunction), 2) + "$";
-                }
+                string dataName = "Iteration #" + (i + 1) + "\n" + FormatFunctionValue(treeData[i].Plan, Convert.ToDouble(treeData[i].FunctionValue), criterion, objectiveFunction);
                 JProperty dataText = new JProperty("text", dataName);
                 JProperty dataType = new JProperty("type", "process");
                 x += marginX;
@@ -257,7 +249,7 @@ namespace Optel2.Controllers
 
         public string GenerateDecisionTreeElementsData(List<Decision> treeData, OptimizationCriterion criterion, AObjectiveFunction objectiveFunction)
         {
-            string treeDataJSON = "var treeDataJSON = [];\n";
+            string treeDataJSON = String.Empty;
             for (int i = 0; i < treeData.Count; i++)
             {
                 treeDataJSON += "treeDataJSON.push(" + GenerateProductionPlanJSON(treeData[i].Plan, criterion, objectiveFunction) + ");\n";
@@ -316,8 +308,13 @@ namespace Optel2.Controllers
             }
             if (planningConfig.TreeRequired)
             {
-                ViewBag.DecisionTreeElementsJSON = GenerateDecisionTreeElementsData(planningConfig.TreeData, planningConfig.Criterion, objectiveFunction);
+                ViewBag.DecisionTreeElementsData = GenerateDecisionTreeElementsData(planningConfig.TreeData, planningConfig.Criterion, objectiveFunction);
                 ViewBag.DecisionTreeJSON = GenerateDecisionTreeJSON(planningConfig.TreeData, planningConfig.Criterion, objectiveFunction);
+            }
+            else
+            {
+                ViewBag.DecisionTreeElementsData = "";
+                ViewBag.DecisionTreeJSON = "";
             }
             ViewBag.JsonString = GenerateProductionPlanJSON(result, planningConfig.Criterion, objectiveFunction);
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
@@ -329,19 +326,26 @@ namespace Optel2.Controllers
             else
             {
                 ViewBag.Error = false;
-                if (planningConfig.Criterion == OptimizationCriterion.Cost)
-                {
-                    ViewBag.Result = Math.Round(result.GetWorkSpending(null, OptimizationCriterion.Cost, objectiveFunction), 2);
-                }
-                else
-                {
-                    ViewBag.Result = FormatTimeInSeconds(requiredTime);
-                }
+                ViewBag.Result = FormatFunctionValue(result, requiredTime, planningConfig.Criterion, objectiveFunction);
             }
             return View(planningConfig);
         }
 
-        public string FormatTimeInSeconds(double seconds)
+        public string FormatFunctionValue(ProductionPlan plan, double seconds, OptimizationCriterion criterion, AObjectiveFunction objectiveFunction)
+        {
+            string result;
+            if (criterion == OptimizationCriterion.Time)
+            {
+                result = FormatTimeInSeconds(seconds);
+            }
+            else
+            {
+                result = Math.Round(plan.GetWorkSpending(null, criterion, objectiveFunction), 2).ToString();
+            }
+            return result;
+        }
+
+        private string FormatTimeInSeconds(double seconds)
         {
             TimeSpan ts = TimeSpan.FromSeconds(seconds);
             int months = 0;
