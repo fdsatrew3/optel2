@@ -57,9 +57,13 @@
 		decisionTreePage = document.getElementById("decisionTree");
 		fixGanttChart(null);
 		initGanttChart("gantt-chart-container", @Html.Raw(ViewBag.JsonString));
-		var diagram = new dhx.Diagram("decisionTreeContainer", {});
+		var diagram = new dhx.Diagram("decisionTreeContainer", {
+			select: true
+		});
 		diagram.data.parse(@Html.Raw(ViewBag.DecisionTreeJSON));
-
+		diagram.events.on("ShapeMouseDown", function (id) {
+			alert(id);
+		});
 	});
 
 	$(window).on('resize', fixGanttChart);
@@ -81,9 +85,13 @@
 		}
 
 		function fixGanttChart(event) {
-			var margin = 200;
-			var width = mainPage.clientWidth - leftPage.clientWidth - margin;
+			var width = (mainPage.clientWidth - leftPage.clientWidth) * 0.90;
 			chart.style.width = width + "px";
+			chart.style.margin = "0px 0px 0px 0px";
+			chart.style.padding = "0px 0px 0px 0px";
+			ganttChartPage.style.width = width + "px";
+			ganttChartPage.style.margin = "0px 0px 0px 0px";
+			ganttChartPage.style.padding = "0px 0px 0px 0px";
 		}
 
 		function onSwitchButtonPress(showGantt) {
