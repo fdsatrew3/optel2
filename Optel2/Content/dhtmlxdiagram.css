@@ -1,0 +1,29 @@
+.dhx_free_diagram .dhx_item_shape {
+	fill: #5A4A78;
+	stroke: none;
+}
+
+.dhx_free_diagram .dhx_diagram_flow_item text {
+	fill: white;
+}
+
+.last .dhx_item_shape {
+	fill: #7D8495;
+}
+
+.decision .dhx_item_shape {
+	fill: #C492AC;
+}
+
+.start .dhx_item_shape {
+	fill: #7D8495;
+}
+
+.dhx_free_diagram .dhx_diagram_line {
+	stroke: #7D8495;
+}
+
+.dhx_free_diagram .dhx_diagram_arrow {
+	stroke: #7D8495;
+	fill: #7D8495;
+}

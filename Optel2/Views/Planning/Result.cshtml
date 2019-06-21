@@ -34,142 +34,33 @@
 			}
 		</div>
 				if (Model.TreeRequired)
-					{
+				{
 					<div id="decisionTree" style="display: none;">
-						<div id="decisionTreeContainer" style="width: 100%; height: 100%;"></div>
-						<!--<div id="gantt-switch-btn" style="position: absolute; margin-top: 520px;">
+						<div id="decisionTreeContainer" style="width: 98%; height: 500px; position: absolute; overflow: scroll;">
+
+						</div>
+						<div id="gantt-switch-btn" style="position: absolute; margin-top: 520px;">
 							<a href="#" onclick="onSwitchButtonPress(true)" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/planning.png" width="24" height="24">&nbsp;Show Gantt chart</div></a>
-						</div>-->
+						</div>
 					</div>
 					}
 				}
 }
 
 <script>
-	@Html.Raw(ViewBag.DecisionTreeElementsJSON);
 	var chart, mainPage, leftPage, ganttChartPage, decisionTreePage;
 	$(document).ready(function () {
-			chart = document.getElementById("gantt-chart-container");
-			mainPage = document.getElementById("main-page");
-			leftPage = document.getElementById("left-page");
-			ganttChartPage = document.getElementById("ganttChart");
-			decisionTreePage = document.getElementById("decisionTree");
-			fixGanttChart(null);
-			initGanttChart("gantt-chart-container", @Html.Raw(ViewBag.JsonString));
-var config = {
-	container: "#decisionTreeContainer",
+		chart = document.getElementById("gantt-chart-container");
+		mainPage = document.getElementById("main-page");
+		leftPage = document.getElementById("left-page");
+		ganttChartPage = document.getElementById("ganttChart");
+		decisionTreePage = document.getElementById("decisionTree");
+		fixGanttChart(null);
+		initGanttChart("gantt-chart-container", @Html.Raw(ViewBag.JsonString));
+		var diagram = new dhx.Diagram("decisionTreeContainer", {});
+		diagram.data.parse(@Html.Raw(ViewBag.DecisionTreeJSON));
 
-        connectors: {
-            type: 'step'
-        },
-        node: {
-            HTMLclass: 'nodeExample1'
-        }
-    },
-    ceo = {
-        text: {
-            name: "Mark Hill",
-            title: "Chief executive officer",
-            contact: "Tel: 01 213 123 134",
-        },
-        image: "../headshots/2.jpg"
-    },
-
-    cto = {
-        parent: ceo,
-        text:{
-            name: "Joe Linux",
-            title: "Chief Technology Officer",
-        },
-        stackChildren: true,
-        image: "../headshots/1.jpg"
-    },
-    cbo = {
-        parent: ceo,
-        stackChildren: true,
-        text:{
-            name: "Linda May",
-            title: "Chief Business Officer",
-        },
-        image: "../headshots/5.jpg"
-    },
-    cdo = {
-        parent: ceo,
-        text:{
-            name: "John Green",
-            title: "Chief accounting officer",
-            contact: "Tel: 01 213 123 134",
-        },
-        image: "../headshots/6.jpg"
-    },
-    cio = {
-        parent: cto,
-        text:{
-            name: "Ron Blomquist",
-            title: "Chief Information Security Officer"
-        },
-        image: "../headshots/8.jpg"
-    },
-    ciso = {
-        parent: cto,
-        text:{
-            name: "Michael Rubin",
-            title: "Chief Innovation Officer",
-            contact: {val: "we@aregreat.com", href: "mailto:we@aregreat.com"}
-        },
-        image: "../headshots/9.jpg"
-    },
-    cio2 = {
-        parent: cdo,
-        text:{
-            name: "Erica Reel",
-            title: "Chief Customer Officer"
-        },
-        link: {
-            href: "http://www.google.com"
-        },
-        image: "../headshots/10.jpg"
-    },
-    ciso2 = {
-        parent: cbo,
-        text:{
-            name: "Alice Lopez",
-            title: "Chief Communications Officer"
-        },
-        image: "../headshots/7.jpg"
-    },
-    ciso3 = {
-        parent: cbo,
-        text:{
-            name: "Mary Johnson",
-            title: "Chief Brand Officer"
-        },
-        image: "../headshots/4.jpg"
-    },
-    ciso4 = {
-        parent: cbo,
-        text:{
-            name: "Kirk Douglas",
-            title: "Chief Business Development Officer"
-        },
-        image: "../headshots/11.jpg"
-    }
-
-    chart_config = [
-        config,
-        ceo,
-        cto,
-        cbo,
-        cdo,
-        cio,
-        ciso,
-        cio2,
-        ciso2,
-        ciso3,
-        ciso4
-    ];
-	new Treant(chart_config);
-			});
+	});
 
 	$(window).on('resize', fixGanttChart);
 
@@ -184,15 +75,13 @@ var config = {
 			gantt.config.scale_unit = "month";
 			gantt.config.date_scale = "%F, %Y";
 			gantt.config.scale_height = 50;
-			gantt.config.subscales = [
-				{ unit: "day", step: 1, date: "%j, %D" }
-		];
+			gantt.config.subscales = [{ unit: "day", step: 1, date: "%j, %D" }];
 			gantt.clearAll();
 			gantt.parse(jsonData);
 		}
 
 		function fixGanttChart(event) {
-			var margin = 65;
+			var margin = 200;
 			var width = mainPage.clientWidth - leftPage.clientWidth - margin;
 			chart.style.width = width + "px";
 		}
@@ -206,41 +95,10 @@ var config = {
 
 @section Scripts {
 	@Scripts.Render("~/bundles/ganttchart")
-	<script src="http://fperucic.github.io/treant-js/vendor/raphael.js"></script>
-	<script src="http://fperucic.github.io/treant-js/Treant.js"></script>
+	@Scripts.Render("~/bundles/decisiontree");
 }
 
 @section Styles {
 	@Styles.Render("~/bundles/ganttchart/css")
-		<link rel="stylesheet" href="http://fperucic.github.io/treant-js/Treant.css">
-		<style>
-			.Treant > .node {
-			}
-
-			.Treant > p {
-				font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-				font-weight: bold;
-				font-size: 12px;
-			}
-
-			.node-name {
-				font-weight: bold;
-			}
-
-			.nodeExample1 {
-				padding: 2px;
-				-webkit-border-radius: 3px;
-				-moz-border-radius: 3px;
-				border-radius: 3px;
-				background-color: #ffffff;
-				border: 1px solid #000;
-				width: 200px;
-				font-family: Tahoma;
-				font-size: 12px;
-			}
-
-				.nodeExample1 img {
-					margin-right: 10px;
-				}
-		</style>
-	}
+	@Styles.Render("~/bundles/decisiontree/css");
+}
