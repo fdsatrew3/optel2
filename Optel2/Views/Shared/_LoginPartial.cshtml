@@ -8,9 +8,9 @@
 		<div class="col-auto top-menu-element" style="padding-left: 0px; padding-right: 2px; margin-left: 0px; margin-right: 0px; color:white;">
 			@User.Identity.GetUserName()
 		</div>
-		<div class="col-auto top-menu-element">
+		<!--<div class="col-auto top-menu-element">
 			<a href="/Manage/Index" title="Manage profile"><img src="~/Images/manage_profile.png" width="24px" height="24px" /></a>
-		</div>
+		</div> -->
 		<div class="col-auto top-menu-element" style="margin-right: 20px;">
 			@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
 			{
