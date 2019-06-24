@@ -66,6 +66,7 @@
 			});
 		}
 		setFunctionValue(originalFunctionValue, '@(ViewBag.Criteria)');
+		console.log(@Html.Raw(ViewBag.JsonString));
 		@Html.Raw(ViewBag.DecisionTreeElementsData);
 	});
 
