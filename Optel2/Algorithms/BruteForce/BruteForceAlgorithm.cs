@@ -74,10 +74,15 @@ namespace Algorithms.BruteForce
             }
 
             BestAlgoritm bestAlgoritm = new BestAlgoritm();
-            SelectedPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
+            ProductionPlan productionPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
 
-            if (_needTree)
-                DecisionTree.Add(new Decision() { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+            if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+            {
+                if (_needTree)
+                    DecisionTree.Add(new Decision { Plan = productionPlan, FunctionValue = productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+
+                SelectedPlan = productionPlan;
+            }
 
             return SelectedPlan;
         }
@@ -122,8 +127,10 @@ namespace Algorithms.BruteForce
 
                     if (_needTree)
                     {
-                        //Tree.Add(new ProductionPlan(SelectedPlan));
-                        DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                        if (DecisionTree.Count == 0)
+                            DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                        if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                            DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
                     }
                 }
             }

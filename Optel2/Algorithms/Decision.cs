@@ -5,7 +5,7 @@ namespace Optel2.Algorithms
 {
     public class Decision
     {
-        public ProductionPlan Plan;
-        public decimal FunctionValue;
+        public ProductionPlan Plan; // сам план в этой точке
+        public decimal FunctionValue; // значение целевой фукции
     }
 }

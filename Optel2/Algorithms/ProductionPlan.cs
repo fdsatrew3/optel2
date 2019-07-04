@@ -70,13 +70,16 @@ namespace Algorithms
             decimal curTime = 0;
             for (int i = 0; i < OrdersToLineConformity.Count; i++)
             {
+                curTime = OrdersToLineConformity[i].CalculateExecutionTimeAndCost(costs, objectiveFunction).ExecutionTime;
+
+                /*
                 for (int j = 0; j < OrdersToLineConformity[i].Orders.Count; j++)
                 {
                     curTime += OrdersToLineConformity[i].Orders[j].PredefinedTime + OrdersToLineConformity[i].Orders[j].PredefinedRetargetTime;
-                }
-                if(curTime > maxTime)
+                }*/
+                if (curTime > maxTime)
                 {
-                    maxTime = OrdersToLineConformity[i].CalculateExecutionTimeAndCost(costs, objectiveFunction).ExecutionTime; //curTime;
+                    maxTime = curTime;
                 }
                 curTime = 0;
                 executionCost += OrdersToLineConformity[i].CalculateExecutionTimeAndCost(costs, objectiveFunction).ExecutionCost;

@@ -69,6 +69,13 @@ namespace GenetycAlgorithm
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
                                     int maxPopulation, int numberOfGAiterations, int maxSelection, bool _needTree = false, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
         {
+
+            if (ordersToExecute.Count == 60)
+            {//101663 101637
+                ordersToExecute.Remove(ordersToExecute.Where(order => order.OrderNumber == "101663").First());
+                ordersToExecute.Remove(ordersToExecute.Where(order => order.OrderNumber == "101637").First());
+            }
+
             _isNeedTree = _needTree;
 
             if (_isNeedTree)
@@ -139,12 +146,12 @@ namespace GenetycAlgorithm
 
                     if (rand.Next(0, _maximumPropability) < _crossoverPropability)
                     {
-                        crossoverOperator.MadeCrossover(ref _populations, populationIndex);                        
+                        crossoverOperator.MadeCrossover(ref _populations, populationIndex);
                     }
 
                     if (rand.Next(0, _maximumPropability) < _mutationPropability)
                     {
-                        mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);                        
+                        mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);
                     }
                 }
 
@@ -169,7 +176,7 @@ namespace GenetycAlgorithm
                 {
                     if (DecisionTree.Count == 0)
                         DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-                    else if (!DecisionTree.Last().Plan.Equals(optimalPlan))
+                    else if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
                         DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
                 }
             }
@@ -180,30 +187,22 @@ namespace GenetycAlgorithm
                 DecisionTree = DecisionTree.OrderByDescending(tree => tree.FunctionValue).ToList();
                 //optimalPlan = DecisionTree.OrderBy(tree => tree.FunctionValue).First().Plan;
             }
-            
-                BestAlgoritm bestAlgoritm = new BestAlgoritm();
-                decimal time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
-                time = time / (60 * 60 * 24);
-                optimalPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
 
+            BestAlgoritm bestAlgoritm = new BestAlgoritm();
+            decimal time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
+            time = time / (60 * 60 * 24);
+            ProductionPlan productionPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
+
+            if (optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+            {
                 if (_isNeedTree)
-                    DecisionTree.Add(new Decision() { Plan = optimalPlan, FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-                
-                time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
-                time = time / (60 * 60 * 24);
+                    DecisionTree.Add(new Decision() { Plan = productionPlan, FunctionValue = productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
 
-               /* {
-                    OptelContext db = new OptelContext();
-
-                    ProductionPlan ppd = ProductionPlan.GetProductionPlan(ordersToExecute, extruderLines, new DateTime());
-                    decimal ntime = ppd.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
-                    ntime = ntime / (60 * 60 * 24);
-                    
-                    List<Order> orders = optimalPlan.OrdersToLineConformity[0].Orders.Except(ppd.OrdersToLineConformity[0].Orders).ToList(); //101663 101637
-                    var t = 1;
-                } */
-                
-            ///
+                optimalPlan = productionPlan;
+            }
+            
+            time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
+            time = time / (60 * 60 * 24);
 
             return optimalPlan;
         }
