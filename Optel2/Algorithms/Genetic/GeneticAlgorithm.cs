@@ -69,13 +69,6 @@ namespace GenetycAlgorithm
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
                                     int maxPopulation, int numberOfGAiterations, int maxSelection, bool _needTree = false, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
         {
-
-            if (ordersToExecute.Count == 60)
-            {//101663 101637
-                ordersToExecute.Remove(ordersToExecute.Where(order => order.OrderNumber == "101663").First());
-                ordersToExecute.Remove(ordersToExecute.Where(order => order.OrderNumber == "101637").First());
-            }
-
             _isNeedTree = _needTree;
 
             if (_isNeedTree)
