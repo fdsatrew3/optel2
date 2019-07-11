@@ -24,6 +24,9 @@
 				@Html.DisplayNameFor(model => model.First().Article)
 			</th>
 			<th>
+				@Html.DisplayNameFor(model => model.First().Recipe)
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.First().Thickness)
 			</th>
 			<th>
@@ -49,6 +52,9 @@
 		<tr>
 			<td>
 				@Html.DisplayFor(modelItem => item.Article)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Recipe)
 			</td>
 			<td>
 				@Html.DisplayFor(modelItem => item.Thickness)
