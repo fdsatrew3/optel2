@@ -15,6 +15,7 @@ namespace Optel2.Models
         public string ItemNumber { get; set; }
         public string Article { get; set; }
         public string Recipe { get; set; }
+        [Display(Name = "Thickness, µm"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal Thickness { get; set; }
         [Display(Name = "Nozzle"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal NozzleInsert { get; set; }
@@ -22,7 +23,7 @@ namespace Optel2.Models
         public decimal NozzleInsertAlternative { get; set; }
         [Display(Name = "Cooling lip"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal CoolingLip { get; set; }
-        [Display(Name = "Production speed"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Display(Name = "Production speed, m/min"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal ProductionSpeed { get; set; }
         public decimal Output { get; set; }
         [Display(Name = "Calibration diameter"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
@@ -30,6 +31,7 @@ namespace Optel2.Models
         [Display(Name = "Extruder")]
         public Guid ExtruderId { get; set; }
         public Extruder Extruder { get; set; }
+        [Display(Name = "Cost, €/kg"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal Cost { get; set; }
     }
 }

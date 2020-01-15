@@ -13,7 +13,7 @@ namespace Optel2.Models
         public Guid Id { get; set; }
         [Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal Calibration { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Display(Name="Duration, s"), Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int Duration { get; set; }
         public decimal Consumption { get; set; }
         [Display(Name = "Extruder")]

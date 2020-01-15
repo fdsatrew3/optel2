@@ -13,7 +13,7 @@ namespace Optel2.Models
         public Guid Id { get; set; }
         [Display(Name = "Cooling lip"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal CoolingLip { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Display(Name = "Duration, s"), Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int Duration { get; set; }
         public decimal Consumption { get; set; }
         [Display(Name = "Extruder")]

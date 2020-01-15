@@ -14,7 +14,7 @@ namespace Optel2.Models
         [Display(Name = "Order number")]
         public string OrderNumber { get; set; }
         public string Product { get; set; }
-        [Display(Name = "Width")]
+        [Display(Name = "Width, m")]
         public decimal Width { get; set; }
         public decimal SetupTime { get; set; }
         public decimal ProductionTime { get; set; }
@@ -23,17 +23,17 @@ namespace Optel2.Models
         public decimal FinishedGoods { get; set; }
         public decimal Granules { get; set; }
         public decimal Waste { get; set; }
-        [Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Display(Name = "Quanity in running meter, m"), Range(0, double.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal QuanityInRunningMeter { get; set; }
-        [Display(Name = "Weight")]
+        [Display(Name = "Weight, kg")]
         public decimal RollWeightNet { get; set; }
         public decimal Rolls { get; set; }
         [Display(Name = "Film recipe")]
         public Guid FilmRecipeId { get; set; }
         public FilmRecipe FilmRecipe { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Display(Name = "PredefinedTime, s"), Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int PredefinedTime { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Display(Name = "PredefinedRetargetTime, s"), Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int PredefinedRetargetTime { get; set; }
         [NotMapped]
         public bool Selected { get; set; }

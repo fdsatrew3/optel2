@@ -54,19 +54,21 @@
 		ganttChartPage = document.getElementById("ganttChart");
 		decisionTreePage = document.getElementById("decisionTree");
 		functionValue = document.getElementById("gantt-chart-value");
-		initGanttChart("gantt-chart-container");
-		updateGanttChart(@Html.Raw(ViewBag.JsonString));
-		if ('@Model.TreeRequired' !== 'False') {
-			var diagram = new dhx.Diagram("decisionTreeContainer", {
-				select: true
-			});
-			diagram.data.parse(@Html.Raw(ViewBag.DecisionTreeJSON));
-			diagram.events.on("ShapeMouseDown", function (id) {
-				ShowDecisionTreePlan(id, diagram.data.getItem(id).text.split("\n")[1]);
-			});
+		if ("@(ViewBag.Error)" === "False") {
+			initGanttChart("gantt-chart-container");
+			updateGanttChart(@Html.Raw(ViewBag.JsonString));
+			if ('@Model.TreeRequired' !== 'False') {
+				var diagram = new dhx.Diagram("decisionTreeContainer", {
+					select: true
+				});
+				diagram.data.parse(@Html.Raw(ViewBag.DecisionTreeJSON));
+				diagram.events.on("ShapeMouseDown", function (id) {
+					ShowDecisionTreePlan(id, diagram.data.getItem(id).text.split("\n")[1]);
+				});
+			}
+			setFunctionValue(originalFunctionValue, '@(ViewBag.Criteria)');
+			@Html.Raw(ViewBag.DecisionTreeElementsData);
 		}
-		setFunctionValue(originalFunctionValue, '@(ViewBag.Criteria)');
-		@Html.Raw(ViewBag.DecisionTreeElementsData);
 	});
 
 	function setFunctionValue(value, criteria) {
