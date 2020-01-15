@@ -75,15 +75,14 @@ namespace Algorithms.BruteForce
 
             BestAlgoritm bestAlgoritm = new BestAlgoritm();
             ProductionPlan productionPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
-
-            if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+            if (_needTree)
             {
-                if (_needTree)
+                if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                {
                     DecisionTree.Add(new Decision { Plan = productionPlan, FunctionValue = productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-
-                SelectedPlan = productionPlan;
+                }
             }
-
+            SelectedPlan = productionPlan;
             return SelectedPlan;
         }
 
