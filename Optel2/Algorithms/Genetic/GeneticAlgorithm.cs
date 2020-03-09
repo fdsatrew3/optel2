@@ -67,7 +67,8 @@ namespace GenetycAlgorithm
         private bool _isNeedTree;
 
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
-                                    int maxPopulation, int numberOfGAiterations, int maxSelection, bool _needTree = false, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95)
+                                    int maxPopulation, int numberOfGAiterations, int maxSelection, bool _needTree = false, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95,
+                                    int maxIterationsCount = 100)
         {
             _isNeedTree = _needTree;
 
@@ -122,7 +123,7 @@ namespace GenetycAlgorithm
             _MadeStarterPopulations();
 
             // Начинаем "разводить" особей.           
-            for (int i = 0; i < _numberOfGAIterations; i++)
+            for (int i = 0; i < _numberOfGAIterations && i < maxIterationsCount; i++)
             {
                 Debug.Print(i + "/" + _numberOfGAIterations);
                 // Обрабатываем популяции хромосом (каждая популяция имеет по EKLinesAmount хромосом).
@@ -254,7 +255,9 @@ namespace GenetycAlgorithm
             _PopulationsInitialisation();
         }
 
-        // Общее число хромосом в популяции не должно превышать число линий.
+        /// <summary>
+        /// Общее число хромосом в популяции не должно превышать число линий
+        /// </summary>
         private void _PopulationsInitialisation()
         {
             // Создаём популяции хромосом. Каждая популяция - это набор линий, которые
