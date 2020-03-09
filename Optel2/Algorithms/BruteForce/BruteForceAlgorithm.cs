@@ -33,15 +33,27 @@ namespace Algorithms.BruteForce
         public ProductionPlan SelectedPlan { get; set; }
 
         // Дерево решение
-        //public List<ProductionPlan> Tree { get; set; }
         public List<Decision> DecisionTree { get; set; }
         private bool _needTree;
 
-        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function, bool _needTree = false)
-        {
-            this._needTree = _needTree;
+        /// <summary>
+        /// Флаг, помечающий, был ли вылет за макисмальное количество итераций
+        /// </summary>
+        public bool IsMaxIterationException { get; private set; }
+        private long iterationNumber;
 
-            if (this._needTree)
+        private int _maxIterationsCount;
+
+        public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
+            bool needTree = false, int maxIterationsCount = 100)
+        {
+            _needTree = needTree;
+
+            iterationNumber = 0;
+            IsMaxIterationException = false;
+            _maxIterationsCount = maxIterationsCount;
+
+            if (_needTree)
             {
                 // Tree = new List<ProductionPlan>();
                 DecisionTree = new List<Decision>();
@@ -70,19 +82,23 @@ namespace Algorithms.BruteForce
             if (_needTree)
             {
                 DecisionTree = DecisionTree.OrderByDescending(tree => tree.FunctionValue).ToList();
-                //optimalPlan = DecisionTree.OrderBy(tree => tree.FunctionValue).First().Plan;
             }
 
-            BestAlgoritm bestAlgoritm = new BestAlgoritm();
-            ProductionPlan productionPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
-            if (_needTree)
+            if (!IsMaxIterationException)
             {
-                if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                BestAlgoritm bestAlgoritm = new BestAlgoritm();
+                ProductionPlan productionPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
+
+                if (_needTree)
                 {
-                    DecisionTree.Add(new Decision { Plan = productionPlan, FunctionValue = productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                    if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                    {
+                        DecisionTree.Add(new Decision { Plan = productionPlan, FunctionValue = productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                    }
                 }
+                SelectedPlan = productionPlan;
             }
-            SelectedPlan = productionPlan;
+
             return SelectedPlan;
         }
 
@@ -114,22 +130,32 @@ namespace Algorithms.BruteForce
         {
             for (len[iteration] = 0; len[iteration] < len.Length; len[iteration]++)
             {
-                if (IsInLen(iteration, len)) // избавляемся от повторений
+                if (IsMaxIterationException)
+                    return;
+                else if (IsInLen(iteration, len)) // избавляемся от повторений
                     continue;
                 else if (iteration < len.Length - 1)
                     CreateListForce(++iteration, ref len);
                 else
                 {
-                    ProductionPlan newPlan = CreatePlanByArray(len); // по массиву перебора создаем план
-                    ProductionPlan oldPlan = SelectedPlan; // сохраняем старый план
-                    SelectedPlan = ChooseBestPlan(new List<ProductionPlan>() { newPlan, SelectedPlan });
-
-                    if (_needTree)
+                    if (++iterationNumber >= _maxIterationsCount)
                     {
-                        if (DecisionTree.Count == 0)
-                            DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-                        if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
-                            DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                        IsMaxIterationException = true;
+                        return;
+                    }
+                    else
+                    {
+                        ProductionPlan newPlan = CreatePlanByArray(len); // по массиву перебора создаем план
+                        ProductionPlan oldPlan = SelectedPlan; // сохраняем старый план
+                        SelectedPlan = ChooseBestPlan(new List<ProductionPlan>() { newPlan, SelectedPlan });
+
+                        if (_needTree)
+                        {
+                            if (DecisionTree.Count == 0)
+                                DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                            if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                                DecisionTree.Add(new Decision { Plan = SelectedPlan, FunctionValue = SelectedPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                        }
                     }
                 }
             }

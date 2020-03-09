@@ -62,9 +62,13 @@ namespace GenetycAlgorithm
         private AObjectiveFunction _objectiveFunction;
 
         // Дерево решений
-        // public List<ProductionPlan> Tree { get; set; }
         public List<Decision> DecisionTree { get; set; }
         private bool _isNeedTree;
+
+        /// <summary>
+        /// Флаг, помечающий, был ли вылет за макисмальное количество итераций
+        /// </summary>
+        public bool IsMaxIterationException { get; private set; }
 
         public async Task<ProductionPlan> Start(List<Extruder> extruderLines, List<Order> ordersToExecute, List<SliceLine> slinesBundle, Costs productionCosts, OptimizationCriterion criterion, AObjectiveFunction function,
                                     int maxPopulation, int numberOfGAiterations, int maxSelection, bool _needTree = false, int mutationPropability = 15, decimal percentOfMutableGens = 0.5m, int crossoverPropability = 95,
@@ -102,6 +106,8 @@ namespace GenetycAlgorithm
             _slinesBundle = slinesBundle;
             _productionCosts = productionCosts;
 
+            IsMaxIterationException = false;
+
             // Всего одна линия: кроссовер бессмысленен. Остаётся только мутация: ставим вероятность
             // кроссовера отрицательной, а вероятность мутации - как можно выше.
             if (_eklinesBundle.Count == 1)
@@ -123,80 +129,91 @@ namespace GenetycAlgorithm
             _MadeStarterPopulations();
 
             // Начинаем "разводить" особей.           
-            for (int i = 0; i < _numberOfGAIterations && i < maxIterationsCount; i++)
+            for (int i = 0; i < _numberOfGAIterations; i++)
             {
                 Debug.Print(i + "/" + _numberOfGAIterations);
-                // Обрабатываем популяции хромосом (каждая популяция имеет по EKLinesAmount хромосом).
-                // Не все популяции обрабатываются: выбираются случайные _maxAmountOfSelection
-                // популяций, которые могут быть обработаны.
-                selectedPopulations = _SelectPopulationsToProceed();
 
-                for (int populationIndex = 0; populationIndex < _populations.Count; populationIndex++)
+                if (i >= maxIterationsCount)
                 {
-                    if (!selectedPopulations.Contains(populationIndex))
-                    {
-                        continue;
-                    }
-
-                    if (rand.Next(0, _maximumPropability) < _crossoverPropability)
-                    {
-                        crossoverOperator.MadeCrossover(ref _populations, populationIndex);
-                    }
-
-                    if (rand.Next(0, _maximumPropability) < _mutationPropability)
-                    {
-                        mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);
-                    }
-                }
-
-                if (optimalPlan.OrdersToLineConformity == null)
-                {
-                    optimalPlan = _GetBestGens();
+                    IsMaxIterationException = true;
+                    break;
                 }
                 else
                 {
-                    // Выбор лучшего плана из всех популяций для данной итерации.
-                    if (_GetBestGens().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) < optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+
+                    // Обрабатываем популяции хромосом (каждая популяция имеет по EKLinesAmount хромосом).
+                    // Не все популяции обрабатываются: выбираются случайные _maxAmountOfSelection
+                    // популяций, которые могут быть обработаны.
+                    selectedPopulations = _SelectPopulationsToProceed();
+
+                    for (int populationIndex = 0; populationIndex < _populations.Count; populationIndex++)
+                    {
+                        if (!selectedPopulations.Contains(populationIndex))
+                        {
+                            continue;
+                        }
+
+                        if (rand.Next(0, _maximumPropability) < _crossoverPropability)
+                        {
+                            crossoverOperator.MadeCrossover(ref _populations, populationIndex);
+                        }
+
+                        if (rand.Next(0, _maximumPropability) < _mutationPropability)
+                        {
+                            mutationOperator.MadeMutation(ref _populations, populationIndex, _percentOfMutableGens);
+                        }
+                    }
+
+                    if (optimalPlan.OrdersToLineConformity == null)
                     {
                         optimalPlan = _GetBestGens();
                     }
-                }
-                // Сохраняем только _maxPopulationsAmount популяций с текущей итерации.
-                _SaveOnlyBestPopulations();
+                    else
+                    {
+                        // Выбор лучшего плана из всех популяций для данной итерации.
+                        if (_GetBestGens().GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) < optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                        {
+                            optimalPlan = _GetBestGens();
+                        }
+                    }
+                    // Сохраняем только _maxPopulationsAmount популяций с текущей итерации.
+                    _SaveOnlyBestPopulations();
 
-                _StagnationDefense(optimalPlan);
+                    _StagnationDefense(optimalPlan);
 
-                if (_isNeedTree)
-                {
-                    if (DecisionTree.Count == 0)
-                        DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
-                    else if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
-                        DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                    if (_isNeedTree)
+                    {
+                        if (DecisionTree.Count == 0)
+                            DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                        else if (DecisionTree.Last().Plan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                            DecisionTree.Add(new Decision { Plan = new ProductionPlan(optimalPlan), FunctionValue = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                    }
                 }
             }
 
-            ///
             if (_isNeedTree)
             {
                 DecisionTree = DecisionTree.OrderByDescending(tree => tree.FunctionValue).ToList();
-                //optimalPlan = DecisionTree.OrderBy(tree => tree.FunctionValue).First().Plan;
             }
 
-            BestAlgoritm bestAlgoritm = new BestAlgoritm();
-            decimal time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
-            time = time / (60 * 60 * 24);
-            ProductionPlan productionPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
-
-            if (optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+            if (!IsMaxIterationException)
             {
-                if (_isNeedTree)
-                    DecisionTree.Add(new Decision() { Plan = productionPlan, FunctionValue = productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+                BestAlgoritm bestAlgoritm = new BestAlgoritm();
+                decimal time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
+                time = time / (60 * 60 * 24);
+                ProductionPlan productionPlan = bestAlgoritm.Start(extruderLines, ordersToExecute, slinesBundle);
 
-                optimalPlan = productionPlan;
+                if (optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) > productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction))
+                {
+                    if (_isNeedTree)
+                        DecisionTree.Add(new Decision() { Plan = productionPlan, FunctionValue = productionPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction) });
+
+                    optimalPlan = productionPlan;
+                }
+
+                time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
+                time = time / (60 * 60 * 24);
             }
-            
-            time = optimalPlan.GetWorkSpending(_productionCosts, _optimizationCriterion, _objectiveFunction);
-            time = time / (60 * 60 * 24);
 
             return optimalPlan;
         }
