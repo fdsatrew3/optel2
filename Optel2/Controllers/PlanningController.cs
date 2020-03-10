@@ -82,6 +82,18 @@ namespace Optel2.Controllers
                 TempData["Extruders"] = sortedExtruders;
                 return RedirectToAction("Result", planningConfig);
             }
+            List<string> modelStateErrors = new List<string>();
+            foreach (ModelState modelState in ModelState.Values)
+            {
+                foreach (ModelError error in modelState.Errors)
+                {
+                    modelStateErrors.Add(error.ErrorMessage);
+                }
+            }
+            foreach (string error in modelStateErrors)
+            {
+                ModelState.AddModelError("", error);
+            }
             PlanningModel planningModel = new PlanningModel();
             planningModel.Orders = await db.Orders.ToListAsync();
             planningModel.Extruders = await db.Extruders.Include(e => e.ExtruderCalibrationChange)
@@ -268,10 +280,32 @@ namespace Optel2.Controllers
             TempData["Extruders"] = planningConfig.Extruders;
             TempData["Orders"] = planningConfig.Orders;
             ProductionPlan result = new ProductionPlan();
-            planningConfig.maxPopulation = planningConfig.Orders.Count;
-            planningConfig.maxSelection = planningConfig.Orders.Count;
-            planningConfig.NumberOfGAiterations = planningConfig.Orders.Count / 2;
+            int maxIterations = int.MaxValue;
+            if (planningConfig.CalculateAlgorithmsSettings)
+            {
+                planningConfig.maxPopulation = planningConfig.Orders.Count;
+                planningConfig.maxSelection = planningConfig.Orders.Count;
+                planningConfig.NumberOfGAiterations = planningConfig.Orders.Count / 2;
+                planningConfig.mutationPropability = 15;
+                planningConfig.percentOfMutableGens = 0.5m;
+                planningConfig.crossoverPropability = 95;
+            }
+            else
+            {
+                AlgorithmSettings settings = await db.AlgorithmSettings.FirstAsync();
+                if (settings != null)
+                {
+                    planningConfig.maxPopulation = settings.maxPopulation;
+                    planningConfig.maxSelection = settings.maxSelection;
+                    planningConfig.NumberOfGAiterations = settings.NumberOfGAiterations;
+                    planningConfig.mutationPropability = settings.mutationPropability;
+                    planningConfig.percentOfMutableGens = settings.percentOfMutableGens;
+                    planningConfig.crossoverPropability = settings.crossoverPropability;
+                    maxIterations = settings.MaxIterations;
+                }
+            }
             MondiObjectiveFunction objectiveFunction = new MondiObjectiveFunction(planningConfig.PlannedStartDate, planningConfig.PlannedEndDate);
+            bool maxIterationsReached = false;
             switch (planningConfig.SelectedAlgorithm)
             {
                 case PlanningModel.PlanningAlgorithm.BruteForce:
@@ -283,8 +317,10 @@ namespace Optel2.Controllers
                         new Costs(),
                         planningConfig.Criterion,
                         objectiveFunction,
-                        planningConfig.TreeRequired));
+                        planningConfig.TreeRequired,
+                        maxIterations));
                     planningConfig.TreeData = bruteForce.DecisionTree;
+                    maxIterationsReached = bruteForce.IsMaxIterationException;
                     break;
                 case PlanningModel.PlanningAlgorithm.Genetic:
                     var genetic = new GeneticAlgorithm();
@@ -298,8 +334,13 @@ namespace Optel2.Controllers
                         planningConfig.maxPopulation,
                         planningConfig.NumberOfGAiterations,
                         planningConfig.maxSelection,
-                        planningConfig.TreeRequired));
+                        planningConfig.TreeRequired,
+                        planningConfig.mutationPropability,
+                        planningConfig.percentOfMutableGens,
+                        planningConfig.crossoverPropability,
+                        maxIterations));
                     planningConfig.TreeData = genetic.DecisionTree;
+                    maxIterationsReached = genetic.IsMaxIterationException;
                     break;
                 case PlanningModel.PlanningAlgorithm.OldPlan:
                     result = GetProductionPlan(planningConfig.Orders, planningConfig.Extruders, planningConfig.PlannedStartDate);
@@ -319,7 +360,7 @@ namespace Optel2.Controllers
             ViewBag.JsonString = GenerateProductionPlanJSON(result, planningConfig.Criterion, objectiveFunction);
             ViewBag.Criteria = planningConfig.Criterion == OptimizationCriterion.Cost ? "Cost" : "Time";
             double requiredTime = Convert.ToDouble(result.GetWorkSpending(null, OptimizationCriterion.Time, objectiveFunction));
-            if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds)
+            if (requiredTime > (planningConfig.PlannedEndDate - planningConfig.PlannedStartDate).TotalSeconds || maxIterationsReached)
             {
                 ViewBag.Error = true;
             }

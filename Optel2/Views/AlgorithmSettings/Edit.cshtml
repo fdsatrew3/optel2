@@ -1,0 +1,82 @@
+﻿@model Optel2.Models.AlgorithmSettings
+
+@{
+    ViewBag.Title = "Algorithm settings";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editForm" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaxIterations, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="">
+                @Html.EditorFor(model => model.MaxIterations, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+                @Html.ValidationMessageFor(model => model.MaxIterations, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumberOfGAiterations, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="">
+                @Html.EditorFor(model => model.NumberOfGAiterations, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+                @Html.ValidationMessageFor(model => model.NumberOfGAiterations, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.maxPopulation, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="">
+                @Html.EditorFor(model => model.maxPopulation, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+                @Html.ValidationMessageFor(model => model.maxPopulation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.maxSelection, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="">
+                @Html.EditorFor(model => model.maxSelection, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+                @Html.ValidationMessageFor(model => model.maxSelection, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.mutationPropability, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="">
+                @Html.EditorFor(model => model.mutationPropability, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+                @Html.ValidationMessageFor(model => model.mutationPropability, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.percentOfMutableGens, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="">
+                @Html.EditorFor(model => model.percentOfMutableGens, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+                @Html.ValidationMessageFor(model => model.percentOfMutableGens, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.crossoverPropability, htmlAttributes: new { @class = "control-label col-auto" })
+            <div class="">
+                @Html.EditorFor(model => model.crossoverPropability, new { htmlAttributes = new { @class = "form-control", data_val = "false" } })
+                @Html.ValidationMessageFor(model => model.crossoverPropability, "", new { @class = "text-danger" })
+            </div>
+        </div>
+		<div class="form-group">
+			<div class="row" style="padding-left: 15px;">
+				<div class="col-auto">
+					<a href="javascript:document.getElementById('editForm').submit()" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/save.png" width="24px" height="24px">&nbsp;Save</div></a>
+				</div>
+			</div>
+		</div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

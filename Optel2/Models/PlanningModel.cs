@@ -30,18 +30,17 @@ namespace Optel2.Models
         public bool TreeRequired { get; set; }
         public List<Decision> TreeData { get; set; }
         #endregion
+        #region GenericShitForAll
+        [Display(Name = "Automatically calculate algorithm parameters")]
+        public bool CalculateAlgorithmsSettings { get; set; }
+        public int MaxIterations { get; set; }
+        #endregion
         #region GeneticAlgorithmShit
-        [Display(Name = "Count of iterations")]
         public int NumberOfGAiterations { get; set; }
-        [Display(Name = "Populations max")]
         public int maxPopulation { get; set; }
-        [Display(Name = "Selection max")]
         public int maxSelection { get; set; }
-        [Display(Name = "Mutation probability")]
         public int mutationPropability { get; set; }
-        [Display(Name = "Percent of mutable gens")]
         public decimal percentOfMutableGens { get; set; }
-        [Display(Name = "Crossover probability")]
         public int crossoverPropability { get; set; }
         #endregion
         #region BruteForceAlgorithmShit
@@ -52,6 +51,7 @@ namespace Optel2.Models
         {
             Orders = new List<Order>();
             Extruders = new List<Extruder>();
+            CalculateAlgorithmsSettings = true;
         }
     }
 }

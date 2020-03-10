@@ -48,7 +48,11 @@
 								<a href="/Extruders/" class="dropdown-item float-left"><img src="/Images/Menu/extruder.png" width="32" height="32">&nbsp;Extruder data</a>
 								<!--<a href="/FilmRecipeCosts/" class="dropdown-item float-left"><img src="/Images/Menu/film_recipe_cost.png" width="32" height="32">&nbsp;Film recipe costs data</a>-->
 								<a href="/FilmRecipes/" class="dropdown-item float-left"><img src="/Images/Menu/film_recipe.png" width="32" height="32">&nbsp;Film recipes data</a>
-								<a href="/Customers/" class="dropdown-item float-left"><img src="/Images/user_m.png" width="32" height="32">&nbsp;Customers data</a>
+								<!--<a href="/Customers/" class="dropdown-item float-left"><img src="/Images/Menu/film_recipe_cost.png" width="32" height="32">&nbsp;Customers</a>-->
+								@if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+								{
+									<a href="/AlgorithmSettings/" class="dropdown-item float-left"><img src="~/Images/Menu/edit.png" width="32" height="32">&nbsp;Algorithms settings</a>
+								}
 								<a href="/Orders/" class="dropdown-item float-left"><img src="/Images/Menu/order.png" width="32" height="32">&nbsp;Orders data</a>
 								<a href="/Planning/Config" class="dropdown-item float-left"><img src="/Images/favicon.png" width="32" height="32">&nbsp;Planning</a>
 							</div>
@@ -82,8 +86,13 @@
 				<br>-->
 				<a href="/FilmRecipes/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/film_recipe.png" width="32" height="32">&nbsp;Film recipes data</div></a>
 				<br>
-				<a href="/Customers/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/user_m.png" width="32" height="32">&nbsp;Customers data</div></a>
-				<br>
+				<!--<a href="/Customers/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/user_m.png" width="32" height="32">&nbsp;Customers data</div></a>
+				<br>-->
+				if (User.IsInRole(Optel2.Utils.User.Roles.Admin))
+				{
+					<a href="/AlgorithmSettings/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="~/Images/Menu/edit.png" width="32" height="32">&nbsp;Algorithms settings</div></a>
+					<br>
+				}
 				<a href="/Orders/" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/Menu/order.png" width="32" height="32">&nbsp;Orders data</div></a>
 				<br>
 				<a href="/Planning/Config" class="btn btn-dark left-menu-btn"><div class="float-left"><img src="/Images/favicon.png" width="32" height="32">&nbsp;Planning</div></a>

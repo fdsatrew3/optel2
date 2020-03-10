@@ -44,5 +44,6 @@ namespace Optel2.Models
         public DbSet<Extruder> Extruders { get; set; }
         public DbSet<FilmRecipe> FilmRecipes { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<AlgorithmSettings> AlgorithmSettings { get; set; }
     }
 }

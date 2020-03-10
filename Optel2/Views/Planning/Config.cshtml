@@ -238,6 +238,12 @@
 				<br />Use it only when you have small planning task (10-15 orders, 1-2 extruders).
 			</div>
 		</div>
+		<div id="Step4Container3" style="padding-left: 15px;">
+			<div class="form-group">
+				Old plan algorithm can be used only for demonstration purposes (Maria Soell existing production plan). 
+				<br />This algorithm require pressing "Select old plan orders" button, only one extruder named "MEX 08" and at least 2 months of planning interval.
+			</div>
+		</div>
 		<div class="form-group" style="margin-bottom: 0px;">
 			<div class="col-auto">
 				@Html.CheckBoxFor(Model => Model.TreeRequired, new { htmlAttributes = new { @class = "form-control", data_val = "false" }, id = "treeCheckbox"})
@@ -245,9 +251,16 @@
 				@Html.ValidationMessageFor(model => model.TreeRequired, "", new { @class = "text-danger" })
 			</div>
 		</div>
-		<div style="padding-left: 15px;">
+		<div style="padding-left: 15px; margin-bottom: 0px; padding-bottom: 0px;">
 			<div class="form-group">
 				Decision tree may increase computation time, use it only on small planning task.
+			</div>
+		</div>
+		<div class="form-group" style="margin-bottom: 0px;">
+			<div class="col-auto">
+				@Html.CheckBoxFor(Model => Model.CalculateAlgorithmsSettings, new { htmlAttributes = new { @class = "form-control", data_val = "false" }, id = "useAdvancedSettings" })
+				@Html.LabelFor(model => model.CalculateAlgorithmsSettings, htmlAttributes: new { @class = "control-label" })
+				@Html.ValidationMessageFor(model => model.CalculateAlgorithmsSettings, "", new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="form-group" id="subminButton">
@@ -271,6 +284,7 @@
 			Step4Container = document.getElementById("Step4Container");
 			Step4Container1 = document.getElementById("Step4Container1");
 			Step4Container2 = document.getElementById("Step4Container2");
+			Step4Container3 = document.getElementById("Step4Container3");
 			CurrentStep = document.getElementById("CurrentStep");
 			AlgorithmDropDown = document.getElementById("AlgorithmDropDown");
 			OnStepButtonPress(false, 1);
@@ -282,6 +296,7 @@
 			var genetic = (algorithm == "@PlanningModel.PlanningAlgorithm.Genetic.ToString()");
 			var treeCheckbox = document.getElementById("treeCheckbox");
 			treeCheckbox.disabled = false;
+			Step4Container3.style.display = "none";
 			switch (algorithm) {
 				case "@PlanningModel.PlanningAlgorithm.Genetic.ToString()":
 					Step4Container1.style.display = genetic ? "block" : "none";
@@ -294,6 +309,7 @@
 				case "Old plan":
 					Step4Container1.style.display = "none";
 					Step4Container2.style.display = "none";
+					Step4Container3.style.display = "block";
 					treeCheckbox.disabled = true;
 					break;
 			}

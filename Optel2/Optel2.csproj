@@ -197,8 +197,10 @@
     <Compile Include="Algorithms\ObjectiveFunctions\MondiObjectiveFunction.cs" />
     <Compile Include="Algorithms\OrdersOnExtruderLine.cs" />
     <Compile Include="Algorithms\ProductionPlan.cs" />
+    <Compile Include="Controllers\AlgorithmSettingsController.cs" />
     <Compile Include="Controllers\PlanningController.cs" />
     <Compile Include="Models\PlanningModel.cs" />
+    <Compile Include="Models\AlgorithmSettings.cs" />
     <Compile Include="Models\SliceLine.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -385,6 +387,7 @@
     <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Planning\Config.cshtml" />
     <Content Include="Views\Planning\Result.cshtml" />
+    <Content Include="Views\AlgorithmSettings\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
